@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using YoghurtBank.Data.Model;
-using System.Net.HttpStatusCode;
+using System.Net;
 
 namespace YoghurtBank.Services
 {
