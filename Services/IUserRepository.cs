@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
 using YoghurtBank.Data.Model;
+using System.Net.HttpStatusCode;
 
 namespace YoghurtBank.Services
 {
     public interface IUserRepository
     {
-        Task<UserDetailsDTO> FindUserAsync(int userId);
-        Task<UserDetailsDTO> AddUserAsync(UserCreateDTO user);
+        (HttpStatusCode, Task<UserDetailsDTO>) FindUserByIdAsync(int userId);
+        (HttpStatusCode, Task<UserDetailsDTO>) AddUserAsync(UserCreateDTO user);
        
     }
 }

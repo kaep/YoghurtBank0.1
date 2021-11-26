@@ -15,7 +15,7 @@ namespace YoghurtBank.Services
             throw new NotImplementedException();
         }
 
-        public Task<UserDetailsDTO> FindUserAsync(int userId)
+        public Task<UserDetailsDTO> FindUserByIdAsync(int userId)
         {
             throw new NotImplementedException();
         }
