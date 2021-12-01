@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using YoghurtBank.Data;
@@ -5,6 +6,9 @@ using YoghurtBank.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using YoghurtBank.Data.Model;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using YoghurtBank.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +18,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 //database connection
-builder.Services.AddDbContextFactory<YoghurtContext>(opt => opt.UseNpgsql(@"Host=localhost;Database=entitycore;Username=postgres;Password=mypassword"));
+builder.Services.AddDbContextFactory<YoghurtContext>(opt => opt.UseNpgsql("Host=127.0.0.1;Database=Yoghurtbase;Username=dev;Password=password123"));
 builder.Services.AddScoped<IYoghurtContext, YoghurtContext>();
 
 
@@ -38,11 +42,6 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
-
-var context = app.Services.GetService<IYoghurtContext>();
-var usertest = new Student{Id = 1};
-context.Users.Add(usertest);
-context.SaveChangesAsync();
 
 
 
