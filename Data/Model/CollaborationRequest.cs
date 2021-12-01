@@ -5,6 +5,7 @@ namespace YoghurtBank.Data.Model
 {
     public class CollaborationRequest
     {
+        public int Id { get; set; }
         public Student Requester { get; init; }
         public Supervisor Requestee { get; init; }
         public Idea? Idea { get; init; }
