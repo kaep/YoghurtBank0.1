@@ -1,5 +1,8 @@
+using System;
+using System.Collections.Generic;
 using YoghurtBank.Data.Model;
 using System.Net;
+using System.Threading.Tasks;
 using YoghurtBank.Infrastructure;
 
 namespace YoghurtBank.Services 
@@ -12,9 +15,28 @@ namespace YoghurtBank.Services
         {
             _context = context;
         }
-        public (HttpStatusCode, Task<UserDetailsDTO>) AddCollaboratinRequestAsync(CollaborationRequestCreateDTO requestCreateDTO)
+        public async Task<(HttpStatusCode, CollaborationRequestDetailsDTO)> AddCollaborationRequestAsync(CollaborationRequestCreateDTO requestCreateDTO)
         {
-            throw new NotImplementedException();
+            var toBeAdded = new CollaborationRequest
+            {
+                //baaah casting necessary :( 
+                Requester = (Student) _context.Users.Find(requestCreateDTO.StudentId),
+                Requestee = (Supervisor) _context.Users.Find(requestCreateDTO.SupervisorId),
+                Idea = _context.Ideas.Find(requestCreateDTO.IdeaId),
+            };
+
+            _context.CollaborationRequests.Add(toBeAdded);
+            await _context.SaveChangesAsync();
+
+            var toBeReturned = new CollaborationRequestDetailsDTO
+            {
+                StudentId = toBeAdded.Requester.Id,
+                SupervisorId = toBeAdded.Requestee.Id,
+                Application = toBeAdded.Application,
+                Status = toBeAdded.Status //denne skal vel sættes til new som default eller noget, right?
+            };
+            
+            return (HttpStatusCode.Processing, toBeReturned); 
         }
 
         public (HttpStatusCode, Task<IEnumerable<CollaborationRequestDetailsDTO>>) FindRequestsByIdeaAsync(int ideaId)

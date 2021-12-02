@@ -1,11 +1,14 @@
+using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using YoghurtBank.Data.Model;
 
 namespace YoghurtBank.Services
 {
     public interface ICollaborationRequestRepository
     {
-        (HttpStatusCode, Task<UserDetailsDTO>) AddCollaboratinRequestAsync(CollaborationRequestCreateDTO requestCreateDTO);
+        Task<(HttpStatusCode, CollaborationRequestDetailsDTO)> AddCollaborationRequestAsync(
+            CollaborationRequestCreateDTO requestCreateDTO);
         
 
         (HttpStatusCode, Task<IEnumerable<CollaborationRequestDetailsDTO>>) FindRequestsByIdeaAsync(int ideaId);
