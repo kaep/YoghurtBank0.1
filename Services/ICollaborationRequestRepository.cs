@@ -13,7 +13,7 @@ namespace YoghurtBank.Services
             CollaborationRequestCreateDTO requestCreateDTO);
         
 
-        (HttpStatusCode, Task<IEnumerable<CollaborationRequestDetailsDTO>>) FindRequestsByIdeaAsync(int ideaId);
+        Task<IEnumerable<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId);
       
 
         (HttpStatusCode, Task<IEnumerable<CollaborationRequestDetailsDTO>>) FindRequestsByUserAsync(int userId);

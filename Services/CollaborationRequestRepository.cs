@@ -4,6 +4,7 @@ using YoghurtBank.Data.Model;
 using System.Net;
 using System.Threading.Tasks;
 using YoghurtBank.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace YoghurtBank.Services 
 {
@@ -21,11 +22,15 @@ namespace YoghurtBank.Services
         {
             var collabRequest = await _context.CollaborationRequests.FindAsync(id);
 
+            if(collabRequest == null){ 
+                return null;
+                }
             return new CollaborationRequestDetailsDTO
             {
                 StudentId = _context.Users.FindAsync(collabRequest.Id).Result.Id,
                 SupervisorId = _context.Users.FindAsync(collabRequest.Id).Result.Id,
-                Status = collabRequest.Status
+                Status = collabRequest.Status,
+                Application = collabRequest.Application
             };
         }
 
@@ -53,9 +58,14 @@ namespace YoghurtBank.Services
             return (HttpStatusCode.Processing, toBeReturned); 
         }
 
-        public (HttpStatusCode, Task<IEnumerable<CollaborationRequestDetailsDTO>>) FindRequestsByIdeaAsync(int ideaId)
+        public async Task<IEnumerable<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId)
         {
-            throw new NotImplementedException();
+            return await _context.CollaborationRequests.Where(c => c.Idea.Id == ideaId).Select(c => new CollaborationRequestDetailsDTO
+            {
+                StudentId = c.Requester.Id,
+                SupervisorId = c.Requestee.Id,
+                Application = c.Application,
+                Status = c.Status}).ToListAsync();   
         }
 
         public (HttpStatusCode, Task<IEnumerable<CollaborationRequestDetailsDTO>>) FindRequestsByUserAsync(int userId)
