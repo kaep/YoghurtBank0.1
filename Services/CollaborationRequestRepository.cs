@@ -15,6 +15,20 @@ namespace YoghurtBank.Services
         {
             _context = context;
         }
+        
+        //er det forkert at de kender til hinanden
+        public async Task<CollaborationRequestDetailsDTO> FindById(int id)
+        {
+            var collabRequest = await _context.CollaborationRequests.FindAsync(id);
+
+            return new CollaborationRequestDetailsDTO
+            {
+                StudentId = _context.Users.FindAsync(collabRequest.Id).Result.Id,
+                SupervisorId = _context.Users.FindAsync(collabRequest.Id).Result.Id,
+                Status = collabRequest.Status
+            };
+        }
+
         public async Task<(HttpStatusCode, CollaborationRequestDetailsDTO)> AddCollaborationRequestAsync(CollaborationRequestCreateDTO requestCreateDTO)
         {
             var toBeAdded = new CollaborationRequest
