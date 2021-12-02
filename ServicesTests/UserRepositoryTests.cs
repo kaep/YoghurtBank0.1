@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
+using System.Net;
 
 namespace ServicesTests {
 
@@ -36,26 +38,36 @@ namespace ServicesTests {
             context.Users.AddRange(
                 Mette, Sofia, Jens, Line
             );
-
-            //add data here if neccesary
-
             context.SaveChanges(); 
 
             _context = context;
             _repository = new UserRepository(_context);
-
         }
 
         [Fact]
-        public void TestFindUser()
+        public void TestFindUserByID()
         {   
-            Assert.Equal(2,2);            
+            var expectedUser = new UserDetailsDTO {Id = 1, Username = "Mette", UserType = "Student"};
+            var output = _repository.FindUserByIdAsync(1);
+            Assert.Equal(expectedUser, output.Item2.Result);            
+        }
+
+        [Fact]
+        public void FindUser_given_id_7_returns_NotFound()
+        {
+            var output = _repository.FindUserByIdAsync(7);
+            var actual = output.Item1; 
+            Assert.Equal(HttpStatusCode.NotFound, actual);
         }
         
         [Fact]
-        public void TestAddUser()
+        public void AddUserAsyncReturnsUserDetailsDTO()
         {
+            var user = new UserCreateDTO{Username = "Hanne", UserType = "Student"};
+            var output = _repository.AddUserAsync(user);
 
+            Assert.Equal(HttpStatusCode.Created, output.Item1);
+            Assert.Equal(output.Item2.Result.Id, 5);
         }
 
         protected virtual void Dispose(bool disposing)

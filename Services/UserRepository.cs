@@ -20,12 +20,31 @@ namespace YoghurtBank.Services
 
         public (HttpStatusCode, Task<UserDetailsDTO>) AddUserAsync(UserCreateDTO user)
         {
-            throw new NotImplementedException();
+            User newUser;
+            if (user.UserType == "Student")
+            {
+                newUser = new Student(UserName = user.UserName);
+            }
+            else 
+            {
+                newUser = new Supervisor(Id = null, UserName = user.UserName);
+            }
+            
+            var returnUser = await _context.Users.Add(newUser);
+            return (HttpStatusCode.OK, returnUser);
         }
 
         public (HttpStatusCode, Task<UserDetailsDTO>) FindUserByIdAsync(int userId)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FindAsync(userID);
+            if (user == null)
+            {
+                return (HttpStatusCode.NotFound, user);
+            }
+            else 
+            {
+                return (HttpStatusCode.OK, user);
+            }
         }
     }
 }
