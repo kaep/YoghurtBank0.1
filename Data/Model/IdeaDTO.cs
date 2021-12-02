@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace YoghurtBank.Data.Model
 { 
 
+
     public record IdeaCreateDTO
     {
         public int CreatorId { get; init; }
@@ -36,6 +37,7 @@ namespace YoghurtBank.Data.Model
         public DateTime? StartDate { get; set; }
         public IdeaType Type { get; set; }
     }
+
 
     public record IdeaDTO
     {
