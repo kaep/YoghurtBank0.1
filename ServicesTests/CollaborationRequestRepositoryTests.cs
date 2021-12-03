@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using YoghurtBank.Services;
 using YoghurtBank.Data.Model;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ServicesTests
 {
-    public class CollaborationRequestRepositoryTests
+    public class CollaborationRequestRepositoryTests : IDisposable
     {
         private readonly IYoghurtContext _context;
         private readonly CollaborationRequestRepository _repo; 
@@ -23,19 +24,7 @@ namespace ServicesTests
             builder.UseSqlite(connection);
             var context = new YoghurtContext(builder.Options);
             context.Database.EnsureCreated();
-
-            var Idea1 = new Idea {
-                Id = 1,
-                Subject = "Harry Pooter",
-                Title = "A",
-                Description = "Vewy nice"
-            };
-
-            var Idea2 = new Idea {
-                Id = 2
-
-            };
-
+            
             var student1 = new Student
             {
                 Id = 1,
@@ -49,6 +38,35 @@ namespace ServicesTests
                 ideas = new List<Idea>(),
                 Username = "Partyman"
             };
+            var Idea1 = new Idea {
+                Id = 1,
+                Subject = "Harry Pooter",
+                Title = "A",
+                Description = "Vewy nice",
+                AmountOfCollaborators = 12,
+                Creator = super1,
+                Open = true,
+                Posted = DateTime.Now,
+                StartDate = DateTime.Now,
+                TimeToComplete = DateTime.Now-DateTime.Today,
+                Type = IdeaType.Bachelor
+            };
+
+            var Idea2 = new Idea {
+                Id = 2,
+                Subject = "Vuldemurt",
+                Title = "B",
+                Description = "Erhamgerd",
+                AmountOfCollaborators = 9,
+                Creator = super1,
+                Open = true,
+                Posted = DateTime.Now,
+                StartDate = DateTime.Now,
+                TimeToComplete = DateTime.Now-DateTime.Today,
+                Type = IdeaType.Project
+            };
+
+            
             var collabRequest1 = new CollaborationRequest{
                 Id = 1,
                 Requester = student1,
@@ -67,7 +85,7 @@ namespace ServicesTests
                 Idea = Idea1
                 
             };
-
+ 
             var collabRequest3 = new CollaborationRequest{
                 Id = 3,
                 Requester = student1,
@@ -86,13 +104,45 @@ namespace ServicesTests
             context.CollaborationRequests.Add(collabRequest1);
             context.CollaborationRequests.Add(collabRequest2);
             context.CollaborationRequests.Add(collabRequest3);
-            context.SaveChangesAsync();
+            context.SaveChanges();
             _context = context;
             _repo = new CollaborationRequestRepository(_context);
         }
 
         [Fact]
-        public void FindById1_returns_collabRequest1()
+        public void ikkeasynk()
+        {
+            var collabrequest = new CollaborationRequestCreateDTO
+            {
+                StudentId = 1,
+                SupervisorId = 2,
+                Application = "Heya",
+                IdeaId = 1
+            };
+            var created = _repo.Create(collabrequest);
+            
+            Assert.Equal("Heya", created.Application);
+        }
+        
+
+        [Fact]
+        public async Task Create_fuckdethele()
+        {
+            var collabrequest = new CollaborationRequestCreateDTO
+            {
+                StudentId = 1,
+                SupervisorId = 2,
+                Application = "Heya",
+                IdeaId = 1
+            };
+            var created = await _repo.CreateAsync(collabrequest);
+            
+            Assert.Equal("Heya", created.Application);
+
+        }
+
+        [Fact]
+        public async void FindById1_returns_collabRequest1()
         {
             #region Arrange
                         
@@ -100,7 +150,7 @@ namespace ServicesTests
             #endregion
 
             #region Act
-            var result = _repo.FindById(1).Result;
+            var result = await _repo.FindById(1);
             #endregion
 
             #region Assert
@@ -129,22 +179,73 @@ namespace ServicesTests
         }
 
         [Fact]
-        public void FindRequestsByIdeaAsync_Given_return_gandalf()
+        public async void FindRequestsByIdeaAsync_Given_return_gandalf()
         {
             #region Arrange
 
             #endregion
 
             #region Act
-            var request = _repo.FindRequestsByIdeaAsync(1).Result;
+
+            var request = await _repo.FindRequestsByIdeaAsync(1);
+            #endregion
+
+            #region Assert
+            Assert.NotEmpty(request);
+            Assert.Equal(2, request.Count());
+
+            #endregion
+        }
+
+
+        [Fact]
+        public async void AddAsync_given_collabrequest_returns_collabrequest()
+        {
+            #region Arrange
+
+            var collabrequest = new CollaborationRequestCreateDTO
+            {
+                StudentId = 1,
+                SupervisorId = 2,
+                Application = "Heya",
+                IdeaId = 1
+            };
+            
+            #endregion
+
+            #region Act
+
+            var result = await _repo.AddCollaborationRequestAsync(collabrequest);
 
             #endregion
 
             #region Assert
-
-            Assert.Equal(2, request.Count());
-
+            Assert.NotNull(result);
+            Assert.Equal("Heya", result.Application);
             #endregion
+
+        }
+
+        private bool disposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+
+                disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
         
     }

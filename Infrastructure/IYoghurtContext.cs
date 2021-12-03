@@ -13,6 +13,7 @@ namespace YoghurtBank.Infrastructure
         public DbSet<CollaborationRequest> CollaborationRequests { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-        
+        int SaveChanges();
+
     }
 }

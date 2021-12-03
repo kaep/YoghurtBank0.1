@@ -8,8 +8,9 @@ namespace YoghurtBank.Services
     public interface ICollaborationRequestRepository
     {
 
+        Task<CollaborationRequestDetailsDTO> CreateAsync(CollaborationRequestCreateDTO request);
         Task<CollaborationRequestDetailsDTO> FindById(int id);
-        Task<(HttpStatusCode, CollaborationRequestDetailsDTO)> AddCollaborationRequestAsync(
+        Task< CollaborationRequestDetailsDTO> AddCollaborationRequestAsync(
             CollaborationRequestCreateDTO requestCreateDTO);
         
 

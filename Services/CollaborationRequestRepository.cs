@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using YoghurtBank.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace YoghurtBank.Services 
 {
@@ -16,7 +17,56 @@ namespace YoghurtBank.Services
         {
             _context = context;
         }
-        
+
+        public CollaborationRequestDetailsDTO Create(CollaborationRequestCreateDTO request)
+        {
+            //error handling i tilfælde af nulls på requester+requesteeeeeee
+            var requester = (Student) _context.Users.Find(request.StudentId);
+            var requestee = (Supervisor) _context.Users.Find(request.SupervisorId);
+            var entity = new CollaborationRequest
+            {
+                Requester = requester,
+                Requestee = requestee,
+                Application = request.Application,
+                Idea =  _context.Ideas.Find(request.IdeaId),
+                Status = CollaborationRequestStatus.Waiting
+            };
+
+            _context.CollaborationRequests.Add(entity);
+            _context.SaveChanges();
+            
+            return new CollaborationRequestDetailsDTO
+            {
+                StudentId = entity.Requester.Id,
+                SupervisorId = entity.Requestee.Id,
+                Status = entity.Status,
+                Application = entity.Application,
+            };
+        }
+
+        public async Task<CollaborationRequestDetailsDTO> CreateAsync(CollaborationRequestCreateDTO request)
+        {
+            var entity = new CollaborationRequest
+            {
+                Requester = (Student) await _context.Users.FindAsync(request.StudentId),
+                Requestee = (Supervisor) await _context.Users.FindAsync(request.SupervisorId),
+                Application = request.Application,
+                Idea = await _context.Ideas.FindAsync(request.IdeaId),
+                Status = CollaborationRequestStatus.Waiting
+            };
+            _context.CollaborationRequests.Add(entity);
+            await _context.SaveChangesAsync();
+
+            return new CollaborationRequestDetailsDTO
+            {
+                StudentId = entity.Requester.Id,
+                SupervisorId = entity.Requestee.Id,
+                Status = entity.Status,
+                Application = entity.Application,
+            };
+        }
+
+
         //er det forkert at de kender til hinanden
         public async Task<CollaborationRequestDetailsDTO> FindById(int id)
         {
@@ -34,15 +84,19 @@ namespace YoghurtBank.Services
             };
         }
 
-        public async Task<(HttpStatusCode, CollaborationRequestDetailsDTO)> AddCollaborationRequestAsync(CollaborationRequestCreateDTO requestCreateDTO)
+        public async Task<CollaborationRequestDetailsDTO> AddCollaborationRequestAsync(CollaborationRequestCreateDTO requestCreateDTO)
         {
             var toBeAdded = new CollaborationRequest
             {
                 //baaah casting necessary :( 
-                Requester = (Student) _context.Users.Find(requestCreateDTO.StudentId),
-                Requestee = (Supervisor) _context.Users.Find(requestCreateDTO.SupervisorId),
-                Idea = _context.Ideas.Find(requestCreateDTO.IdeaId),
+                
+                Requester = (Student)  await _context.Users.FindAsync(requestCreateDTO.StudentId),
+                Requestee = (Supervisor) await _context.Users.FindAsync(requestCreateDTO.SupervisorId),
+                Idea = await _context.Ideas.FindAsync(requestCreateDTO.IdeaId),
+                Application = requestCreateDTO.Application,
+                Status = CollaborationRequestStatus.Waiting //denne skal vel være noget new eller ?
             };
+
 
             _context.CollaborationRequests.Add(toBeAdded);
             await _context.SaveChangesAsync();
@@ -55,7 +109,7 @@ namespace YoghurtBank.Services
                 Status = toBeAdded.Status //denne skal vel sættes til new som default eller noget, right?
             };
             
-            return (HttpStatusCode.Processing, toBeReturned); 
+            return toBeReturned; 
         }
 
         public async Task<IEnumerable<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId)
@@ -65,7 +119,11 @@ namespace YoghurtBank.Services
                 StudentId = c.Requester.Id,
                 SupervisorId = c.Requestee.Id,
                 Application = c.Application,
-                Status = c.Status}).ToListAsync();   
+                Status = c.Status
+                
+            }).ToListAsync();   
+       
+       
         }
 
         public (HttpStatusCode, Task<IEnumerable<CollaborationRequestDetailsDTO>>) FindRequestsByUserAsync(int userId)
