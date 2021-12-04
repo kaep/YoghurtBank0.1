@@ -9,10 +9,8 @@ namespace YoghurtBank.Services
     {
 
         Task<CollaborationRequestDetailsDTO> CreateAsync(CollaborationRequestCreateDTO request);
-        Task<CollaborationRequestDetailsDTO> FindById(int id);
-        Task< CollaborationRequestDetailsDTO> AddCollaborationRequestAsync(
-            CollaborationRequestCreateDTO requestCreateDTO);
-        
+        Task<CollaborationRequestDetailsDTO> FindById(int id); //aka GET
+        Task<int> DeleteAsync(int id); //returværdi skal overvejes -> det skal nok være noget status-agtigt
 
         Task<IEnumerable<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId);
       

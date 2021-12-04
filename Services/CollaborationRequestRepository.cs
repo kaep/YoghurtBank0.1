@@ -52,8 +52,9 @@ namespace YoghurtBank.Services
                 Requestee = (Supervisor) await _context.Users.FindAsync(request.SupervisorId),
                 Application = request.Application,
                 Idea = await _context.Ideas.FindAsync(request.IdeaId),
-                Status = CollaborationRequestStatus.Waiting
+                Status = CollaborationRequestStatus.Waiting // bliver status ikke sat automatisk
             };
+            
             _context.CollaborationRequests.Add(entity);
             await _context.SaveChangesAsync();
 
@@ -67,14 +68,15 @@ namespace YoghurtBank.Services
         }
 
 
-        //er det forkert at de kender til hinanden
         public async Task<CollaborationRequestDetailsDTO> FindById(int id)
         {
             var collabRequest = await _context.CollaborationRequests.FindAsync(id);
 
-            if(collabRequest == null){ 
+            if(collabRequest == null)
+            { 
                 return null;
-                }
+            }
+            
             return new CollaborationRequestDetailsDTO
             {
                 StudentId = _context.Users.FindAsync(collabRequest.Id).Result.Id,
@@ -84,33 +86,19 @@ namespace YoghurtBank.Services
             };
         }
 
-        public async Task<CollaborationRequestDetailsDTO> AddCollaborationRequestAsync(CollaborationRequestCreateDTO requestCreateDTO)
+        public async Task<int> DeleteAsync(int id)
         {
-            var toBeAdded = new CollaborationRequest
+            var entity = _context.CollaborationRequests.Find(id);
+            if (entity == null)
             {
-                //baaah casting necessary :( 
-                
-                Requester = (Student)  await _context.Users.FindAsync(requestCreateDTO.StudentId),
-                Requestee = (Supervisor) await _context.Users.FindAsync(requestCreateDTO.SupervisorId),
-                Idea = await _context.Ideas.FindAsync(requestCreateDTO.IdeaId),
-                Application = requestCreateDTO.Application,
-                Status = CollaborationRequestStatus.Waiting //denne skal vel være noget new eller ?
-            };
+                return -1; //BAD! create a status instead
+            }
 
-
-            _context.CollaborationRequests.Add(toBeAdded);
+            _context.CollaborationRequests.Remove(entity);
             await _context.SaveChangesAsync();
-
-            var toBeReturned = new CollaborationRequestDetailsDTO
-            {
-                StudentId = toBeAdded.Requester.Id,
-                SupervisorId = toBeAdded.Requestee.Id,
-                Application = toBeAdded.Application,
-                Status = toBeAdded.Status //denne skal vel sættes til new som default eller noget, right?
-            };
-            
-            return toBeReturned; 
+            return entity.Id;
         }
+
 
         public async Task<IEnumerable<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId)
         {
@@ -125,6 +113,8 @@ namespace YoghurtBank.Services
        
        
         }
+
+        
 
         public (HttpStatusCode, Task<IEnumerable<CollaborationRequestDetailsDTO>>) FindRequestsByUserAsync(int userId)
         {

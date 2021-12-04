@@ -18,6 +18,7 @@ namespace ServicesTests
         
         public CollaborationRequestRepositoryTests() 
         {
+            #region Setup
             var connection = new SqliteConnection("Filename=:memory:");
             connection.Open();
             var builder = new DbContextOptionsBuilder<YoghurtContext>();
@@ -80,7 +81,7 @@ namespace ServicesTests
                 Id = 2,
                 Requester = student1,
                 Requestee = super1,
-                Application = "Yes",
+                Application = "No",
                 Status = CollaborationRequestStatus.ApprovedBySupervisor,
                 Idea = Idea1
                 
@@ -107,11 +108,14 @@ namespace ServicesTests
             context.SaveChanges();
             _context = context;
             _repo = new CollaborationRequestRepository(_context);
+            #endregion
         }
 
+
         [Fact]
-        public void ikkeasynk()
+        public async Task CreateAsync_given_request_returns_it()
         {
+            #region Arrange
             var collabrequest = new CollaborationRequestCreateDTO
             {
                 StudentId = 1,
@@ -119,30 +123,19 @@ namespace ServicesTests
                 Application = "Heya",
                 IdeaId = 1
             };
-            var created = _repo.Create(collabrequest);
-            
-            Assert.Equal("Heya", created.Application);
-        }
-        
+            #endregion
 
-        [Fact]
-        public async Task Create_fuckdethele()
-        {
-            var collabrequest = new CollaborationRequestCreateDTO
-            {
-                StudentId = 1,
-                SupervisorId = 2,
-                Application = "Heya",
-                IdeaId = 1
-            };
+            #region Act
             var created = await _repo.CreateAsync(collabrequest);
-            
-            Assert.Equal("Heya", created.Application);
+            #endregion
 
+            #region Assert
+            Assert.Equal("Heya", created.Application);
+            #endregion
         }
 
         [Fact]
-        public async void FindById1_returns_collabRequest1()
+        public async Task FindById1_returns_collabRequest1()
         {
             #region Arrange
                         
@@ -179,7 +172,7 @@ namespace ServicesTests
         }
 
         [Fact]
-        public async void FindRequestsByIdeaAsync_Given_return_gandalf()
+        public async Task FindRequestsByIdeaAsync_given_id_1_returns_two_requests()
         {
             #region Arrange
 
@@ -187,19 +180,20 @@ namespace ServicesTests
 
             #region Act
 
-            var request = await _repo.FindRequestsByIdeaAsync(1);
+            var requests = await _repo.FindRequestsByIdeaAsync(1);
             #endregion
 
             #region Assert
-            Assert.NotEmpty(request);
-            Assert.Equal(2, request.Count());
-
+            Assert.NotEmpty(requests);
+            Assert.Equal(2, requests.Count());
+            Assert.Equal("Yes", requests.ElementAt(0).Application);
+            Assert.Equal("No", requests.ElementAt(1).Application);
             #endregion
         }
 
 
         [Fact]
-        public async void AddAsync_given_collabrequest_returns_collabrequest()
+        public async Task AddAsync_given_collabrequest_returns_collabrequest()
         {
             #region Arrange
 
@@ -215,7 +209,7 @@ namespace ServicesTests
 
             #region Act
 
-            var result = await _repo.AddCollaborationRequestAsync(collabrequest);
+            var result = await _repo.CreateAsync(collabrequest);
 
             #endregion
 
@@ -225,7 +219,32 @@ namespace ServicesTests
             #endregion
 
         }
+        
+        [Fact]
+        public async Task DeleteAsync_given_valid_id_deletes_requestid_and_returns_id()
+        {
+            var result = await _repo.DeleteAsync(1);
+            var entity = _context.CollaborationRequests.Find(1);
 
+            Assert.Equal(1, result);
+            Assert.Null(entity);
+        }
+        
+        
+        //TODO denne skal rettes når vi har fundet en god status at returnere
+        [Fact]
+        public async Task DeleteAsync_given_invalid_id_returns_minusone()
+        {
+            //make sure that it doesnt exists
+            var entity = _context.CollaborationRequests.Find(500);
+            Assert.Null(entity);
+            
+            var result = await _repo.DeleteAsync(500);
+            Assert.Equal(-1, result);
+        }
+
+
+        #region DisposeStuff
         private bool disposed;
 
         protected virtual void Dispose(bool disposing)
@@ -247,6 +266,10 @@ namespace ServicesTests
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+        
+
+        #endregion
+       
         
     }
 }
