@@ -17,5 +17,6 @@ namespace YoghurtBank.Data.Model
         public string UserName { get; init; }
         public string UserType { get; init; }
     }
+    
 
 }
