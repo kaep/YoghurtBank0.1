@@ -1,4 +1,6 @@
+using System.Reflection.Emit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YoghurtBank.Data.Model;
 
 namespace YoghurtBank.Infrastructure
@@ -12,7 +14,8 @@ namespace YoghurtBank.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-        
+            modelBuilder.Entity<CollaborationRequest>().Property(c => c.Status)
+                .HasConversion(new EnumToStringConverter<CollaborationRequestStatus>());
         }
     }
 }
