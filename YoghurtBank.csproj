@@ -20,4 +20,27 @@
     <PackageReference Include="xUnit" Version="2.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\appsettings.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests.deps.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\bin\Debug\net6.0\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\bin\Debug\net6.0\appsettings.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\bin\Debug\net6.0\ServicesTests.deps.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\bin\Debug\net6.0\ServicesTests.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\bin\Debug\net6.0\ServicesTests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\bin\Debug\net6.0\ServicesTests\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\bin\Debug\net6.0\ServicesTests\obj\ServicesTests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\bin\Debug\net6.0\YoghurtBank.deps.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\bin\Debug\net6.0\YoghurtBank.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\bin\Debug\net6.0\YoghurtBank.staticwebassets.runtime.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\ServicesTests\obj\ServicesTests.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\YoghurtBank.deps.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\YoghurtBank.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\YoghurtBank.staticwebassets.runtime.json" />
+  </ItemGroup>
+
 </Project>
