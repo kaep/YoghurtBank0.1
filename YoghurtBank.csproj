@@ -6,6 +6,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-YoghurtBank2-9C6B6E81-1377-4E67-8758-74FD42012033</UserSecretsId>
+    <WebProject_DirectoryAccessLevelKey>0</WebProject_DirectoryAccessLevelKey>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +23,11 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
     <PackageReference Include="xUnit" Version="2.4.1" />
 
-
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" NoWarn="NU1605"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.0" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.16.0" />
+    <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="1.16.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.16.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,7 +51,6 @@
     <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\YoghurtBank.deps.json" />
     <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\YoghurtBank.runtimeconfig.json" />
     <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\YoghurtBank.staticwebassets.runtime.json" />
-
   </ItemGroup>
 
 </Project>
