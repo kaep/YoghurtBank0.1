@@ -5,7 +5,7 @@ namespace YoghurtBank.Data.Model {
 
     public class Supervisor : User {
 
-        public ICollection<Idea> ideas { get; set; }
+        public ICollection<Idea> Ideas { get; set; }
 
         public void PostIdea(Idea idea)
         {

@@ -31,15 +31,15 @@ namespace ServicesTests
             var student1 = new Student
             {
                 Id = 1,
-                Username = "Henning",
+                UserName = "Henning",
                 CollaborationRequests = new List<CollaborationRequest>()
             };
             var super1 = new Supervisor
             {
                 Id = 2,
                 CollaborationRequests = new List<CollaborationRequest>(),
-                ideas = new List<Idea>(),
-                Username = "Partyman"
+                Ideas = new List<Idea>(),
+                UserName = "Partyman"
             };
             var Idea1 = new Idea
             {

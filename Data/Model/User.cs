@@ -5,7 +5,7 @@ namespace YoghurtBank.Data.Model
 {
     public abstract class User {
         public int Id { get; init; } 
-        public string Username { get; init; }
+        public string UserName { get; init; }
         public ICollection<CollaborationRequest> CollaborationRequests { get; set; }
 
         public void LogIn() 
