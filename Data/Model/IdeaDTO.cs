@@ -64,6 +64,7 @@ namespace YoghurtBank.Data.Model
         public bool Open { get; set; }
         public TimeSpan TimeToComplete { get; set; }
         public DateTime? StartDate { get; set; }
+        public IdeaType Type {get; set;}
     }
 }
 

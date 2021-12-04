@@ -37,7 +37,7 @@ namespace ServicesTests
             _repo = new CollaborationRequestRepository(_context);
         }
 
-        [Fact]
+        [Fact (Skip = "Smokeit")]
         public void FindById_returns_collabRequest1()
         {   
                        
