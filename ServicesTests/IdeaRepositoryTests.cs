@@ -248,10 +248,26 @@ namespace YoghurtBank.ServicesTests {
             );
         }
 
-        //Se evt. Ondfisk implementation.
+        private bool disposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+
+                disposed = true;
+            }
+        }
+
         public void Dispose()
         {
-            _context.Dispose();
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
