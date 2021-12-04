@@ -265,7 +265,7 @@ namespace ServicesTests
         }
 
         [Fact]
-        public async Task UpdateAsync_given_existing_character_updates_it()
+        public async Task UpdateAsync_given_existing_request_updates_it()
         {
             //get initial status
             var status = _context.CollaborationRequests.Find(1).Status;
