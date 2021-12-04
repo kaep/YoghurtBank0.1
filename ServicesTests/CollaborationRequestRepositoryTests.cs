@@ -1,4 +1,4 @@
-using Xunit; 
+using Xunit;
 using YoghurtBank.Infrastructure;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -14,18 +14,19 @@ namespace ServicesTests
     public class CollaborationRequestRepositoryTests : IDisposable
     {
         private readonly IYoghurtContext _context;
-        private readonly CollaborationRequestRepository _repo; 
-        
-        public CollaborationRequestRepositoryTests() 
+        private readonly CollaborationRequestRepository _repo;
+
+        public CollaborationRequestRepositoryTests()
         {
             #region Setup
+
             var connection = new SqliteConnection("Filename=:memory:");
             connection.Open();
             var builder = new DbContextOptionsBuilder<YoghurtContext>();
             builder.UseSqlite(connection);
             var context = new YoghurtContext(builder.Options);
             context.Database.EnsureCreated();
-            
+
             var student1 = new Student
             {
                 Id = 1,
@@ -39,7 +40,8 @@ namespace ServicesTests
                 ideas = new List<Idea>(),
                 Username = "Partyman"
             };
-            var Idea1 = new Idea {
+            var Idea1 = new Idea
+            {
                 Id = 1,
                 Subject = "Harry Pooter",
                 Title = "A",
@@ -49,11 +51,12 @@ namespace ServicesTests
                 Open = true,
                 Posted = DateTime.Now,
                 StartDate = DateTime.Now,
-                TimeToComplete = DateTime.Now-DateTime.Today,
+                TimeToComplete = DateTime.Now - DateTime.Today,
                 Type = IdeaType.Bachelor
             };
 
-            var Idea2 = new Idea {
+            var Idea2 = new Idea
+            {
                 Id = 2,
                 Subject = "Vuldemurt",
                 Title = "B",
@@ -63,38 +66,39 @@ namespace ServicesTests
                 Open = true,
                 Posted = DateTime.Now,
                 StartDate = DateTime.Now,
-                TimeToComplete = DateTime.Now-DateTime.Today,
+                TimeToComplete = DateTime.Now - DateTime.Today,
                 Type = IdeaType.Project
             };
 
-            
-            var collabRequest1 = new CollaborationRequest{
+
+            var collabRequest1 = new CollaborationRequest
+            {
                 Id = 1,
                 Requester = student1,
-                Requestee = super1, 
+                Requestee = super1,
                 Application = "Yes",
                 Status = CollaborationRequestStatus.Waiting,
                 Idea = Idea1
             };
 
-            var collabRequest2 = new CollaborationRequest{
+            var collabRequest2 = new CollaborationRequest
+            {
                 Id = 2,
                 Requester = student1,
                 Requestee = super1,
                 Application = "No",
                 Status = CollaborationRequestStatus.ApprovedBySupervisor,
                 Idea = Idea1
-                
             };
- 
-            var collabRequest3 = new CollaborationRequest{
+
+            var collabRequest3 = new CollaborationRequest
+            {
                 Id = 3,
                 Requester = student1,
                 Requestee = super1,
                 Application = "Yes",
                 Status = CollaborationRequestStatus.ApprovedBySupervisor,
                 Idea = Idea2
-                
             };
 
 
@@ -108,6 +112,7 @@ namespace ServicesTests
             context.SaveChanges();
             _context = context;
             _repo = new CollaborationRequestRepository(_context);
+
             #endregion
         }
 
@@ -116,6 +121,7 @@ namespace ServicesTests
         public async Task CreateAsync_given_request_returns_it()
         {
             #region Arrange
+
             var collabrequest = new CollaborationRequestCreateDTO
             {
                 StudentId = 1,
@@ -123,14 +129,19 @@ namespace ServicesTests
                 Application = "Heya",
                 IdeaId = 1
             };
+
             #endregion
 
             #region Act
+
             var created = await _repo.CreateAsync(collabrequest);
+
             #endregion
 
             #region Assert
+
             Assert.Equal("Heya", created.Application);
+
             #endregion
         }
 
@@ -138,34 +149,40 @@ namespace ServicesTests
         public async Task FindById1_returns_collabRequest1()
         {
             #region Arrange
-                        
 
             #endregion
 
             #region Act
+
             var result = await _repo.FindById(1);
+
             #endregion
 
             #region Assert
+
             Assert.Equal(1, result.StudentId);
             Assert.Equal(1, result.SupervisorId);
             Assert.Equal(CollaborationRequestStatus.Waiting, result.Status);
             Assert.Equal("Yes", result.Application);
+
             #endregion
         }
+
         [Fact]
         public void FindByInvalidId_Returns_Null()
         {
             #region Arrange
-                        
 
             #endregion
 
             #region Act
+
             var result = _repo.FindById(1337).Result;
+
             #endregion
 
             #region Assert
+
             Assert.Null(result);
 
             #endregion
@@ -181,13 +198,16 @@ namespace ServicesTests
             #region Act
 
             var requests = await _repo.FindRequestsByIdeaAsync(1);
+
             #endregion
 
             #region Assert
+
             Assert.NotEmpty(requests);
             Assert.Equal(2, requests.Count());
             Assert.Equal("Yes", requests.ElementAt(0).Application);
             Assert.Equal("No", requests.ElementAt(1).Application);
+
             #endregion
         }
 
@@ -204,7 +224,7 @@ namespace ServicesTests
                 Application = "Heya",
                 IdeaId = 1
             };
-            
+
             #endregion
 
             #region Act
@@ -214,12 +234,13 @@ namespace ServicesTests
             #endregion
 
             #region Assert
+
             Assert.NotNull(result);
             Assert.Equal("Heya", result.Application);
-            #endregion
 
+            #endregion
         }
-        
+
         [Fact]
         public async Task DeleteAsync_given_valid_id_deletes_requestid_and_returns_id()
         {
@@ -229,8 +250,8 @@ namespace ServicesTests
             Assert.Equal(1, result);
             Assert.Null(entity);
         }
-        
-        
+
+
         //TODO denne skal rettes når vi har fundet en god status at returnere
         [Fact]
         public async Task DeleteAsync_given_invalid_id_returns_minusone()
@@ -238,13 +259,68 @@ namespace ServicesTests
             //make sure that it doesnt exists
             var entity = _context.CollaborationRequests.Find(500);
             Assert.Null(entity);
-            
+
             var result = await _repo.DeleteAsync(500);
             Assert.Equal(-1, result);
         }
 
+        [Fact]
+        public async Task UpdateAsync_given_existing_character_updates_it()
+        {
+            //get initial status
+            var status = _context.CollaborationRequests.Find(1).Status;
+
+
+            var update = new CollaborationRequestUpdateDTO
+            {
+                Id = 1,
+                Status = CollaborationRequestStatus.ApprovedByStudent
+            };
+
+            #region Act
+
+            var result = await _repo.UpdateAsync(update.Id, update);
+
+            #endregion
+
+            #region Assert
+
+            Assert.Equal(CollaborationRequestStatus.Waiting, status);
+            Assert.NotNull(result);
+            Assert.Equal(CollaborationRequestStatus.ApprovedByStudent, result.Status);
+
+            #endregion
+        }
+
+        //TODO change this when return value of method is not null but instead is a status
+        [Fact]
+        public async Task UpdateAsync_given_non_existing_id_returns_null()
+        {
+            #region Arrange
+
+            var id = 500;
+            var update = new CollaborationRequestUpdateDTO
+            {
+                Id = id,
+                Status = CollaborationRequestStatus.ApprovedByStudent
+            };
+            #endregion
+
+            #region Act
+
+            var result = await _repo.UpdateAsync(500, update);
+            var entity = await _context.CollaborationRequests.FindAsync(500);
+            #endregion
+
+            #region Assert
+            Assert.Null(entity);
+            Assert.Null(result);
+            #endregion
+        }
+
 
         #region DisposeStuff
+
         private bool disposed;
 
         protected virtual void Dispose(bool disposing)
@@ -266,10 +342,7 @@ namespace ServicesTests
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
-        
 
         #endregion
-       
-        
     }
 }

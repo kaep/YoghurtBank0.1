@@ -46,6 +46,8 @@ namespace YoghurtBank.Services
 
         public async Task<CollaborationRequestDetailsDTO> CreateAsync(CollaborationRequestCreateDTO request)
         {
+            //husk null-checking
+            
             var entity = new CollaborationRequest
             {
                 Requester = (Student) await _context.Users.FindAsync(request.StudentId),
@@ -77,6 +79,8 @@ namespace YoghurtBank.Services
                 return null;
             }
             
+            //husk null-checking
+            
             return new CollaborationRequestDetailsDTO
             {
                 StudentId = _context.Users.FindAsync(collabRequest.Id).Result.Id,
@@ -88,7 +92,7 @@ namespace YoghurtBank.Services
 
         public async Task<int> DeleteAsync(int id)
         {
-            var entity = _context.CollaborationRequests.Find(id);
+            var entity = await _context.CollaborationRequests.FindAsync(id);
             if (entity == null)
             {
                 return -1; //BAD! create a status instead
@@ -102,6 +106,7 @@ namespace YoghurtBank.Services
 
         public async Task<IEnumerable<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId)
         {
+            //husk null-checking på c.idea 
             return await _context.CollaborationRequests.Where(c => c.Idea.Id == ideaId).Select(c => new CollaborationRequestDetailsDTO
             {
                 StudentId = c.Requester.Id,
@@ -110,11 +115,29 @@ namespace YoghurtBank.Services
                 Status = c.Status
                 
             }).ToListAsync();   
-       
-       
         }
 
-        
+        public async Task<CollaborationRequestDetailsDTO> UpdateAsync(int id, CollaborationRequestUpdateDTO updateRequest)
+        {
+            //TODO should more properties be update-able? 
+            
+            var entity = await _context.CollaborationRequests.FindAsync(id);
+            if (entity == null)
+            {
+                return null;  //RETURN A STATUS INSTEAD
+            }
+
+            entity.Status = updateRequest.Status;
+            await _context.SaveChangesAsync();
+            return new CollaborationRequestDetailsDTO
+            {
+                Status = entity.Status,
+                Application = entity.Application,
+                StudentId = entity.Requester.Id,
+                SupervisorId = entity.Requestee.Id
+            };
+        }
+
 
         public (HttpStatusCode, Task<IEnumerable<CollaborationRequestDetailsDTO>>) FindRequestsByUserAsync(int userId)
         {

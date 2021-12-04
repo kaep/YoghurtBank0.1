@@ -13,8 +13,10 @@ namespace YoghurtBank.Services
         Task<int> DeleteAsync(int id); //returværdi skal overvejes -> det skal nok være noget status-agtigt
 
         Task<IEnumerable<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId);
-      
 
+        Task<CollaborationRequestDetailsDTO> UpdateAsync(int id, CollaborationRequestUpdateDTO updateRequest); //return value? like delete
+        
+        
         (HttpStatusCode, Task<IEnumerable<CollaborationRequestDetailsDTO>>) FindRequestsByUserAsync(int userId);
     }
 }
