@@ -6,8 +6,11 @@ namespace YoghurtBank.Services
 {
     public interface IUserRepository
     {
-        (HttpStatusCode, Task<UserDetailsDTO>) FindUserByIdAsync(int userId);
-        (HttpStatusCode, Task<UserDetailsDTO>) AddUserAsync(UserCreateDTO user);
+        Task<(HttpStatusCode code, UserDetailsDTO details)> FindUserByIdAsync(int userId);
+
+        Task<UserDetailsDTO> CreateAsync(UserCreateDTO user);
+
+        Task<int> DeleteAsync(int id);
        
     }
 }
