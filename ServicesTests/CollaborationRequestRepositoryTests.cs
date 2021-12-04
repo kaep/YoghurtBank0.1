@@ -1,3 +1,4 @@
+
 using Xunit;
 using YoghurtBank.Infrastructure;
 using Microsoft.Data.Sqlite;
@@ -26,7 +27,7 @@ namespace ServicesTests
             builder.UseSqlite(connection);
             var context = new YoghurtContext(builder.Options);
             context.Database.EnsureCreated();
-
+            
             var student1 = new Student
             {
                 Id = 1,
