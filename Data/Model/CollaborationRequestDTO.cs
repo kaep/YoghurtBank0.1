@@ -18,7 +18,7 @@ namespace YoghurtBank.Data.Model
     public record CollaborationRequestDetailsDTO 
     {
         public int StudentId {get; set;}
-        public int Supervisor {get; set;}
+        public int SupervisorId {get; set;}
         public string Application { get; set; } 
         public CollaborationRequestStatus Status { get; set; }
     }
