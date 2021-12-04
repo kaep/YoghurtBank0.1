@@ -8,8 +8,8 @@ namespace YoghurtBank.Services
 {
     public interface IIdeaRepository
     {
-        Task<(HttpStatusCode, Task<IEnumerable<IdeaDTO>>)> FindIdeaBySupervisorAsync(int userId);
-        (HttpStatusCode, Task<IdeaDetailsDTO>) FindIdeaDetailsAsync(int IdeaId);
+        (HttpStatusCode, IEnumerable<IdeaDTO>) FindIdeaBySupervisorAsync(int userId);
+        Task<(HttpStatusCode, IdeaDetailsDTO)> FindIdeaDetailsAsync(int IdeaId);
         (HttpStatusCode, int) CreateIdea(IdeaCreateDTO idea);
 
     }
