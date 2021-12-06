@@ -235,7 +235,7 @@ namespace YoghurtBank.ServicesTests {
             );
         }
 
-        //Todo fix broken test - Timespan does is off (precision)
+        //Todo fix broken test - Timespan is off (precision)
         [Fact]
         public async Task ReadAllAsync_returns_all_elements_in_context() {
             var actualIdeas = await _repo.ReadAllAsync();
