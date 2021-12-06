@@ -45,6 +45,7 @@ namespace YoghurtBank.Services
             };
         }
 
+       
         public async Task<CollaborationRequestDetailsDTO> CreateAsync(CollaborationRequestCreateDTO request)
         {
             //husk null-checking
@@ -140,9 +141,34 @@ namespace YoghurtBank.Services
         }
 
 
-        public (HttpStatusCode, Task<IEnumerable<CollaborationRequestDetailsDTO>>) FindRequestsByUserAsync(int userId)
+        public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsBySupervisorAsync(int supervisorId)
         {
-            throw new NotImplementedException();
+            //overvej type checking, så vi er sikre på at metoden ikke bruges til at finde den forkerte type user
+            
+            var listOfUsers = await _context.CollaborationRequests.Where(c => c.Requestee.Id == supervisorId).Select(c => new CollaborationRequestDetailsDTO
+            {
+                StudentId = c.Requester.Id,
+                SupervisorId = c.Requestee.Id,
+                Application = c.Application,
+                Status = c.Status
+                
+            }).ToListAsync();
+            return listOfUsers.AsReadOnly();
+        }
+
+        public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsByStudentAsync(int studentId)
+        {
+            //overvej type checking, så vi er sikre på at metoden ikke bruges til at finde den forkerte type user
+
+            var listOfUsers = await _context.CollaborationRequests.Where(c => c.Requester.Id == studentId).Select(c => new CollaborationRequestDetailsDTO
+            {
+                StudentId = c.Requester.Id,
+                SupervisorId = c.Requestee.Id,
+                Application = c.Application,
+                Status = c.Status
+                
+            }).ToListAsync();
+            return listOfUsers.AsReadOnly();
         }
     }
 }

@@ -47,19 +47,6 @@ namespace YoghurtBank.ServicesTests {
             
         }
 
-
-        /*[Fact]
-        public void AddIdeaAsyncReturnsSomething(){
-
-            TimeSpan ts1 = TimeSpan. FromDays(12);
-            Type bach = IdeaType.Bachelor;
-            var idea = new IdeaCreateDTO{CreatorId = 1, Title = "BigDataHandling", Subject =  "Database Managment", Description = "Interesting topic with the best supervisor (B-dog)", AmountOfCollaborators = 3, Open = true, TimeToComplete = null, StartDate = 2022-01-03, Type = null};
-            var output = _repo.AddIdea(idea);
-
-            Assert.Equal(HttpStatusCode.Created, output);
-           
-        }*/
-
         [Fact]
         public async Task FindIdeaDetailsAsync_given_valid_id_returns_details()
         {
@@ -245,6 +232,23 @@ namespace YoghurtBank.ServicesTests {
             Assert.Collection(expectedIdeas,
             idea => Assert.Equal(ideaDTO1, idea),
             idea => Assert.Equal(ideaDTO2, idea)
+            );
+        }
+
+        [Fact]
+        public async Task ReadAllAsync_returns_all_elements_in_context() {
+            var actualIdeas = await _repo.ReadAllAsync();
+            
+            
+            var supervisor1 = _context.Users.Find(1);
+            var supervisor2 = _context.Users.Find(2);            
+                
+
+            Assert.Collection(actualIdeas,
+            Idea => Assert.Equal(new IdeaDetailsDTO{Id = 2, CreatorId = supervisor1.Id, Posted = DateTime.Now, Subject = "Data Intelligence", Title = "Data Intelligence is good", Description = "Data Intelligence gives value", AmountOfCollaborators = 1, Open = true, TimeToComplete = DateTime.Now-DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.PhD},Idea),
+            Idea => Assert.Equal(new IdeaDetailsDTO{Id = 4, CreatorId = supervisor1.Id, Posted = DateTime.Now, Subject = "Requirements Elicitation", Title = "Requirements Elicitation is good", Description = "Requirements Elicitation gives value", AmountOfCollaborators = 5, Open = true, TimeToComplete = DateTime.Now-DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Masters},Idea),
+            Idea => Assert.Equal(new IdeaDetailsDTO{Id = 1, CreatorId = supervisor2.Id, Posted = DateTime.Now, Subject = "Big Data", Title = "Big data is good", Description = "Big data gives value", AmountOfCollaborators = 3, Open = true, TimeToComplete = DateTime.Now-DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Bachelor}, Idea),
+            Idea => Assert.Equal(new IdeaDetailsDTO{Id = 3, CreatorId = supervisor2.Id, Posted = DateTime.Now, Subject = "DevOps", Title = "DevOps is good", Description = "DevOps gives value", AmountOfCollaborators = 2, Open = true, TimeToComplete = DateTime.Now-DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Project},Idea)
             );
         }
 
