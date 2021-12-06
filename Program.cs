@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi.Models;
 using YoghurtBank;
+using YoghurtBank.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +60,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContextFactory<YoghurtContext>(opt => opt.UseNpgsql("Host=127.0.0.1;Database=Yoghurtbase;Username=dev;Password=password123"));
 builder.Services.AddScoped<IYoghurtContext, YoghurtContext>();
 builder.Services.AddScoped<ICollaborationRequestRepository, CollaborationRequestRepository>();
+
+builder.Services.AddScoped<CollaborationRequestController, CollaborationRequestController>();
 
 var app = builder.Build();
 

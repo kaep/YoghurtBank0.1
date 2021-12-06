@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
@@ -41,7 +42,7 @@ namespace YoghurtBank.Controllers
             {
                 StudentId = 1,
                 SupervisorId = 2,
-                Application = "Science",
+                Application = "Science din fars bil",
                 Status = CollaborationRequestStatus.Waiting
             };
             var cb2 = new CollaborationRequestDetailsDTO
@@ -51,7 +52,7 @@ namespace YoghurtBank.Controllers
                 Application = "Not Science",
                 Status = CollaborationRequestStatus.Waiting
             };
-            return  new List<CollaborationRequestDetailsDTO> { cb1, cb2};
+            return  new List<CollaborationRequestDetailsDTO> { cb1, cb2}.AsReadOnly();
             //return await _repository.DERSKALLAVESENGETMETODE();
         }
 
