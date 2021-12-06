@@ -16,7 +16,7 @@ namespace YoghurtBank.Controllers
     //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+    //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     public class CollaborationRequestController : ControllerBase
     {
         private readonly ILogger<CollaborationRequestController> _logger;
@@ -31,7 +31,7 @@ namespace YoghurtBank.Controllers
         }
 
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet]
         public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> Get()
         {
@@ -56,7 +56,7 @@ namespace YoghurtBank.Controllers
         }
 
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         //[ProducesResponseType()]
         public async Task<IActionResult> Post(CollaborationRequestCreateDTO request)
@@ -67,7 +67,7 @@ namespace YoghurtBank.Controllers
             return CreatedAtAction(nameof(Get), new {created.Application}, created);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,7 +78,7 @@ namespace YoghurtBank.Controllers
             return await _repository.DeleteAsync(id);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
