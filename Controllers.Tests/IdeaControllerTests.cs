@@ -36,6 +36,5 @@ namespace YoghurtBank.ControllerTests
             Assert.Equal(NotFoundResult, result);
             #endregion
         }
-
     }
 } 
