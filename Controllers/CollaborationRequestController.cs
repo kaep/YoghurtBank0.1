@@ -9,14 +9,15 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web.Resource;
 using YoghurtBank.Data.Model;
 using YoghurtBank.Services;
+using System.Net;
 
 namespace YoghurtBank.Controllers
 {
 
     [Authorize]
     [ApiController]
-    //[Route("api/[controller]")]
-    [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+    [Route("api/[controller]")]
+    //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     public class CollaborationRequestController : ControllerBase
     {
         private readonly ILogger<CollaborationRequestController> _logger;
@@ -31,10 +32,13 @@ namespace YoghurtBank.Controllers
         }
 
 
+
         [AllowAnonymous]
         [HttpGet]
         public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> Get()
         {
+
+            
             //når der virkelig er data på bordet, så kan det være vi skal tjekke for om listen er tom.
             //dummy data
             var cb1 = new CollaborationRequestDetailsDTO
@@ -53,6 +57,29 @@ namespace YoghurtBank.Controllers
             };
             return new List<CollaborationRequestDetailsDTO> {cb1, cb2};
             //return await _repository.DERSKALLAVESENGETMETODE();
+        }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[ProducesResponseType(typeof(CollaborationRequestDetailsDTO), StatusCodes.Status200OK)]
+        public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> GetByIdeaId(int id)
+        {
+            var requests = await _repository.FindRequestsByIdeaAsync(id);
+            return requests;
+        }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> GetIdeaByUser(Boolean isSupervisor, int userId)
+        {
+            if(isSupervisor = true){
+                return await _repository.FindRequestsBySupervisorAsync(userId);
+            } else {
+                return await _repository.FindRequestsByStudentAsync(userId);
+            }
+
         }
 
 

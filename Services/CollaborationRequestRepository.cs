@@ -106,17 +106,20 @@ namespace YoghurtBank.Services
         }
 
 
-        public async Task<IEnumerable<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId)
+        public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId)
         {
             //husk null-checking på c.idea 
-            return await _context.CollaborationRequests.Where(c => c.Idea.Id == ideaId).Select(c => new CollaborationRequestDetailsDTO
+            var requests = await _context.CollaborationRequests.Where(c => c.Idea.Id == ideaId).Select(c => new CollaborationRequestDetailsDTO
             {
                 StudentId = c.Requester.Id,
                 SupervisorId = c.Requestee.Id,
                 Application = c.Application,
                 Status = c.Status
                 
-            }).ToListAsync();   
+            }).ToListAsync();
+
+            return requests.AsReadOnly();
+
         }
 
         public async Task<CollaborationRequestDetailsDTO> UpdateAsync(int id, CollaborationRequestUpdateDTO updateRequest)
