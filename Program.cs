@@ -17,6 +17,7 @@ using YoghurtBank.Services;
 using YoghurtBank.Data;
 using YoghurtBank.Infrastructure;
 using YoghurtBank.Data.Model;
+using YoghurtBank.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,7 +53,9 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContextFactory<YoghurtContext>(opt => opt.UseNpgsql("Host=127.0.0.1;Database=Yoghurtbase;Username=dev;Password=password123"));
 builder.Services.AddScoped<IYoghurtContext, YoghurtContext>();
 builder.Services.AddScoped<ICollaborationRequestRepository, CollaborationRequestRepository>();
-
+builder.Services.AddScoped<IIdeaRepository, IdeaRepository>();
+builder.Services.AddScoped<CollaborationRequestController, CollaborationRequestController>();
+builder.Services.AddScoped<IdeaController, IdeaController>();
 
 var app = builder.Build();
 
@@ -79,6 +82,8 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+app.SeedAsync();
 
 app.Run();
 
