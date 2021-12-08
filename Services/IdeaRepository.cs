@@ -95,7 +95,7 @@ namespace YoghurtBank.Services
             return entity.Id;
         }
         
-
+        
         public async Task<IdeaDetailsDTO> FindIdeaDetailsAsync(int IdeaId)
         {
            var idea = await _context.Ideas.FindAsync(IdeaId);
@@ -121,6 +121,7 @@ namespace YoghurtBank.Services
             };
         }
 
+
         public async Task<(HttpStatusCode code, IEnumerable<IdeaDTO> list)> FindIdeasBySupervisorIdAsync(int userId)
         {
             var supervisor = (Supervisor) _context.Users.Find(userId);
@@ -141,6 +142,27 @@ namespace YoghurtBank.Services
             return (HttpStatusCode.Accepted, ideas);
             }
             
+        }
+
+        public async Task<IReadOnlyCollection<IdeaDetailsDTO>> ReadAllAsync()
+        {
+            var AllIdeas =  await _context.Ideas
+            .Select(i => 
+            new IdeaDetailsDTO {
+                CreatorId = i.Creator.Id,
+                Id = i.Id,
+                Title = i.Title,
+                Subject = i.Subject,
+                Posted = i.Posted,
+                Description = i.Description,
+                AmountOfCollaborators = i.AmountOfCollaborators,
+                Open = i.Open,
+                TimeToComplete = i.TimeToComplete,
+                StartDate = i.StartDate,
+                Type = i.Type
+            }).ToListAsync();
+
+            return AllIdeas.AsReadOnly();
         }
     }
 }
