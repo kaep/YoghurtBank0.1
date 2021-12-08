@@ -1,12 +1,3 @@
-using System;
-using System.Collections.Generic;
-using YoghurtBank.Data.Model;
-using System.Net;
-using System.Threading.Tasks;
-using YoghurtBank.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-
 
 namespace YoghurtBank.Services 
 {

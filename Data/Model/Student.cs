@@ -1,4 +1,3 @@
-using System;
 
 namespace YoghurtBank.Data.Model
 {

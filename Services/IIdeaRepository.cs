@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
-using YoghurtBank.Data.Model;
-
+﻿
 namespace YoghurtBank.Services
 {
     public interface IIdeaRepository

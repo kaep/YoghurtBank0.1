@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 
 namespace YoghurtBank.Data.Model
 {
