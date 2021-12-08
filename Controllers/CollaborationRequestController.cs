@@ -1,16 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web.Resource;
-using YoghurtBank.Data.Model;
-using YoghurtBank.Services;
-using System.Net;
-
+﻿
 namespace YoghurtBank.Controllers
 {
 
@@ -60,7 +48,7 @@ namespace YoghurtBank.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id}")]
+        [HttpGet("{ideaid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         //[ProducesResponseType(typeof(CollaborationRequestDetailsDTO), StatusCodes.Status200OK)]
         public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> GetByIdeaId(int id)
@@ -70,9 +58,9 @@ namespace YoghurtBank.Controllers
         }
 
         [Authorize]
-        [HttpGet("{ideaid}")]
+        [HttpGet("{userid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> GetIdeaByUser(Boolean isSupervisor, int userId)
+        public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> GetRequestsByUser(bool isSupervisor, int userId)
         {
             if (isSupervisor)
             {

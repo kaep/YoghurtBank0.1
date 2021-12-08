@@ -1,15 +1,3 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web.Resource;
-using YoghurtBank.Data.Model;
-using YoghurtBank.Services;
-using System.Net;
 
 namespace YoghurtBank.Controllers
 {
@@ -40,5 +28,38 @@ namespace YoghurtBank.Controllers
             //hvordan fungerer dette? I rasmus' kode ser det ud som om at 
             //ideadetailsdto slet ikke bliver returneret??? hjælp mig :( 
         }
+
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<int> Delete(int id)
+        {
+            //der skal vel være noget logik der tjekker at det er korrekt bruger og den derfor godt må slettes? 
+            return await _repository.DeleteAsync(id);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ProducesResponseType(typeof(IdeaDetailsDTO), 201)]
+        public async Task<IdeaDetailsDTO> Post(IdeaCreateDTO idea)
+        {
+            return await _repository.CreateAsync(idea);
+        }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IdeaDetailsDTO> Put(int id, IdeaUpdateDTO update) 
+        {
+            var ideaToUpdate = await _repository.UpdateAsync(id, update);
+
+            if (ideaToUpdate == null)
+            {
+                //returner en status, dette gøre metoden ikke inde i repo den returnere blot null. Der foretages dog allerede null tjek i repo metode.
+                throw new NotImplementedException();
+            } else 
+            {
+                return ideaToUpdate;
+            }
+        }
+         
     }
 }
