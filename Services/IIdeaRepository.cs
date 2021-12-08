@@ -14,9 +14,9 @@ namespace YoghurtBank.Services
 
         Task<IdeaDetailsDTO> CreateAsync(IdeaCreateDTO idea);
 
-        Task<int> DeleteAsync(int id); 
+        Task<int> DeleteAsync(int id);
         Task<IdeaDetailsDTO> UpdateAsync(int id, IdeaUpdateDTO update);
 
-        Task<IReadOnlyCollection<IdeaDetailsDTO>> ReadAllAsync();    
-        }
+        Task<IReadOnlyCollection<IdeaDetailsDTO>> ReadAllAsync();
+    }
 }

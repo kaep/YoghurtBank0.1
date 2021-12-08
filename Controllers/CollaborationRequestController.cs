@@ -38,7 +38,7 @@ namespace YoghurtBank.Controllers
         public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> Get()
         {
 
-            
+
             //når der virkelig er data på bordet, så kan det være vi skal tjekke for om listen er tom.
             //dummy data
             var cb1 = new CollaborationRequestDetailsDTO
@@ -55,7 +55,7 @@ namespace YoghurtBank.Controllers
                 Application = "Not Science",
                 Status = CollaborationRequestStatus.Waiting
             };
-            return new List<CollaborationRequestDetailsDTO> {cb1, cb2};
+            return new List<CollaborationRequestDetailsDTO> { cb1, cb2 };
             //return await _repository.DERSKALLAVESENGETMETODE();
         }
 
@@ -74,12 +74,14 @@ namespace YoghurtBank.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> GetIdeaByUser(Boolean isSupervisor, int userId)
         {
-            if(isSupervisor = true){
+            if (isSupervisor)
+            {
                 return await _repository.FindRequestsBySupervisorAsync(userId);
-            } else {
+            }
+            else
+            {
                 return await _repository.FindRequestsByStudentAsync(userId);
             }
-
         }
 
 
@@ -91,7 +93,7 @@ namespace YoghurtBank.Controllers
             var created = await _repository.CreateAsync(request);
 
             //det skal være created.Id og ikke application, men DTO har ikke id pt... 
-            return CreatedAtAction(nameof(Get), new {created.Application}, created);
+            return CreatedAtAction(nameof(Get), new { created.Application }, created);
         }
 
         [Authorize]

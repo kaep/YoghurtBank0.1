@@ -26,17 +26,17 @@ namespace YoghurtBank.Controllers
         public IdeaController(ILogger<IdeaController> logger, IIdeaRepository repository)
         {
             _logger = logger;
-            _repository = repository; 
+            _repository = repository;
         }
 
 
+        //vi har droppet actionresults for nuværende... keep it simple 
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(IdeaDetailsDTO), StatusCodes.Status200OK)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<IdeaDetailsDTO>> GetById(int id)
+        public async Task<IdeaDetailsDTO> GetById(int id)
         {
-            var result = await _repository.FindIdeaDetailsAsync(id);
-            return result != null ? result : new NotFoundResult();
+            return await _repository.FindIdeaDetailsAsync(id);
             //hvordan fungerer dette? I rasmus' kode ser det ud som om at 
             //ideadetailsdto slet ikke bliver returneret??? hjælp mig :( 
         }
