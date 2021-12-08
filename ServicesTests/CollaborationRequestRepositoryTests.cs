@@ -34,6 +34,7 @@ namespace ServicesTests
                 UserName = "Henning",
                 CollaborationRequests = new List<CollaborationRequest>()
             };
+
             var super1 = new Supervisor
             {
                 Id = 2,
@@ -41,6 +42,16 @@ namespace ServicesTests
                 Ideas = new List<Idea>(),
                 UserName = "Partyman"
             };
+
+             var super2 = new Supervisor
+            {
+                Id = 3,
+                CollaborationRequests = new List<CollaborationRequest>(),
+                Ideas = new List<Idea>(),
+                UserName = "Morten"
+            };
+            
+
             var Idea1 = new Idea
             {
                 Id = 1,
@@ -102,14 +113,26 @@ namespace ServicesTests
                 Idea = Idea2
             };
 
+            var collabRequest4 = new CollaborationRequest
+            {
+                Id = 4,
+                Requester = student1,
+                Requestee = super2,
+                Application = "Hail Hydra",
+                Status = CollaborationRequestStatus.ApprovedBySupervisor,
+                Idea = Idea2
+            };
+
 
             context.Users.Add(student1);
             context.Users.Add(super1);
+            context.Users.Add(super2);
             context.Ideas.Add(Idea1);
             context.Ideas.Add(Idea2);
             context.CollaborationRequests.Add(collabRequest1);
             context.CollaborationRequests.Add(collabRequest2);
             context.CollaborationRequests.Add(collabRequest3);
+            context.CollaborationRequests.Add(collabRequest4);
             context.SaveChanges();
             _context = context;
             _repo = new CollaborationRequestRepository(_context);
@@ -117,6 +140,63 @@ namespace ServicesTests
             #endregion
         }
 
+        [Fact]
+        public async Task FindRequestsBySupervisorAsync_given_user2_returns_3_requests()
+        {
+            #region Arrange
+            var id = 2;
+            #endregion
+            
+            #region Act
+            var result = await _repo.FindRequestsBySupervisorAsync(id);
+            #endregion
+
+            #region Assert
+            Assert.NotNull(result);
+            Assert.Equal(3, result.Count());
+            Assert.Equal("Yes", result.ElementAt(0).Application);
+            Assert.Equal("No", result.ElementAt(1).Application);
+            Assert.Equal("Yes", result.ElementAt(2).Application);
+            #endregion
+        }
+
+        [Fact]
+        public async Task FindRequestsBySupervisorAsync_given_user3_returns_1_request()
+        {
+            #region Arrange
+            var id = 3;
+            #endregion
+            
+            #region Act
+            var result = await _repo.FindRequestsBySupervisorAsync(id);
+            #endregion
+
+            #region Assert
+            Assert.NotNull(result);
+            Assert.Equal(1, result.Count());
+            Assert.Equal("Hail Hydra", result.ElementAt(0).Application);
+            Assert.Equal(CollaborationRequestStatus.ApprovedBySupervisor, result.ElementAt(0).Status);
+            Assert.Equal(1, result.ElementAt(0).StudentId);
+            Assert.Equal(3, result.ElementAt(0).SupervisorId);
+            #endregion
+        }
+
+         [Fact]
+        public async Task FindRequestsByStudentAsync_given_user1_returns_4_requests()
+        {
+            #region Arrange
+            var id = 1;
+            #endregion
+            
+            #region Act
+            var result = await _repo.FindRequestsByStudentAsync(id);
+            #endregion
+
+            #region Assert
+            Assert.NotNull(result);
+            Assert.Equal(4, result.Count());
+            #endregion
+        }
 
         [Fact]
         public async Task CreateAsync_given_request_returns_it()
