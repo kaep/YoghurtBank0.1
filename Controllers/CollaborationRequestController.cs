@@ -32,7 +32,7 @@ namespace YoghurtBank.Controllers
         }
 
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> Get()
         {

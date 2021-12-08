@@ -1,12 +1,15 @@
 ﻿@page "/fetchdata"
-
-<PageTitle>Weather forecast</PageTitle>
-
+@attribute [Authorize]
 @using YoghurtBank.Data
 @using YoghurtBank.Controllers
 @using YoghurtBank.Data.Model
+@using System.Net.Http.Json
 @inject WeatherForecastService ForecastService
-@inject CollaborationRequestController cuntroller
+@inject HttpClient Http
+
+
+<PageTitle>YoghurtBank</PageTitle>
+
 
 <h1>Your collaborationrequests</h1>
 
@@ -45,7 +48,7 @@ else
 @code {
     
     private WeatherForecast[]? forecasts;
-    private IReadOnlyCollection<CollaborationRequestDetailsDTO> requests;
+    private CollaborationRequestDetailsDTO[]? requests;
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,9 +66,8 @@ else
             Application = "Not Science",
             Status = CollaborationRequestStatus.Waiting
         };
-        //requests = new List<CollaborationRequestDetailsDTO> { cb1, cb2}.AsReadOnly();
-        requests = await cuntroller.Get();
+        //nu virker det her, men hvorfor skal hele path på? kan man sætte en basepath et sted?
+        requests = await Http.GetFromJsonAsync<CollaborationRequestDetailsDTO[]>("https://localhost:7194/api/collaborationrequest");
         forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
     }
-    
 }
