@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -46,8 +47,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor().AddMicrosoftIdentityConsentHandler();
 builder.Services.AddSingleton<WeatherForecastService>();
 
+
+
 var configuration = LoadConfiguration();
-var connectionString = configuration.GetConnectionString("Yoghurtbase");
+var connectionString = configuration.GetConnectionString("Yoghurtbase:connectionString");
 
 
 //database connection
@@ -78,6 +81,7 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
 
 static IConfiguration LoadConfiguration()
 {
