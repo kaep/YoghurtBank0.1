@@ -146,10 +146,11 @@ namespace YoghurtBank.Services
 
         public async Task<IReadOnlyCollection<IdeaDetailsDTO>> ReadAllAsync()
         {
-            List<IdeaDetailsDTO> listOfAllIdeas =  await _context.Ideas
-            .Select(i => new IdeaDetailsDTO{
-                Id = i.Id,
+            var AllIdeas =  await _context.Ideas
+            .Select(i => 
+            new IdeaDetailsDTO {
                 CreatorId = i.Creator.Id,
+                Id = i.Id,
                 Title = i.Title,
                 Subject = i.Subject,
                 Posted = i.Posted,
@@ -161,7 +162,7 @@ namespace YoghurtBank.Services
                 Type = i.Type
             }).ToListAsync();
 
-            return listOfAllIdeas.AsReadOnly();
+            return AllIdeas.AsReadOnly();
         }
     }
 }
