@@ -49,11 +49,15 @@ namespace YoghurtBank.Services
         public async Task<CollaborationRequestDetailsDTO> CreateAsync(CollaborationRequestCreateDTO request)
         {
             //husk null-checking
-            
+            var student = (Student) await _context.Users.FindAsync(request.StudentId);
+            if(student == null) return null;
+            var super = (Supervisor) await _context.Users.FindAsync(request.SupervisorId);
+            if(super == null) return null;
+
             var entity = new CollaborationRequest
             {
-                Requester = (Student) await _context.Users.FindAsync(request.StudentId),
-                Requestee = (Supervisor) await _context.Users.FindAsync(request.SupervisorId),
+                Requester = student,
+                Requestee = super,
                 Application = request.Application,
                 Idea = await _context.Ideas.FindAsync(request.IdeaId),
                 Status = CollaborationRequestStatus.Waiting // bliver status ikke sat automatisk

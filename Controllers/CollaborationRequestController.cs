@@ -70,7 +70,7 @@ namespace YoghurtBank.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id}")]
+        [HttpGet("{ideaid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> GetIdeaByUser(Boolean isSupervisor, int userId)
         {
