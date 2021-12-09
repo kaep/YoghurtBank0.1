@@ -6,10 +6,21 @@ namespace YoghurtBank.Data.Model
         public int Id { get; set; }
         public Supervisor Creator { get; set; }
         public DateTime Posted { get; set; }
-        public string Subject { get; set; } 
+
+        [Required]
+        [StringLength(100)]
+        public string Subject { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string Title { get; set; }
+
+        [Required]
+        [StringLength(250)]
         public string Description { get; set; }
         public int AmountOfCollaborators { get; set; }
+
+        [Required]
         public bool Open { get; set; }
         public TimeSpan TimeToComplete { get; set; }
         public DateTime? StartDate { get; set; }

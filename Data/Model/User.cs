@@ -4,6 +4,9 @@ namespace YoghurtBank.Data.Model
     public abstract class User
     {
         public int Id { get; init; }
+
+        [Required]
+        [StringLength(50)]
         public string UserName { get; init; }
 
         [EmailAddress]
