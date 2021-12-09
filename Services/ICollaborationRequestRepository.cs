@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
-using YoghurtBank.Data.Model;
 
 namespace YoghurtBank.Services
 {
@@ -11,7 +7,7 @@ namespace YoghurtBank.Services
         Task<CollaborationRequestDetailsDTO> FindById(int id); //aka GET
         Task<int> DeleteAsync(int id); //returværdi skal overvejes -> det skal nok være noget status-agtigt
 
-        Task<IEnumerable<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId);
+        Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId);
 
         Task<CollaborationRequestDetailsDTO> UpdateAsync(int id, CollaborationRequestUpdateDTO updateRequest); //return value? like delete
         

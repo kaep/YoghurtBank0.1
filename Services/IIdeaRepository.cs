@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
-using YoghurtBank.Data.Model;
-
+﻿
 namespace YoghurtBank.Services
 {
     public interface IIdeaRepository
@@ -14,9 +9,9 @@ namespace YoghurtBank.Services
 
         Task<IdeaDetailsDTO> CreateAsync(IdeaCreateDTO idea);
 
-        Task<int> DeleteAsync(int id); 
+        Task<int> DeleteAsync(int id);
         Task<IdeaDetailsDTO> UpdateAsync(int id, IdeaUpdateDTO update);
 
-        Task<IReadOnlyCollection<IdeaDetailsDTO>> ReadAllAsync();    
-        }
+        Task<IReadOnlyCollection<IdeaDetailsDTO>> ReadAllAsync();
+    }
 }

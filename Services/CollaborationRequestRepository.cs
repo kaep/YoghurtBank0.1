@@ -1,12 +1,3 @@
-using System;
-using System.Collections.Generic;
-using YoghurtBank.Data.Model;
-using System.Net;
-using System.Threading.Tasks;
-using YoghurtBank.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-
 
 namespace YoghurtBank.Services 
 {
@@ -49,11 +40,15 @@ namespace YoghurtBank.Services
         public async Task<CollaborationRequestDetailsDTO> CreateAsync(CollaborationRequestCreateDTO request)
         {
             //husk null-checking
-            
+            var student = (Student) await _context.Users.FindAsync(request.StudentId);
+            if(student == null) return null;
+            var super = (Supervisor) await _context.Users.FindAsync(request.SupervisorId);
+            if(super == null) return null;
+
             var entity = new CollaborationRequest
             {
-                Requester = (Student) await _context.Users.FindAsync(request.StudentId),
-                Requestee = (Supervisor) await _context.Users.FindAsync(request.SupervisorId),
+                Requester = student,
+                Requestee = super,
                 Application = request.Application,
                 Idea = await _context.Ideas.FindAsync(request.IdeaId),
                 Status = CollaborationRequestStatus.Waiting // bliver status ikke sat automatisk
@@ -106,17 +101,20 @@ namespace YoghurtBank.Services
         }
 
 
-        public async Task<IEnumerable<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId)
+        public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId)
         {
             //husk null-checking på c.idea 
-            return await _context.CollaborationRequests.Where(c => c.Idea.Id == ideaId).Select(c => new CollaborationRequestDetailsDTO
+            var requests = await _context.CollaborationRequests.Where(c => c.Idea.Id == ideaId).Select(c => new CollaborationRequestDetailsDTO
             {
                 StudentId = c.Requester.Id,
                 SupervisorId = c.Requestee.Id,
                 Application = c.Application,
                 Status = c.Status
                 
-            }).ToListAsync();   
+            }).ToListAsync();
+
+            return requests.AsReadOnly();
+
         }
 
         public async Task<CollaborationRequestDetailsDTO> UpdateAsync(int id, CollaborationRequestUpdateDTO updateRequest)

@@ -1,27 +1,24 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using YoghurtBank.Data;
-using YoghurtBank.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using YoghurtBank.Data.Model;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using YoghurtBank.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Graph = Microsoft.Graph;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.OpenApi.Models;
+using Graph = Microsoft.Graph;
+using YoghurtBank.Services;
+using YoghurtBank.Data;
+using YoghurtBank.Infrastructure;
+using YoghurtBank.Data.Model;
+using YoghurtBank.Controllers;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,16 +39,33 @@ builder.Services.AddAuthorization(options =>
     options.FallbackPolicy = options.DefaultPolicy;
 });
 
+builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor().AddMicrosoftIdentityConsentHandler();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "YoghurtBank.Server", Version = "v1" });
+    c.UseInlineDefinitionsForEnums();
+});
+
+
+
+var configuration = LoadConfiguration();
+var connectionString = configuration.GetConnectionString("Yoghurtbase:connectionString");
+
 
 //database connection
-builder.Services.AddDbContextFactory<YoghurtContext>(opt => opt.UseNpgsql("Host=127.0.0.1;Database=Yoghurtbase;Username=dev;Password=password123"));
+builder.Services.AddDbContextFactory<YoghurtContext>(opt => opt.UseNpgsql(connectionString));
 builder.Services.AddScoped<IYoghurtContext, YoghurtContext>();
-
+builder.Services.AddScoped<ICollaborationRequestRepository, CollaborationRequestRepository>();
+builder.Services.AddScoped<IIdeaRepository, IdeaRepository>();
+builder.Services.AddScoped<CollaborationRequestController, CollaborationRequestController>();
+builder.Services.AddScoped<IdeaController, IdeaController>();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -60,6 +74,9 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "YoghurtBank V1"));
 
 app.UseHttpsRedirection();
 
@@ -73,6 +90,18 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+app.SeedAsync();
+
+static IConfiguration LoadConfiguration()
+{
+    var builder = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json")
+        .AddUserSecrets<Program>();
+
+    return builder.Build();
+}
 
 app.Run();
 
