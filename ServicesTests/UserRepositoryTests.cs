@@ -12,7 +12,8 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Net;
 
-namespace ServicesTests {
+namespace ServicesTests
+{
 
     public class UserRepositoryTests : IDisposable
     {
@@ -22,7 +23,6 @@ namespace ServicesTests {
 
         public UserRepositoryTests()
         {
-            //copy-pasta fra rasmus github:
             var connection = new SqliteConnection("Filename=:memory:");
             connection.Open();
             var builder = new DbContextOptionsBuilder<YoghurtContext>();
@@ -30,15 +30,15 @@ namespace ServicesTests {
             var context = new YoghurtContext(builder.Options);
             context.Database.EnsureCreated();
 
-            User Mette = new Student {Id = 1, UserName = "Mette", CollaborationRequests = new List<CollaborationRequest>{}}; 
-            User Sofia = new Student {Id = 2, UserName = "Sofia", CollaborationRequests = new List<CollaborationRequest>{}};
-            User Jens = new Supervisor {Id = 3, UserName = "Jens", CollaborationRequests = new List<CollaborationRequest>{}};
-            User Line = new Supervisor {Id = 4, UserName = "Line", CollaborationRequests = new List<CollaborationRequest>{}};
+            User Mette = new Student { Id = 1, UserName = "Mette", Email = "MetteFredriksen@yahoo.dk", CollaborationRequests = new List<CollaborationRequest> { } };
+            User Sofia = new Student { Id = 2, UserName = "Sofia", Email = "sofkj@itu.dk", CollaborationRequests = new List<CollaborationRequest> { } };
+            User Jens = new Supervisor { Id = 3, UserName = "Jens", Email = "jens@munk.dk", CollaborationRequests = new List<CollaborationRequest> { } };
+            User Line = new Supervisor { Id = 4, UserName = "Line", Email = "linetrine@retteguiden.dk", CollaborationRequests = new List<CollaborationRequest> { } };
 
             context.Users.AddRange(
                 Mette, Sofia, Jens, Line
             );
-            context.SaveChanges(); 
+            context.SaveChanges();
 
             _context = context;
             _repository = new UserRepository(_context);
@@ -46,8 +46,9 @@ namespace ServicesTests {
 
 
         [Fact]
-        public async Task FindUserByIdAsync_given_invalid_Id_returns_notFound_and_null() {
-            
+        public async Task FindUserByIdAsync_given_invalid_Id_returns_notFound_and_null()
+        {
+
             int userId = 10;
             var actualUser = await _repository.FindUserByIdAsync(userId);
 
@@ -56,7 +57,7 @@ namespace ServicesTests {
 
 
         [Fact]
-        public async Task FindUserByIdAsync_given_id_2_returns_UserDetailsDTO() 
+        public async Task FindUserByIdAsync_given_id_2_returns_UserDetailsDTO()
         {
 
             int userId = 2;
@@ -64,14 +65,17 @@ namespace ServicesTests {
 
             var expected = new UserDetailsDTO
             {
-                Id = 2, 
+                Id = 2,
                 UserName = "Sofia",
-                UserType = "Student"
+                UserType = "Student",
+                Email = "sofkj@itu.dk"
+
             };
 
             Assert.Equal(2, user.details.Id);
             Assert.Equal("Sofia", user.details.UserName);
             Assert.Equal("Student", user.details.UserType);
+            Assert.Equal("sofkj@itu.dk", user.details.Email);
 
         }
 
@@ -111,31 +115,33 @@ namespace ServicesTests {
             Assert.Equal(-1, result);
             #endregion
         }
-        
+
         [Fact]
         public async Task CreateAsync_given_user_with_type_student_Returns_UserDetailsDTO()
         {
-            var user = new UserCreateDTO{UserName = "Hanne", UserType = "Student"};
-            
+            var user = new UserCreateDTO { UserName = "Hanne", UserType = "Student", Email = "Kleppert@live.dk" };
+
             var result = await _repository.CreateAsync(user);
 
             Assert.NotNull(result);
             Assert.Equal(5, result.Id);
             Assert.Equal("Hanne", result.UserName);
             Assert.Equal("Student", result.UserType);
+            Assert.Equal("Kleppert@live.dk", result.Email);
         }
 
         [Fact]
         public async Task CreateAsync_given_user_with_type_supervisor_Returns_UserDetailsDTO()
         {
-            var user = new UserCreateDTO{UserName = "Hanne-Birgitte", UserType = "Supervisor"};
-            
+            var user = new UserCreateDTO { UserName = "Hanne-Birgitte", UserType = "Supervisor", Email = "test@test.dk" };
+
             var result = await _repository.CreateAsync(user);
 
             Assert.NotNull(result);
             Assert.Equal(5, result.Id);
             Assert.Equal("Hanne-Birgitte", result.UserName);
             Assert.Equal("Supervisor", result.UserType);
+            Assert.Equal("test@test.dk", result.Email);
         }
 
 
@@ -143,7 +149,7 @@ namespace ServicesTests {
         [Fact]
         public async Task CreateAsync_given_invalid_usertype_returns_null()
         {
-            var user = new UserCreateDTO{UserName = "Mikki", UserType = "invalid"};
+            var user = new UserCreateDTO { UserName = "Mikki", UserType = "invalid", Email = "test@test.dk" };
             var result = await _repository.CreateAsync(user);
             Assert.Null(result);
         }
@@ -154,7 +160,7 @@ namespace ServicesTests {
             {
                 if (disposing)
                 {
-                // TODO: dispose managed state (managed objects)
+                    // TODO: dispose managed state (managed objects)
                 }
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null

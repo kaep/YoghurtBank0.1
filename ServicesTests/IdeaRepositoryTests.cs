@@ -9,14 +9,15 @@ using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 
-namespace YoghurtBank.ServicesTests {
+namespace YoghurtBank.ServicesTests
+{
 
     public class IdeaRepositoryTests : IDisposable
     {
         private readonly YoghurtContext _context;
         private readonly IdeaRepository _repo;
 
-        public IdeaRepositoryTests() 
+        public IdeaRepositoryTests()
         {
             var connection = new SqliteConnection("Filename=:memory:");
             connection.Open();
@@ -25,14 +26,14 @@ namespace YoghurtBank.ServicesTests {
             var context = new YoghurtContext(builder.Options);
             context.Database.EnsureCreated();
 
-            var supervisor1 = new Supervisor{Id = 1, UserName = "Torben", CollaborationRequests = new List<CollaborationRequest>(), Ideas = new List<Idea>()};
-            var supervisor2 = new Supervisor{Id = 2, UserName = "Preben", CollaborationRequests = new List<CollaborationRequest>(), Ideas = new List<Idea>()};
-            
-            var idea1 = new Idea{Id = 1, Creator = supervisor2, Posted = DateTime.Now, Subject = "Big Data", Title = "Big data is good", Description = "Big data gives value", AmountOfCollaborators = 3, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Bachelor};
-            var idea2 = new Idea{Id = 2, Creator = supervisor1, Posted = DateTime.Now, Subject = "Data Intelligence", Title = "Data Intelligence is good", Description = "Data Intelligence gives value", AmountOfCollaborators = 1, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.PhD};
-            var idea3 = new Idea{Id = 3, Creator = supervisor2, Posted = DateTime.Now, Subject = "DevOps", Title = "DevOps is good", Description = "DevOps gives value", AmountOfCollaborators = 2, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Project};
-            var idea4 = new Idea{Id = 4, Creator = supervisor1, Posted = DateTime.Now, Subject = "Requirements Elicitation", Title = "Requirements Elicitation is good", Description = "Requirements Elicitation gives value", AmountOfCollaborators = 5, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Masters};
-//DateTime.Now-DateTime.Today
+            var supervisor1 = new Supervisor { Id = 1, UserName = "Torben", CollaborationRequests = new List<CollaborationRequest>(), Ideas = new List<Idea>(), Email = "test@test.dk" };
+            var supervisor2 = new Supervisor { Id = 2, UserName = "Preben", CollaborationRequests = new List<CollaborationRequest>(), Ideas = new List<Idea>(), Email = "test@test.dk" };
+
+            var idea1 = new Idea { Id = 1, Creator = supervisor2, Posted = DateTime.Now, Subject = "Big Data", Title = "Big data is good", Description = "Big data gives value", AmountOfCollaborators = 3, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Bachelor };
+            var idea2 = new Idea { Id = 2, Creator = supervisor1, Posted = DateTime.Now, Subject = "Data Intelligence", Title = "Data Intelligence is good", Description = "Data Intelligence gives value", AmountOfCollaborators = 1, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.PhD };
+            var idea3 = new Idea { Id = 3, Creator = supervisor2, Posted = DateTime.Now, Subject = "DevOps", Title = "DevOps is good", Description = "DevOps gives value", AmountOfCollaborators = 2, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Project };
+            var idea4 = new Idea { Id = 4, Creator = supervisor1, Posted = DateTime.Now, Subject = "Requirements Elicitation", Title = "Requirements Elicitation is good", Description = "Requirements Elicitation gives value", AmountOfCollaborators = 5, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Masters };
+            //DateTime.Now-DateTime.Today
 
             supervisor1.Ideas.Add(idea2);
             supervisor1.Ideas.Add(idea4);
@@ -45,14 +46,14 @@ namespace YoghurtBank.ServicesTests {
             context.SaveChanges();
             _context = context;
             _repo = new IdeaRepository(_context);
-            
+
         }
 
         [Fact]
         public async Task FindIdeaDetailsAsync_given_valid_id_returns_details()
         {
             #region Arrange
-            var id = 1; 
+            var id = 1;
             #endregion
 
             #region Act
@@ -76,9 +77,9 @@ namespace YoghurtBank.ServicesTests {
         public async Task FindIdeaDetailsAsync_given_invalid_id_returns_null()
         {
             #region Arrange
-            var id = 500; 
+            var id = 500;
             #endregion
-            
+
             #region Act
             var result = await _repo.FindIdeaDetailsAsync(id);
             #endregion
@@ -87,7 +88,7 @@ namespace YoghurtBank.ServicesTests {
             //needs to be changed when return value of method is changed
             Assert.Null(result);
             #endregion
-            
+
         }
 
         [Fact]
@@ -96,7 +97,7 @@ namespace YoghurtBank.ServicesTests {
             #region Arrange
             var id = 1;
             #endregion
-            
+
             #region Act
             var result = await _repo.DeleteAsync(id);
             var entity = await _context.Ideas.FindAsync(id);
@@ -125,7 +126,7 @@ namespace YoghurtBank.ServicesTests {
         public async Task UpdateAsync_given_existing_entity_updates_it()
         {
             #region Arrange
-            var id = 1; 
+            var id = 1;
             //get intital 
             var entity = await _context.Ideas.FindAsync(id);
 
@@ -153,7 +154,7 @@ namespace YoghurtBank.ServicesTests {
             Assert.Equal("NewDescription", result.Description);
             Assert.Equal(400, result.AmountOfCollaborators);
             Assert.False(result.Open);
-            
+
 
             Assert.NotNull(updatedEntity);
             Assert.Equal("NewTitle", updatedEntity.Title);
@@ -177,9 +178,9 @@ namespace YoghurtBank.ServicesTests {
                 Title = "GADDAG's and their use in ScrabbleBots",
                 Subject = "Scrabble",
                 Description = "Heya Sweden",
-                AmountOfCollaborators = 2, 
+                AmountOfCollaborators = 2,
                 Open = true,
-                TimeToComplete = DateTime.Now-DateTime.Now,
+                TimeToComplete = DateTime.Now - DateTime.Now,
                 StartDate = DateTime.Now,
                 Type = IdeaType.Bachelor
             };
@@ -200,31 +201,33 @@ namespace YoghurtBank.ServicesTests {
         {
             int supervisorid = 5;
             var ideasFromSupervisorId = await _repo.FindIdeasBySupervisorIdAsync(supervisorid);
-            
+
             Assert.Equal((HttpStatusCode.NotFound, null), ideasFromSupervisorId);
 
         }
-        
+
         [Fact]
-       public async Task FIndIdeaBySupervisor_given_valid_UserId_returns_list_with_two_elements()
+        public async Task FIndIdeaBySupervisor_given_valid_UserId_returns_list_with_two_elements()
         {
             int supervisorid = 2;
             var ideasFromSupervisorId = await _repo.FindIdeasBySupervisorIdAsync(supervisorid);
 
-            var ideaDTO1 = new IdeaDTO {
+            var ideaDTO1 = new IdeaDTO
+            {
                 Id = 1,
                 Title = "Big data is good",
                 Subject = "Big Data",
                 Type = IdeaType.Bachelor
             };
 
-            var ideaDTO2 = new IdeaDTO {
+            var ideaDTO2 = new IdeaDTO
+            {
                 Id = 3,
                 Title = "DevOps is good",
                 Subject = "DevOps",
                 Type = IdeaType.Project
             };
-            
+
             Assert.Equal(HttpStatusCode.Accepted, ideasFromSupervisorId.code);
             Assert.Collection(ideasFromSupervisorId.list,
             idea => Assert.Equal(ideaDTO1, idea),
@@ -234,14 +237,16 @@ namespace YoghurtBank.ServicesTests {
 
         //Todo fix broken test - Timespan is off (precision)
         [Fact]
-        public async Task ReadAllAsync_returns_all_elements_in_context() {
+        public async Task ReadAllAsync_returns_all_elements_in_context()
+        {
             var ideas = await _repo.ReadAllAsync();
-            
-            
+
+
             var supervisor1 = _context.Users.Find(1);
             var supervisor2 = _context.Users.Find(2);
 
-            var IdeaDetailsDTO1 = new IdeaDetailsDTO {
+            var IdeaDetailsDTO1 = new IdeaDetailsDTO
+            {
                 CreatorId = supervisor1.Id,
                 Id = 2,
                 Title = "Data Intelligence is good",
@@ -253,9 +258,10 @@ namespace YoghurtBank.ServicesTests {
                 TimeToComplete = DateTime.Today - DateTime.Today,
                 StartDate = DateTime.Now,
                 Type = IdeaType.PhD
-            };  
+            };
 
-            var IdeaDetailsDTO2 = new IdeaDetailsDTO {
+            var IdeaDetailsDTO2 = new IdeaDetailsDTO
+            {
                 CreatorId = supervisor1.Id,
                 Id = 4,
                 Title = "Requirements Elicitation is good",
@@ -267,10 +273,11 @@ namespace YoghurtBank.ServicesTests {
                 TimeToComplete = DateTime.Today - DateTime.Today,
                 StartDate = DateTime.Now,
                 Type = IdeaType.Masters
-            }; 
-            var IdeaDetailsDTO3 = new IdeaDetailsDTO {
+            };
+            var IdeaDetailsDTO3 = new IdeaDetailsDTO
+            {
                 CreatorId = supervisor2.Id,
-                Id = 1, 
+                Id = 1,
                 Title = "Big data is good",
                 Subject = "Big Data",
                 Posted = DateTime.Now,
@@ -280,12 +287,13 @@ namespace YoghurtBank.ServicesTests {
                 TimeToComplete = DateTime.Today - DateTime.Today,
                 StartDate = DateTime.Now,
                 Type = IdeaType.Bachelor
-            }; 
-            var IdeaDetailsDTO4 = new IdeaDetailsDTO {
+            };
+            var IdeaDetailsDTO4 = new IdeaDetailsDTO
+            {
                 CreatorId = supervisor2.Id,
                 Id = 3,
                 Title = "DevOps is good",
-                Subject = "DevOps", 
+                Subject = "DevOps",
                 Posted = DateTime.Now,
                 Description = "DevOps gives value",
                 AmountOfCollaborators = 2,
@@ -293,8 +301,8 @@ namespace YoghurtBank.ServicesTests {
                 TimeToComplete = DateTime.Today - DateTime.Today,
                 StartDate = DateTime.Now,
                 Type = IdeaType.Project
-            };           
-                
+            };
+
             Assert.Collection(ideas,
             idea => Assert.Equal(IdeaDetailsDTO1.ToString(), idea.ToString()),
             idea => Assert.Equal(IdeaDetailsDTO2.ToString(), idea.ToString()),
