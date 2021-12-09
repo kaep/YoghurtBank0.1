@@ -77,6 +77,19 @@ namespace YoghurtBank.Services
             return entity.Id;
         }
 
+        public async Task<UserDetailsDTO> FindUserByEmail(string email)
+        {
+            var users = _context.Users.Where(u => u.Email == email).Select(u =>
+            new UserDetailsDTO
+            {
+                Id = u.Id, 
+                UserName = u.UserName, 
+                UserType = u.GetType().Name,
+                Email = u.Email
+            });
+            return await users.FirstOrDefaultAsync() ?? null; 
+        }
+
         private async Task<UserDetailsDTO> CreateStudent(UserCreateDTO user)
         {
             var entity = new Student

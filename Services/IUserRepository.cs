@@ -9,6 +9,8 @@ namespace YoghurtBank.Services
         Task<UserDetailsDTO> CreateAsync(UserCreateDTO user);
 
         Task<int> DeleteAsync(int id);
+
+        Task<UserDetailsDTO> FindUserByEmail(string email);
        
     }
 }
