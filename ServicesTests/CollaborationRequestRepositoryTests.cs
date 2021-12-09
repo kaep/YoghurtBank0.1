@@ -27,12 +27,13 @@ namespace ServicesTests
             builder.UseSqlite(connection);
             var context = new YoghurtContext(builder.Options);
             context.Database.EnsureCreated();
-            
+
             var student1 = new Student
             {
                 Id = 1,
                 UserName = "Henning",
-                CollaborationRequests = new List<CollaborationRequest>()
+                CollaborationRequests = new List<CollaborationRequest>(),
+                Email = "Henning@gmail.com"
             };
 
             var super1 = new Supervisor
@@ -40,17 +41,19 @@ namespace ServicesTests
                 Id = 2,
                 CollaborationRequests = new List<CollaborationRequest>(),
                 Ideas = new List<Idea>(),
-                UserName = "Partyman"
+                UserName = "Partyman",
+                Email = "Partyman@live.dk"
             };
 
-             var super2 = new Supervisor
+            var super2 = new Supervisor
             {
                 Id = 3,
                 CollaborationRequests = new List<CollaborationRequest>(),
                 Ideas = new List<Idea>(),
-                UserName = "Morten"
+                UserName = "Morten",
+                Email = "test@test.dk"
             };
-            
+
 
             var Idea1 = new Idea
             {
@@ -146,7 +149,7 @@ namespace ServicesTests
             #region Arrange
             var id = 2;
             #endregion
-            
+
             #region Act
             var result = await _repo.FindRequestsBySupervisorAsync(id);
             #endregion
@@ -166,7 +169,7 @@ namespace ServicesTests
             #region Arrange
             var id = 3;
             #endregion
-            
+
             #region Act
             var result = await _repo.FindRequestsBySupervisorAsync(id);
             #endregion
@@ -181,13 +184,13 @@ namespace ServicesTests
             #endregion
         }
 
-         [Fact]
+        [Fact]
         public async Task FindRequestsByStudentAsync_given_user1_returns_4_requests()
         {
             #region Arrange
             var id = 1;
             #endregion
-            
+
             #region Act
             var result = await _repo.FindRequestsByStudentAsync(id);
             #endregion
