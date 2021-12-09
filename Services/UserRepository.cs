@@ -14,15 +14,16 @@ namespace YoghurtBank.Services
 
         public async Task<UserDetailsDTO> CreateAsync(UserCreateDTO user)
         {
-            if(user.UserType == "Student")
+            if (user.UserType == "Student")
             {
                 return await CreateStudent(user);
-            } 
-            else if(user.UserType == "Supervisor")
+            }
+            else if (user.UserType == "Supervisor")
             {
                 return await CreateSupervisor(user);
             }
-            else {
+            else
+            {
                 return null; //change this?
             }
         }
@@ -30,40 +31,44 @@ namespace YoghurtBank.Services
         public async Task<(HttpStatusCode code, UserDetailsDTO details)> FindUserByIdAsync(int userId)
         {
             var user = await _context.Users.FindAsync(userId);
-            
+
             if (user == null)
             {
                 return (HttpStatusCode.NotFound, null);
             }
-            else 
+            else
             {
                 UserDetailsDTO userDetailsDTO = null;
-                
-                if (user.GetType() == typeof(Student)) {
-                    userDetailsDTO = new UserDetailsDTO 
-                    {
-                        Id = user.Id,
-                        UserName = user.UserName,
-                        UserType = "Student"
-                    };
-                } else
+
+                if (user.GetType() == typeof(Student))
                 {
-                    userDetailsDTO = new UserDetailsDTO 
+                    userDetailsDTO = new UserDetailsDTO
                     {
                         Id = user.Id,
                         UserName = user.UserName,
-                        UserType = "Supervisor"
+                        UserType = "Student",
+                        Email = user.Email
                     };
                 }
-                
+                else
+                {
+                    userDetailsDTO = new UserDetailsDTO
+                    {
+                        Id = user.Id,
+                        UserName = user.UserName,
+                        UserType = "Supervisor",
+                        Email = user.Email
+                    };
+                }
+
                 return (HttpStatusCode.OK, userDetailsDTO);
             }
         }
-        
+
         public async Task<int> DeleteAsync(int id)
         {
             var entity = await _context.Users.FindAsync(id);
-            if(entity == null)
+            if (entity == null)
             {
                 return -1; //BAD, RETURN A STATUS INSTEAD
             }
@@ -77,7 +82,8 @@ namespace YoghurtBank.Services
             var entity = new Student
             {
                 UserName = user.UserName,
-                CollaborationRequests = new List<CollaborationRequest>()
+                CollaborationRequests = new List<CollaborationRequest>(),
+                Email = user.Email
             };
             await _context.Users.AddAsync(entity);
             await _context.SaveChangesAsync();
@@ -85,7 +91,8 @@ namespace YoghurtBank.Services
             {
                 Id = entity.Id,
                 UserName = entity.UserName,
-                UserType = "Student"
+                UserType = "Student",
+                Email = entity.Email
             };
         }
 
@@ -95,7 +102,8 @@ namespace YoghurtBank.Services
             {
                 UserName = user.UserName,
                 CollaborationRequests = new List<CollaborationRequest>(),
-                Ideas = new List<Idea>()
+                Ideas = new List<Idea>(),
+                Email = user.Email
             };
             await _context.Users.AddAsync(entity);
             await _context.SaveChangesAsync();
@@ -103,7 +111,8 @@ namespace YoghurtBank.Services
             {
                 Id = entity.Id,
                 UserName = entity.UserName,
-                UserType = "Supervisor"
+                UserType = "Supervisor",
+                Email = entity.Email
             };
         }
     }

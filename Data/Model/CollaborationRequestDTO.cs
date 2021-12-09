@@ -1,12 +1,17 @@
 
 namespace YoghurtBank.Data.Model
-{ 
+{
     public record CollaborationRequestCreateDTO
     {
-        public int StudentId { get; set;}
-        public int SupervisorId { get; set;}
+        [Required]
+        public int StudentId { get; set; }
+
+        [Required]
+        public int SupervisorId { get; set; }
         public int? IdeaId { get; set; }
-        public string Application { get; set; } 
+
+        [Required]
+        public string Application { get; set; }
     }
 
     public record CollaborationRequestUpdateDTO
@@ -15,11 +20,18 @@ namespace YoghurtBank.Data.Model
         public CollaborationRequestStatus Status { get; set; }
     }
 
-    public record CollaborationRequestDetailsDTO 
+    public record CollaborationRequestDetailsDTO
     {
-        public int StudentId {get; set;}
-        public int SupervisorId {get; set;}
-        public string Application { get; set; } 
+        [Required]
+        public int StudentId { get; set; }
+
+        [Required]
+        public int SupervisorId { get; set; }
+
+        [StringLength(500)]
+        [Required]
+        public string Application { get; set; }
+
         public CollaborationRequestStatus Status { get; set; }
     }
 }

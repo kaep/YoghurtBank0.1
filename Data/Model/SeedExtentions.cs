@@ -24,7 +24,8 @@ namespace YoghurtBank.Data.Model
             {
                 Id = 1,
                 UserName = "Henning",
-                CollaborationRequests = new List<CollaborationRequest>()
+                CollaborationRequests = new List<CollaborationRequest>(),
+                Email = "HenningG@gmail.com"
             };
 
             var super1 = new Supervisor
@@ -32,7 +33,8 @@ namespace YoghurtBank.Data.Model
                 Id = 2,
                 CollaborationRequests = new List<CollaborationRequest>(),
                 Ideas = new List<Idea>(),
-                UserName = "Partyman"
+                UserName = "Partyman",
+                Email = "Partyman@gmail.com"
             };
 
              var super2 = new Supervisor
@@ -40,7 +42,8 @@ namespace YoghurtBank.Data.Model
                 Id = 3,
                 CollaborationRequests = new List<CollaborationRequest>(),
                 Ideas = new List<Idea>(),
-                UserName = "Morten"
+                UserName = "Morten",
+                Email = "Morten@gmail.com"
             };
             
 
