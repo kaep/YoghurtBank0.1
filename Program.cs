@@ -19,6 +19,7 @@ using YoghurtBank.Infrastructure;
 using YoghurtBank.Data.Model;
 using YoghurtBank.Controllers;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -49,8 +50,14 @@ builder.Services.AddSwaggerGen(c =>
     c.UseInlineDefinitionsForEnums();
 });
 
+
+
+var configuration = LoadConfiguration();
+var connectionString = configuration.GetConnectionString("Yoghurtbase:connectionString");
+
+
 //database connection
-builder.Services.AddDbContextFactory<YoghurtContext>(opt => opt.UseNpgsql("Host=127.0.0.1;Database=Yoghurtbase;Username=dev;Password=password123"));
+builder.Services.AddDbContextFactory<YoghurtContext>(opt => opt.UseNpgsql(connectionString));
 builder.Services.AddScoped<IYoghurtContext, YoghurtContext>();
 builder.Services.AddScoped<ICollaborationRequestRepository, CollaborationRequestRepository>();
 builder.Services.AddScoped<IIdeaRepository, IdeaRepository>();
@@ -58,6 +65,7 @@ builder.Services.AddScoped<CollaborationRequestController, CollaborationRequestC
 builder.Services.AddScoped<IdeaController, IdeaController>();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -84,6 +92,16 @@ app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.SeedAsync();
+
+static IConfiguration LoadConfiguration()
+{
+    var builder = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json")
+        .AddUserSecrets<Program>();
+
+    return builder.Build();
+}
 
 app.Run();
 
