@@ -12,6 +12,10 @@ namespace YoghurtBank.Infrastructure
         {
             modelBuilder.Entity<CollaborationRequest>().Property(c => c.Status)
                 .HasConversion(new EnumToStringConverter<CollaborationRequestStatus>());
+
+            modelBuilder.Entity<User>(entity => {
+                entity.HasIndex(e => e.Email).IsUnique();
+            });
         }
     }
 }
