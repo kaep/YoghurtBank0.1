@@ -405,3 +405,6 @@ FodyWeavers.xsd
 !.vscode/*.code-snippets
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,visualstudiocode
+
+# File specific to a Mac 
+.DS_Store
