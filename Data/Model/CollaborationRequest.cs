@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
+﻿
 namespace YoghurtBank.Data.Model
 {
     public class CollaborationRequest

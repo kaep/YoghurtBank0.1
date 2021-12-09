@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using YoghurtBank.Data.Model;
-using YoghurtBank.Infrastructure;
-
+﻿
 namespace YoghurtBank.Services
 {
     public class IdeaRepository : IIdeaRepository
