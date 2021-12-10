@@ -30,11 +30,41 @@ namespace YoghurtBank.Controllers
         }
 
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(IEnumerable<IdeaDetailsDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IReadOnlyCollection<IdeaDetailsDTO>), StatusCodes.Status200OK)]
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<IEnumerable<IdeaDetailsDTO>> GetAll()
+        public async Task<IReadOnlyCollection<IdeaDetailsDTO>> GetAll()
         {
-            return await _repository.ReadAllAsync();
+            var Idea1 = new IdeaDetailsDTO
+            {
+                Id = 1,
+                Subject = "Harry Pooter",
+                Title = "A",
+                Description = "Vewy nice",
+                AmountOfCollaborators = 12,
+                Open = true,
+                Posted = DateTime.UtcNow,
+                StartDate = DateTime.UtcNow,
+                TimeToComplete = DateTime.UtcNow - DateTime.Today,
+                Type = IdeaType.Bachelor
+            };
+
+            var Idea2 = new IdeaDetailsDTO
+            {
+                Id = 2,
+                Subject = "Vuldemurt",
+                Title = "B",
+                Description = "Erhamgerd",
+                AmountOfCollaborators = 9,
+                Open = true,
+                Posted = DateTime.UtcNow,
+                StartDate = DateTime.UtcNow,
+                TimeToComplete = DateTime.UtcNow - DateTime.Today,
+                Type = IdeaType.Project
+            };
+            var ideas = new List<IdeaDetailsDTO>{Idea1, Idea2};
+            return ideas.AsReadOnly();
+            //return await _repository.ReadAllAsync();
             //hvordan fungerer dette? I rasmus' kode ser det ud som om at 
             //ideadetailsdto slet ikke bliver returneret??? hjælp mig :( 
         }
