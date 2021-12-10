@@ -29,6 +29,16 @@ namespace YoghurtBank.Controllers
             //ideadetailsdto slet ikke bliver returneret??? hjælp mig :( 
         }
 
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(IEnumerable<IdeaDetailsDTO>), StatusCodes.Status200OK)]
+        [HttpGet]
+        public async Task<IEnumerable<IdeaDetailsDTO>> GetAll()
+        {
+            return await _repository.ReadAllAsync();
+            //hvordan fungerer dette? I rasmus' kode ser det ud som om at 
+            //ideadetailsdto slet ikke bliver returneret??? hjælp mig :( 
+        }
+
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<int> Delete(int id)

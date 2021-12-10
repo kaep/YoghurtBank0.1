@@ -2,12 +2,20 @@
 
 @using YoghurtBank.Services;
 @using YoghurtBank.Infrastructure;
+@using YoghurtBank.Controllers;
+@inject IdeaController ideaController;
 
 <PageTitle>Projects</PageTitle>
 
 <h1>List of open projects</h1>
 
 <span style="display:inline-block; width: 500;"></span>
+
+@foreach (var idea in ideaController.GetAll().Result){
+    <h3><a href="idea/get/@idea.Id"> @idea.Title </a> </h3>
+    <h2> @idea.Subject </h2>
+    <p> @idea.Description </p>
+}
 
 <h3><a href="project1">Dette er en test </a></h3>
 

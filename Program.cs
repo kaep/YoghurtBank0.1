@@ -53,7 +53,7 @@ builder.Services.AddSwaggerGen(c =>
 
 
 var configuration = LoadConfiguration();
-var connectionString = configuration.GetConnectionString("Yoghurtbase:connectionString");
+var connectionString = configuration.GetConnectionString("Yoghurtbase");
 
 
 //database connection
