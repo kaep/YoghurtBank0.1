@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using YoghurtBank.Infrastructure;
@@ -11,9 +12,10 @@ using YoghurtBank.Infrastructure;
 namespace YoghurtBank.Migrations
 {
     [DbContext(typeof(YoghurtContext))]
-    partial class YoghurtContextModelSnapshot : ModelSnapshot
+    [Migration("20211210114840_ny")]
+    partial class ny
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
