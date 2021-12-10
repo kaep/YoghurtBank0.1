@@ -11,15 +11,47 @@
 
 Welcome to your new app.
 
+@if (claims == null)
+{
+    <p><em>Ingen claims din so</em></p>
+    <h1>@claims</h1>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Issuer</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in claims)
+            {
+                <tr>
+                    <td>@claim.Subject</td>
+                    <td>@claim.Type</td>
+                    <td>@claim.Value</td>
+                    <td>@claim.Issuer</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 
 @code {
 
     private string user;
+    private IEnumerable<Claim> claims;
     protected override async Task OnInitializedAsync()
     {
         user = auth.GetAuthenticationStateAsync().Result.User.Identity.Name;
+        claims  = auth.GetAuthenticationStateAsync().Result.User.Claims; 
+        
     }
     
 }
