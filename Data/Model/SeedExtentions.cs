@@ -197,54 +197,27 @@ namespace YoghurtBank.Data.Model
                 Status = CollaborationRequestStatus.Waiting,
                 Idea = Idea3
             };
-
-
-            // context.Users.RemoveRange(student1, student2);
-            // context.Ideas.RemoveRange(Idea1, Idea2);
-            // context.CollaborationRequests.RemoveRange(collabRequest1);
-            // context.CollaborationRequests.RemoveRange(collabRequest2);
-            // context.CollaborationRequests.RemoveRange(collabRequest3);
-            // context.CollaborationRequests.RemoveRange(collabRequest4);
-            // context.CollaborationRequests.RemoveRange(collabRequest5);
-
-            context.Users.Add(student1);
-            context.Users.Add(student2);
-            context.Users.Add(student3);
-            context.Users.Add(super1);
-            context.Users.Add(super2);
-            context.Ideas.Add(Idea1);
-            context.Ideas.Add(Idea2);
-            context.Ideas.Add(Idea3);
-            context.Ideas.Add(Idea4);
-            context.Ideas.Add(Idea5);
-            context.CollaborationRequests.Add(collabRequest1);
-            context.CollaborationRequests.Add(collabRequest2);
-            context.CollaborationRequests.Add(collabRequest3);
-            context.CollaborationRequests.Add(collabRequest4);
-            context.CollaborationRequests.Add(collabRequest5);
-            context.CollaborationRequests.Add(collabRequest6);
-            await context.SaveChangesAsync();
            
 
             if (!await context.Users.AnyAsync() && !await context.Ideas.AnyAsync() && !await context.CollaborationRequests.AnyAsync())
             {
-                // context.Users.Add(student1);
-                // context.Users.Add(student2);
-                // context.Users.Add(student3);
-                // context.Users.Add(super1);
-                // context.Users.Add(super2);
-                // context.Ideas.Add(Idea1);
-                // context.Ideas.Add(Idea2);
-                // context.Ideas.Add(Idea3);
-                // context.Ideas.Add(Idea4);
-                // context.Ideas.Add(Idea5);
-                // context.CollaborationRequests.Add(collabRequest1);
-                // context.CollaborationRequests.Add(collabRequest2);
-                // context.CollaborationRequests.Add(collabRequest3);
-                // context.CollaborationRequests.Add(collabRequest4);
-                // context.CollaborationRequests.Add(collabRequest5);
-                // context.CollaborationRequests.Add(collabRequest6);
-                // await context.SaveChangesAsync();
+                context.Users.Add(student1);
+                context.Users.Add(student2);
+                context.Users.Add(student3);
+                context.Users.Add(super1);
+                context.Users.Add(super2);
+                context.Ideas.Add(Idea1);
+                context.Ideas.Add(Idea2);
+                context.Ideas.Add(Idea3);
+                context.Ideas.Add(Idea4);
+                context.Ideas.Add(Idea5);
+                context.CollaborationRequests.Add(collabRequest1);
+                context.CollaborationRequests.Add(collabRequest2);
+                context.CollaborationRequests.Add(collabRequest3);
+                context.CollaborationRequests.Add(collabRequest4);
+                context.CollaborationRequests.Add(collabRequest5);
+                context.CollaborationRequests.Add(collabRequest6);
+                await context.SaveChangesAsync();
             }
         }
     }
