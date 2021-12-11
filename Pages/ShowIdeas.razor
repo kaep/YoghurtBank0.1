@@ -56,10 +56,12 @@ else
     {
         //her skal være noget logik som finder ideer frem baseret på
         //hvem der er logget ind? 
-        //Name = await auth.GetAuthenticationStateAsync().User.Identity.Name; 
-        //user = await api-kald-der-finder-bruger-baseret-på-navn/mail?
-        
-        //pt. er den sat til at finde de forkerte ideer! 
+        var authState = await auth.GetAuthenticationStateAsync();
+        Console.WriteLine(authState.User.Identity.Name); //det her svarer til sebastian email, kan det bruges til at finde requests i db? 
+        //skal evt. bruge denne mail til at køre igennem UserValidator og få fat i et user-objekt?
+
+
+        //pt. er denne blot sat til at finde alle ideer i db
         ideas = await Http.GetFromJsonAsync<IdeaDetailsDTO[]>($"https://localhost:7194/api/idea");
     }
 }
