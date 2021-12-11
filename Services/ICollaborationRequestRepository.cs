@@ -1,6 +1,4 @@
 
-namespace YoghurtBank.Services
-{
     public interface ICollaborationRequestRepository
     {
         Task<CollaborationRequestDetailsDTO> CreateAsync(CollaborationRequestCreateDTO request);
@@ -14,4 +12,3 @@ namespace YoghurtBank.Services
         Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsBySupervisorAsync(int supervisorId);
         Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsByStudentAsync(int studentId);
     }
-}

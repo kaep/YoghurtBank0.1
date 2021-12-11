@@ -1,7 +1,7 @@
 using YoghurtBank.Data.Model;
 using YoghurtBank.Infrastructure;
 using Xunit;
-using YoghurtBank.Services;
+using Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System.Net;

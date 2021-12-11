@@ -1,5 +1,5 @@
 
-namespace YoghurtBank.Services 
+namespace Services 
 {
    
     public class CollaborationRequestRepository : ICollaborationRequestRepository

@@ -8,7 +8,7 @@ using Moq;
 using Xunit;
 using YoghurtBank.Controllers;
 using YoghurtBank.Data.Model;
-using YoghurtBank.Services;
+using Services;
 
 namespace YoghurtBank.ControllerTests
 {

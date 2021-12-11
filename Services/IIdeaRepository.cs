@@ -1,6 +1,5 @@
 ﻿
-namespace YoghurtBank.Services
-{
+
     public interface IIdeaRepository
     {
         Task<(HttpStatusCode code, IEnumerable<IdeaDTO> list)> FindIdeasBySupervisorIdAsync(int userId);
@@ -14,4 +13,4 @@ namespace YoghurtBank.Services
 
         Task<IReadOnlyCollection<IdeaDetailsDTO>> ReadAllAsync();
     }
-}
+

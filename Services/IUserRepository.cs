@@ -1,7 +1,4 @@
 ﻿
-
-namespace YoghurtBank.Services
-{
     public interface IUserRepository
     {
         Task<UserDetailsDTO>? FindUserByIdAsync(int userId);
@@ -11,4 +8,4 @@ namespace YoghurtBank.Services
         Task<int> DeleteAsync(int id);
        
     }
-}
+

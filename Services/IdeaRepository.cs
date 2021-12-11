@@ -1,6 +1,5 @@
 ﻿
-namespace YoghurtBank.Services
-{
+
     public class IdeaRepository : IIdeaRepository
     {
         private readonly IYoghurtContext _context;
@@ -158,4 +157,4 @@ namespace YoghurtBank.Services
             return AllIdeas.AsReadOnly();
         }
     }
-}
+

@@ -16,6 +16,6 @@ global using Microsoft.Extensions.Logging;
 global using Microsoft.Identity.Web.Resource;
 
 global using YoghurtBank.Data.Model;
-global using YoghurtBank.Services;
+global using Services;
 global using YoghurtBank.Controllers;
 

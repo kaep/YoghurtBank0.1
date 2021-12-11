@@ -5,7 +5,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using YoghurtBank.Services;
+using Services;
 using YoghurtBank.Data.Model;
 using System.Linq;
 using System.Threading.Tasks;

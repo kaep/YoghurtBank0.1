@@ -13,7 +13,7 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.OpenApi.Models;
 using Graph = Microsoft.Graph;
-using YoghurtBank.Services;
+using Services;
 using YoghurtBank.Data;
 using YoghurtBank.Infrastructure;
 using YoghurtBank.Data.Model;
