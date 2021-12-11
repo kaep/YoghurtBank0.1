@@ -1,13 +1,49 @@
 @page "/projects"
-
+@attribute [Authorize]
 @using YoghurtBank.Services;
 @using YoghurtBank.Infrastructure;
+@using YoghurtBank.Controllers;
+@using YoghurtBank.Data
+@using YoghurtBank.Controllers
+@using YoghurtBank.Data.Model
+@using System.Net.Http.Json
+@inject HttpClient Http
 
 <PageTitle>Projects</PageTitle>
 
 <h1>List of open projects</h1>
 
 <span style="display:inline-block; width: 500;"></span>
+
+<h1>@ideas</h1>
+<h1>@requests</h1>
+
+@if(ideas == null)
+{
+    <h1>Listen er tom brothr</h1>
+}
+else {
+    @foreach (var idea in ideas){
+    <h3> @idea.Title</h3>
+    <h2> @idea.Subject </h2>
+    <p> @idea.Description </p>
+}
+}
+
+
+
+@if(requests == null)
+{
+    <h1>Requests er tom brothr</h1>
+}
+else 
+{
+    @foreach (var request in requests){
+    <h3> @request.Application</h3>
+    <h2> @request.Status </h2>
+    <p> blenis </p>
+}}
+
 
 <h3><a href="project1">Dette er en test </a></h3>
 
@@ -39,3 +75,15 @@
 
 <span style="display:inline-block; width: 150;"></span>    
 
+@code {
+    
+    private IdeaDetailsDTO[]? ideas;
+    private CollaborationRequestDetailsDTO[]? requests;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //nu virker det her, men hvorfor skal hele path på? kan man sætte en basepath et sted?
+        ideas = await Http.GetFromJsonAsync<IdeaDetailsDTO[]>("https://localhost:7194/api/idea");
+        requests = await Http.GetFromJsonAsync<CollaborationRequestDetailsDTO[]>("https://localhost:7194/api/collaborationrequest");
+    }
+}
