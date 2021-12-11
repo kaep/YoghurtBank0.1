@@ -91,7 +91,7 @@ app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-app.SeedAsync();
+await app.SeedAsync();
 
 static IConfiguration LoadConfiguration()
 {
