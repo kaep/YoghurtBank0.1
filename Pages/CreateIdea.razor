@@ -6,9 +6,7 @@
 
 <PageTitle>Create Idea</PageTitle>
 <h1>Register your idea for a project!</h1>
-<p>You register a new idea by filling out the input form below.
-
-</p>
+<p>You register a new idea by filling out the input form below</p>
 
 
 <EditForm Model="@idea" OnValidSubmit="@HandleValidSubmit">
@@ -89,6 +87,7 @@
         //denne udregning fucker fordi den returnerer en nullable timespan
         //og timespan felt på ideacreatedto er ikke nullable :) 
         //idea.TimeToComplete = end-idea.StartDate;
+        idea.Open = true; //bare sæt den som åben pr. default, eller? 
         var result = await Http.PostAsJsonAsync("https://localhost:7194/api/idea", idea);
         Console.WriteLine($"Created {result}");
     }
