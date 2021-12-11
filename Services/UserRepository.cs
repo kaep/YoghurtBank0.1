@@ -28,13 +28,14 @@ namespace YoghurtBank.Services
             }
         }
 
-        public async Task<(HttpStatusCode code, UserDetailsDTO details)> FindUserByIdAsync(int userId)
+        //TODO: i removed the http status code, and had to make user nullable
+        public async Task<UserDetailsDTO>? FindUserByIdAsync(int userId)
         {
             var user = await _context.Users.FindAsync(userId);
 
             if (user == null)
             {
-                return (HttpStatusCode.NotFound, null);
+                return null;
             }
             else
             {
@@ -61,7 +62,7 @@ namespace YoghurtBank.Services
                     };
                 }
 
-                return (HttpStatusCode.OK, userDetailsDTO);
+                return (userDetailsDTO);
             }
         }
 
@@ -70,7 +71,7 @@ namespace YoghurtBank.Services
             var entity = await _context.Users.FindAsync(id);
             if (entity == null)
             {
-                return -1; //BAD, RETURN A STATUS INSTEAD
+                return -1; //BAD, RETURN A STATUS OR SOMETHING ELSE INSTEAD
             }
             _context.Users.Remove(entity);
             await _context.SaveChangesAsync();

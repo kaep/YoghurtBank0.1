@@ -19,14 +19,10 @@ namespace YoghurtBank.Controllers
             _repository = repository;
         }
 
-
-
         [AllowAnonymous]
         [HttpGet]
         public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> Get()
         {
-
-
             //når der virkelig er data på bordet, så kan det være vi skal tjekke for om listen er tom.
             //dummy data
             var cb1 = new CollaborationRequestDetailsDTO

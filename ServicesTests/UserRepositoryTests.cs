@@ -52,7 +52,7 @@ namespace ServicesTests
             int userId = 10;
             var actualUser = await _repository.FindUserByIdAsync(userId);
 
-            Assert.Equal((HttpStatusCode.NotFound, null), actualUser);
+            Assert.Equal(null, actualUser);
         }
 
 
@@ -72,11 +72,10 @@ namespace ServicesTests
 
             };
 
-            Assert.Equal(2, user.details.Id);
-            Assert.Equal("Sofia", user.details.UserName);
-            Assert.Equal("Student", user.details.UserType);
-            Assert.Equal("sofkj@itu.dk", user.details.Email);
-
+            Assert.Equal(2, user.Id);
+            Assert.Equal("Sofia", user.UserName);
+            Assert.Equal("Student", user.UserType);
+            Assert.Equal("sofkj@itu.dk", user.Email);
         }
 
         [Fact]
