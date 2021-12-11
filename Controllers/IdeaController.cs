@@ -38,8 +38,8 @@ namespace YoghurtBank.Controllers
             var Idea1 = new IdeaDetailsDTO
             {
                 Id = 1,
-                Subject = "Harry Pooter",
-                Title = "A",
+                Subject = "Work/life balance",
+                Title = "Work/life balance at ITU",
                 Description = "Vewy nice",
                 AmountOfCollaborators = 12,
                 Open = true,
