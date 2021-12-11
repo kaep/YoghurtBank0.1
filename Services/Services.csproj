@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -60,6 +60,11 @@
     <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\YoghurtBank.runtimeconfig.json" />
     <_ContentIncludedByDefault Remove="ServicesTests\bin\Debug\net6.0\YoghurtBank.staticwebassets.runtime.json" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\YoghurtBank.csproj" />
+  </ItemGroup>
+
 
 
 </Project>
