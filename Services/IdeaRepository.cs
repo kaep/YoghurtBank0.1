@@ -104,6 +104,11 @@ namespace YoghurtBank.Services
            //var idea = await _context.Ideas.FindAsync(IdeaId);
            
            //improve this -> status codes? 
+            
+            if(idea == null)
+            {
+                return null;
+            }
 
             return new IdeaDetailsDTO
             {
