@@ -52,7 +52,7 @@ namespace ServicesTests
             int userId = 10;
             var actualUser = await _repository.FindUserByIdAsync(userId);
 
-            Assert.Equal(null, actualUser);
+            Assert.Null(actualUser);
         }
 
 
