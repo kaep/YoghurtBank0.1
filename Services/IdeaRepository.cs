@@ -10,10 +10,16 @@ namespace YoghurtBank.Services
         }
         public async Task<IdeaDetailsDTO> CreateAsync(IdeaCreateDTO idea)
         {
+            var sup = (Supervisor) await _context.Users.FindAsync(idea.CreatorId);
+            if(sup == null)
+            {
+                //hvad fanden skal der ske brødre??? -> på en eller anden måde skal vi indikere at der skete en fejl
+            }
+
             //husk noget null-checking 
             var entity = new Idea
             {
-                Creator = (Supervisor) await _context.Users.FindAsync(idea.CreatorId),
+                Creator = sup,
                 Title = idea.Title,
                 Subject = idea.Subject,
                 Description = idea.Description,
@@ -24,6 +30,7 @@ namespace YoghurtBank.Services
                 Type = idea.Type
             };
 
+            sup.Ideas.Add(entity);
             _context.Ideas.Add(entity);
             await _context.SaveChangesAsync();
 
@@ -91,13 +98,17 @@ namespace YoghurtBank.Services
         
         public async Task<IdeaDetailsDTO> FindIdeaDetailsAsync(int IdeaId)
         {
-           var idea = await _context.Ideas.FindAsync(IdeaId);
+            var idea = _context.Ideas.Where(i => i.Id == IdeaId).Include(i => i.Creator).FirstOrDefault();
+            //eager loading according to: https://docs.microsoft.com/en-us/ef/ef6/querying/related-data 
+            //for some reason, creators can be null here - lazy loading error or something else? https://entityframeworkcore.com/knowledge-base/39434878/how-to-include-related-tables-in-dbset-find--- 
+           //var idea = await _context.Ideas.FindAsync(IdeaId);
            
            //improve this -> status codes? 
-           if(idea == null)
-           {
-               return null;
-           }
+            
+            if(idea == null)
+            {
+                return null;
+            }
 
             return new IdeaDetailsDTO
             {
@@ -110,7 +121,8 @@ namespace YoghurtBank.Services
                 Open = idea.Open,
                 TimeToComplete = idea.TimeToComplete,
                 StartDate = idea.StartDate,
-                CreatorId = idea.Creator.Id
+                CreatorId = idea.Creator.Id,
+                Type = idea.Type
             };
         }
 

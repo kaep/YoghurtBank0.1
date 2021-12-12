@@ -63,6 +63,8 @@ builder.Services.AddScoped<ICollaborationRequestRepository, CollaborationRequest
 builder.Services.AddScoped<IIdeaRepository, IdeaRepository>();
 builder.Services.AddScoped<CollaborationRequestController, CollaborationRequestController>();
 builder.Services.AddScoped<IdeaController, IdeaController>();
+builder.Services.AddScoped<UserController, UserController>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
@@ -91,7 +93,7 @@ app.MapControllers();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
-app.SeedAsync();
+await app.SeedAsync();
 
 static IConfiguration LoadConfiguration()
 {

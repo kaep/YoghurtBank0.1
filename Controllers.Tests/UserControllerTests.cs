@@ -50,7 +50,7 @@ namespace YoghurtBank.ControllerTests
         {
             #region Arrange
             var id = 666;
-            UserDetailsDTO user = null;
+            UserDetailsDTO? user = null;
             _repoMock.Setup(m => m.FindUserByIdAsync(id)).ReturnsAsync(user);
             #endregion
 
@@ -103,6 +103,33 @@ namespace YoghurtBank.ControllerTests
             var result = await _controller.Delete(id);
 
             Assert.Equal(-1, result); 
+        }
+
+        [Fact]
+        public async Task GetAllSupervisors_returns_all_supervisors()
+        {
+            var Mikki = new UserDetailsDTO
+            {
+                Id = 1,
+                UserName = "Mikki",
+                UserType = "Supervisor",
+                Email = "mikki@erstor.dk"
+
+            };
+
+            var Sofia = new UserDetailsDTO
+            {
+                Id = 2,
+                UserName = "Sofia",
+                UserType = "Supervisor",
+                Email = "sofkj@itu.dk"
+
+            };
+    
+            _repoMock.Setup(m => m.GetAllSupervisors()).ReturnsAsync(new List<UserDetailsDTO>{Mikki, Sofia}.AsReadOnly());
+
+            var result = await _controller.GetSupervisors();
+            Assert.Equal(2, result.Count());
         }
     }
 } 

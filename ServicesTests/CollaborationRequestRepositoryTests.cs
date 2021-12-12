@@ -176,7 +176,7 @@ namespace ServicesTests
 
             #region Assert
             Assert.NotNull(result);
-            Assert.Equal(1, result.Count());
+            Assert.Single(result);
             Assert.Equal("Hail Hydra", result.ElementAt(0).Application);
             Assert.Equal(CollaborationRequestStatus.ApprovedBySupervisor, result.ElementAt(0).Status);
             Assert.Equal(1, result.ElementAt(0).StudentId);

@@ -12,11 +12,11 @@ namespace YoghurtBank.Data.Model
         public string Subject { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(100)]
         public string Title { get; set; }
 
         [Required]
-        [StringLength(250)]
+        [StringLength(500)]
         public string Description { get; set; }
         public int AmountOfCollaborators { get; set; }
 

@@ -1,0 +1,94 @@
+<!---Inspired by Rasmus Lystrøm @https://github.com/ondfisk/BDSA2021 -->
+@page "/createidea"
+@attribute [Authorize]
+@inject HttpClient Http
+
+
+<PageTitle>Create Idea</PageTitle>
+<h1>Register your idea for a project!</h1>
+<p>You register a new idea by filling out the input form below</p>
+
+
+<EditForm Model="@idea" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="Title">Title</label>
+        <InputText id="Title" @bind-Value="idea.Title" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="Subject">Subject</label>
+        <InputText id="Subject" @bind-Value="idea.Subject" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="Description">Description</label>
+        <InputTextArea id="Description" @bind-Value="idea.Description" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="AmountOfCollaborators">Amount of collaborators</label>
+        <InputNumber id="Description" @bind-Value="idea.AmountOfCollaborators" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="StartDate">Start date</label>
+        <InputDate id="StartDate" @bind-Value="idea.StartDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="EndDate">End date</label>
+        <InputDate id="EndDate" @bind-Value="end" class="form-control" />
+    </div>
+    <div class="form-group">
+        <div>Type</div>
+        <InputRadioGroup @bind-Value="idea.Type">
+            <InputRadio id="Project" Value="@IdeaType.Project" class="form-check-input" /><label class="form-check-label" for="Project">@IdeaType.Project</label>
+            <InputRadio id="Bachelor" Value="@IdeaType.Bachelor" class="form-check-input" /><label class="form-check-label" for="Bachelor">@IdeaType.Bachelor</label>
+            <InputRadio id="Masters" Value="@IdeaType.Masters" class="form-check-input" /><label class="form-check-label" for="Masters">@IdeaType.Masters</label>
+            <InputRadio id="PhD" Value="@IdeaType.PhD" class="form-check-input" /><label class="form-check-label" for="PhD">@IdeaType.PhD</label>
+        </InputRadioGroup>
+    </div>
+    <div class="form-group">
+        <br />
+        <button type="submit" class="btn btn-success" @onclick="Create">Create</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+        <button type="button" class="btn btn-primary" @onclick="Cancel">Cancel</button>
+    </div>
+
+</EditForm>
+
+
+
+
+
+@code {
+
+    private IdeaCreateDTO idea = new(); 
+    private DateTime end;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        Console.WriteLine("Success");
+        //denne "udregning" skal fixes, pt. fucker den pga. noget nullable
+        //idea.TimeToComplete = end-idea.StartDate;     
+    }
+
+    private void Cancel()
+    {
+        Console.WriteLine("Cancelled");
+    }
+
+    private async void Create()
+    {
+        //not done... 
+        
+        //denne udregning fucker fordi den returnerer en nullable timespan
+        //og timespan felt på ideacreatedto er ikke nullable :) 
+        //idea.TimeToComplete = end-idea.StartDate;
+        idea.Open = true; //bare sæt den som åben pr. default, eller? 
+        var result = await Http.PostAsJsonAsync("https://localhost:7194/api/idea", idea);
+        Console.WriteLine($"Created {result}");
+    }
+}

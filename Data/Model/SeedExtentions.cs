@@ -73,8 +73,8 @@ namespace YoghurtBank.Data.Model
                 Creator = super1,
                 Open = true,
                 Posted = DateTime.UtcNow,
-                StartDate = new DateTime(2022, 28, 4),
-                TimeToComplete = new DateTime(2022, 21, 7) - new DateTime(2022, 28, 4),
+                StartDate = new DateTime(2022, 4, 28).ToUniversalTime(),
+                TimeToComplete = new DateTime(2022, 7, 21).ToUniversalTime() - new DateTime(2022, 4, 28).ToUniversalTime(),
                 Type = IdeaType.Project
             };
 
@@ -88,8 +88,8 @@ namespace YoghurtBank.Data.Model
                 Creator = super2,
                 Open = true,
                 Posted = DateTime.UtcNow,
-                StartDate = new DateTime(2022, 11, 3),
-                TimeToComplete = new DateTime(2022, 21, 5) - new DateTime(2022, 11, 3),
+                StartDate = new DateTime(2022, 3, 11).ToUniversalTime(),
+                TimeToComplete = new DateTime(2022, 5, 21).ToUniversalTime() - new DateTime(2022, 3, 11).ToUniversalTime(),
                 Type = IdeaType.Project
             };
 
@@ -97,14 +97,14 @@ namespace YoghurtBank.Data.Model
             {
                 Id = 3,
                 Subject = "Medicine",
-                Title = "Tranquilizers and their effects on persian cats in captivity",
+                Title = "Tranquilizers and their effects on persian cats",
                 Description = "In this project, students will be....",
                 AmountOfCollaborators = 2,
                 Creator = super1,
                 Open = true,
                 Posted = DateTime.UtcNow,
-                StartDate = new DateTime(2022, 1, 1),
-                TimeToComplete = new DateTime(2022, 1, 6) - new DateTime(2022, 1, 1),
+                StartDate = new DateTime(2022, 1, 1).ToUniversalTime(),
+                TimeToComplete = new DateTime(2022, 6, 1).ToUniversalTime() - new DateTime(2022, 1, 1).ToUniversalTime(),
                 Type = IdeaType.PhD
             };
 
@@ -117,9 +117,9 @@ namespace YoghurtBank.Data.Model
                 AmountOfCollaborators = 3,
                 Creator = super2,
                 Open = true,
-                Posted = new DateTime(2021, 31, 10),
-                StartDate = new DateTime(2022, 1, 1),
-                TimeToComplete = new DateTime(2022, 1, 12) - new DateTime(2022, 1, 1),
+                Posted = new DateTime(2021, 10, 31).ToUniversalTime(),
+                StartDate = new DateTime(2022, 1, 1).ToUniversalTime(),
+                TimeToComplete = new DateTime(2022, 12, 1).ToUniversalTime() - new DateTime(2022, 1, 1).ToUniversalTime(),
                 Type = IdeaType.Bachelor
             };
 
@@ -128,13 +128,13 @@ namespace YoghurtBank.Data.Model
                 Id = 5,
                 Subject = "Lorem ipsum",
                 Title = "Suspendisse nisl nisl, imperdiet sit.",
-                Description = "In eget dui et tellus accumsan pellentesque. Fusce volutpat eros eget consectetur faucibus.  Praesent id lectus sagittis, condimentum ex ut, porta orci. Mauris gravida sed leo non feugiat. Duis vitae aliquam massa, quis convallis nunc. Praesent diam dolor, bibendum et cursus dapibus, egestas id purus. Phasellus ut pellentesque massa.",
+                Description = "In eget dui et tellus accumsan pellentesque. Fusce volutpat eros eget consectetur faucibus.  Praesent id lectus sagittis, condimentum ex ut, porta orci. Mauris gravida sed leo non feugiat. Duis vitae aliquam massa, quis convallis nunc.",
                 AmountOfCollaborators = 1,
                 Creator = super2,
                 Open = true,
-                Posted = new DateTime(2021, 15, 9),
-                StartDate = new DateTime(2022, 15, 3),
-                TimeToComplete = new DateTime(2022, 15, 5) - new DateTime(2022, 15, 3),
+                Posted = new DateTime(2021, 9, 15).ToUniversalTime(),
+                StartDate = new DateTime(2022, 3, 15).ToUniversalTime(),
+                TimeToComplete = new DateTime(2022, 5, 15).ToUniversalTime() - new DateTime(2022, 3, 15).ToUniversalTime(),
                 Type = IdeaType.Masters
             };
 
@@ -197,7 +197,7 @@ namespace YoghurtBank.Data.Model
                 Status = CollaborationRequestStatus.Waiting,
                 Idea = Idea3
             };
-
+           
 
             if (!await context.Users.AnyAsync() && !await context.Ideas.AnyAsync() && !await context.CollaborationRequests.AnyAsync())
             {

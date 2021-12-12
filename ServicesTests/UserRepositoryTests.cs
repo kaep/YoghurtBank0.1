@@ -52,7 +52,7 @@ namespace ServicesTests
             int userId = 10;
             var actualUser = await _repository.FindUserByIdAsync(userId);
 
-            Assert.Equal(null, actualUser);
+            Assert.Null(actualUser);
         }
 
 
@@ -151,6 +151,21 @@ namespace ServicesTests
             var user = new UserCreateDTO { UserName = "Mikki", UserType = "invalid", Email = "test@test.dk" };
             var result = await _repository.CreateAsync(user);
             Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task GetAllSupervisors_returns_all_supervisors_in_context()
+        {
+
+            var Jens = await _repository.FindUserByIdAsync(3);
+            var Line = await _repository.FindUserByIdAsync(4);
+
+            var result = await _repository.GetAllSupervisors();
+            Assert.Equal(2, result.Count());
+            Assert.Collection(result, 
+                user => Assert.Equal(Jens, user),
+                user => Assert.Equal(Line, user)  
+            );
         }
 
         protected virtual void Dispose(bool disposing)

@@ -55,6 +55,8 @@ namespace YoghurtBank.Services
             };
             
             _context.CollaborationRequests.Add(entity);
+            super.CollaborationRequests.Add(entity);
+            student.CollaborationRequests.Add(entity);
             await _context.SaveChangesAsync();
 
             return new CollaborationRequestDetailsDTO

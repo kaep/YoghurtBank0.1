@@ -18,6 +18,7 @@ namespace YoghurtBank.Controllers
         }
 
 
+        [AllowAnonymous]
         //vi har droppet actionresults for nuværende... keep it simple 
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(IdeaDetailsDTO), StatusCodes.Status200OK)]
@@ -35,38 +36,10 @@ namespace YoghurtBank.Controllers
         [HttpGet]
         public async Task<IReadOnlyCollection<IdeaDetailsDTO>> GetAll()
         {
-            var Idea1 = new IdeaDetailsDTO
-            {
-                Id = 1,
-                Subject = "Work/life balance",
-                Title = "Work/life balance at ITU",
-                Description = "Vewy nice",
-                AmountOfCollaborators = 12,
-                Open = true,
-                Posted = DateTime.UtcNow,
-                StartDate = DateTime.UtcNow,
-                TimeToComplete = DateTime.UtcNow - DateTime.Today,
-                Type = IdeaType.Bachelor
-            };
-
-            var Idea2 = new IdeaDetailsDTO
-            {
-                Id = 2,
-                Subject = "Vuldemurt",
-                Title = "B",
-                Description = "Erhamgerd",
-                AmountOfCollaborators = 9,
-                Open = true,
-                Posted = DateTime.UtcNow,
-                StartDate = DateTime.UtcNow,
-                TimeToComplete = DateTime.UtcNow - DateTime.Today,
-                Type = IdeaType.Project
-            };
-            var ideas = new List<IdeaDetailsDTO>{Idea1, Idea2};
-            return ideas.AsReadOnly();
-            //return await _repository.ReadAllAsync();
+            return await _repository.ReadAllAsync();
             //hvordan fungerer dette? I rasmus' kode ser det ud som om at 
             //ideadetailsdto slet ikke bliver returneret??? hjælp mig :( 
+            //-> det er noget med hans options-klasse (som i øvrigt ikke er nødvendig jf. Rasmus på discord)
         }
 
         [Authorize]

@@ -11,6 +11,7 @@ namespace YoghurtBank.Data.Model
         public int? IdeaId { get; set; }
 
         [Required]
+        [StringLength(500)]
         public string Application { get; set; }
     }
 

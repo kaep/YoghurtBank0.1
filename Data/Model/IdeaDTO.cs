@@ -6,11 +6,11 @@ namespace YoghurtBank.Data.Model
     public record IdeaCreateDTO
     {
         public int CreatorId { get; init; }
-        [StringLength(100)]
+        [StringLength(50)]
         public string Title { get; set; }
         [StringLength(100)]
         public string Subject { get; set; }
-        [StringLength(1200)]
+        [StringLength(500)]
         public string Description { get; set; }
         public int AmountOfCollaborators { get; set; }
         public bool Open { get; set; }
@@ -26,7 +26,7 @@ namespace YoghurtBank.Data.Model
         public string Title { get; set; }
         [StringLength(100)]
         public string Subject { get; set; }
-        [StringLength(1200)]
+        [StringLength(500)]
         public string Description { get; set; }
         public int AmountOfCollaborators { get; set; }
         public bool Open { get; set; }
@@ -55,7 +55,7 @@ namespace YoghurtBank.Data.Model
         [StringLength(100)]
         public string Subject { get; set; }
         public DateTime Posted { get; init; }
-        [StringLength(1200)]
+        [StringLength(500)]
         public string Description { get; set; }
         public int AmountOfCollaborators { get; set; }
         public bool Open { get; set; }
