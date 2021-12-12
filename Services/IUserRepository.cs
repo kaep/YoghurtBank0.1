@@ -9,6 +9,8 @@ namespace YoghurtBank.Services
         Task<UserDetailsDTO> CreateAsync(UserCreateDTO user);
 
         Task<int> DeleteAsync(int id);
-       
+
+        Task<IReadOnlyCollection<UserDetailsDTO>> GetAllSupervisors(); 
+
     }
 }

@@ -78,6 +78,33 @@ namespace YoghurtBank.Services
             return entity.Id;
         }
 
+
+        public async Task<IReadOnlyCollection<UserDetailsDTO>> GetAllSupervisors()
+        {
+            // var users = await _context.Users.Where(c => c.GetType() == typeof(Supervisor))
+            // .Select(u => new UserDetailsDTO
+            // {
+            //     Id = u.Id,
+            //     UserName = u.UserName,
+            //     UserType = "Supervisor",
+            //     Email = u.Email
+
+            // }).ToListAsync();
+
+
+            //Det her er meget grimt, plz få det til at virke med linq 
+            var returnlist = new List<UserDetailsDTO>();
+            foreach(var user in _context.Users)
+            {
+                if(user.GetType() == typeof(Supervisor))
+                {
+                    returnlist.Add(new UserDetailsDTO{Id = user.Id, UserName = user.UserName, UserType = "Supervisor", Email = user.Email});
+                }
+            }
+
+            return returnlist.AsReadOnly();
+        }
+
         private async Task<UserDetailsDTO> CreateStudent(UserCreateDTO user)
         {
             var entity = new Student
@@ -116,5 +143,6 @@ namespace YoghurtBank.Services
                 Email = entity.Email
             };
         }
+        
     }
 }
