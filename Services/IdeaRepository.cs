@@ -11,9 +11,17 @@ namespace YoghurtBank.Services
         public async Task<IdeaDetailsDTO> CreateAsync(IdeaCreateDTO idea)
         {
             var sup = (Supervisor) await _context.Users.FindAsync(idea.CreatorId);
+            //var sup = (Supervisor) await _context.Users.Where(u => u.Id == idea.CreatorId).FirstOrDefault();
+            //List<Idea> ideas = await _context.Ideas.Where(i => i.Creator.Id == sup.Id).Select(i => i).ToListAsync();
             if(sup == null)
             {
+                Environment.Exit(1);
                 //hvad fanden skal der ske brødre??? -> på en eller anden måde skal vi indikere at der skete en fejl
+            }
+            if(sup.Ideas == null)
+            {
+                Console.WriteLine("NEJ!!!");
+                //Environment.Exit(1);
             }
 
             //husk noget null-checking 
