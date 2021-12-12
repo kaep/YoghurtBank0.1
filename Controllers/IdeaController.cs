@@ -50,7 +50,7 @@ namespace YoghurtBank.Controllers
             return await _repository.DeleteAsync(id);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(IdeaDetailsDTO), 201)]
         public async Task<IdeaDetailsDTO> Post(IdeaCreateDTO idea)
