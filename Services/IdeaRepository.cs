@@ -10,10 +10,16 @@ namespace YoghurtBank.Services
         }
         public async Task<IdeaDetailsDTO> CreateAsync(IdeaCreateDTO idea)
         {
+            var sup = (Supervisor) await _context.Users.FindAsync(idea.CreatorId);
+            if(sup == null)
+            {
+                //hvad fanden skal der ske brødre??? -> på en eller anden måde skal vi indikere at der skete en fejl
+            }
+
             //husk noget null-checking 
             var entity = new Idea
             {
-                Creator = (Supervisor) await _context.Users.FindAsync(idea.CreatorId),
+                Creator = sup,
                 Title = idea.Title,
                 Subject = idea.Subject,
                 Description = idea.Description,
@@ -24,6 +30,7 @@ namespace YoghurtBank.Services
                 Type = idea.Type
             };
 
+            sup.Ideas.Add(entity);
             _context.Ideas.Add(entity);
             await _context.SaveChangesAsync();
 
