@@ -18,6 +18,7 @@ namespace YoghurtBank.Controllers
         }
 
 
+        [AllowAnonymous]
         //vi har droppet actionresults for nuværende... keep it simple 
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(IdeaDetailsDTO), StatusCodes.Status200OK)]

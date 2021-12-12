@@ -46,6 +46,7 @@ namespace YoghurtBank.Controllers
             return await _repository.DeleteAsync(id);
         }
 
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(IReadOnlyCollection<UserDetailsDTO>),StatusCodes.Status200OK)]
         [HttpGet]
