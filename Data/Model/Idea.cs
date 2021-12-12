@@ -3,6 +3,7 @@ namespace YoghurtBank.Data.Model
 {
     public class Idea
     {
+        [Key]
         public int Id { get; set; }
         public Supervisor Creator { get; set; }
         public DateTime Posted { get; set; }
@@ -23,7 +24,7 @@ namespace YoghurtBank.Data.Model
         [Required]
         public bool Open { get; set; }
         public TimeSpan TimeToComplete { get; set; }
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { get; set; }
         public IdeaType Type { get; set; }
     }
 }

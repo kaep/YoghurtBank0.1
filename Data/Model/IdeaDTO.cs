@@ -15,7 +15,7 @@ namespace YoghurtBank.Data.Model
         public int AmountOfCollaborators { get; set; }
         public bool Open { get; set; }
         public TimeSpan TimeToComplete { get; set; }
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { get; set; }
         public IdeaType Type { get; set; }
     }
 
@@ -31,7 +31,7 @@ namespace YoghurtBank.Data.Model
         public int AmountOfCollaborators { get; set; }
         public bool Open { get; set; }
         public TimeSpan TimeToComplete { get; set; }
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { get; set; }
         public IdeaType Type { get; set; }
     }
 
@@ -60,7 +60,7 @@ namespace YoghurtBank.Data.Model
         public int AmountOfCollaborators { get; set; }
         public bool Open { get; set; }
         public TimeSpan TimeToComplete { get; set; }
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { get; set; }
         public IdeaType Type {get; set;}
     }
 }
