@@ -128,5 +128,14 @@ namespace YoghurtBank.ControllerTests
             //denne her har application og science fordi Get inde i controlleren bruger application -> det skal laves om til id 
             Assert.Equal(KeyValuePair.Create("Application", (object?)"Science"), result?.RouteValues?.Single());
         }
+
+
+        [Fact]
+        public async Task Delete_given_valid_id_returns_it()
+        {
+            _repoMock.Setup(m => m.DeleteAsync(1)).ReturnsAsync(1);
+            var result = await _controller.Delete(1);
+            Assert.Equal(1, result);
+        }
     }
 } 
