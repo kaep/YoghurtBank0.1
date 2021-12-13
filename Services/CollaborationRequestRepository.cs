@@ -9,34 +9,7 @@ namespace YoghurtBank.Services
         {
             _context = context;
         }
-
-        public CollaborationRequestDetailsDTO Create(CollaborationRequestCreateDTO request)
-        {
-            //error handling i tilfælde af nulls på requester+requesteeeeeee
-            var requester = (Student) _context.Users.Find(request.StudentId);
-            var requestee = (Supervisor) _context.Users.Find(request.SupervisorId);
-            var entity = new CollaborationRequest
-            {
-                Requester = requester,
-                Requestee = requestee,
-                Application = request.Application,
-                Idea =  _context.Ideas.Find(request.IdeaId),
-                Status = CollaborationRequestStatus.Waiting
-            };
-
-            _context.CollaborationRequests.Add(entity);
-            _context.SaveChanges();
-            
-            return new CollaborationRequestDetailsDTO
-            {
-                StudentId = entity.Requester.Id,
-                SupervisorId = entity.Requestee.Id,
-                Status = entity.Status,
-                Application = entity.Application,
-            };
-        }
-
-       
+        
         public async Task<CollaborationRequestDetailsDTO> CreateAsync(CollaborationRequestCreateDTO request)
         {
             //husk null-checking
