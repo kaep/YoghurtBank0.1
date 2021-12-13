@@ -118,7 +118,7 @@ namespace YoghurtBank.ControllerTests
                 Status = CollaborationRequestStatus.Waiting
             };
             var toCreate = new CollaborationRequestCreateDTO();
-            _repoMock.Setup(m => m.CreateAsync(toCreate)).ReturnsAsync(cb1);
+            _repoMock.Setup(m => m.CreateAsync(toCreate)).ReturnsAsync(Status.Created, cb1);
 
 
             var result = await _controller.Post(toCreate) as CreatedAtActionResult;
@@ -133,9 +133,9 @@ namespace YoghurtBank.ControllerTests
         [Fact]
         public async Task Delete_given_valid_id_returns_it()
         {
-            _repoMock.Setup(m => m.DeleteAsync(1)).ReturnsAsync(1);
+            _repoMock.Setup(m => m.DeleteAsync(1)).ReturnsAsync(Status.Deleted, 1);
             var result = await _controller.Delete(1);
-            Assert.Equal(1, result);
+            Assert.Equal(1, result.id);
         }
 
         [Fact]
@@ -144,11 +144,11 @@ namespace YoghurtBank.ControllerTests
             var id = 1;
             var cb = new CollaborationRequestUpdateDTO();
             _repoMock.Setup(m => m.UpdateAsync(id, cb))
-                .ReturnsAsync(new CollaborationRequestDetailsDTO{Application = "Sweet"});
+                .ReturnsAsync(Status.Updated, new CollaborationRequestDetailsDTO{Application = "Sweet"});
 
             var result = await _controller.Put(id, cb);
-            Assert.NotNull(result);
-            Assert.Equal("Sweet", result.Application);
+            Assert.NotNull(result.dto);
+            Assert.Equal("Sweet", result.dto.Application);
         }
 
         [Fact]
@@ -156,7 +156,7 @@ namespace YoghurtBank.ControllerTests
         {
             var cb1 = new CollaborationRequestDetailsDTO();
             var cb2 = new CollaborationRequestDetailsDTO();
-            _repoMock.Setup(m => m.FindRequestsByIdeaAsync(1)).ReturnsAsync(new List<CollaborationRequestDetailsDTO>
+            _repoMock.Setup(m => m.FindRequestsByIdeaAsync(1)).ReturnsAsync(Status.Found, new List<CollaborationRequestDetailsDTO>
                 {cb1, cb2}.AsReadOnly());
 
             var result = await _controller.GetByIdeaId(1);

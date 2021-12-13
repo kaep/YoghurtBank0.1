@@ -61,14 +61,15 @@ namespace YoghurtBank.ServicesTests
             #endregion
 
             #region Assert
-            Assert.NotNull(result);
-            Assert.Equal(1, result.Id);
-            Assert.Equal("Big Data", result.Subject);
-            Assert.Equal("Big data is good", result.Title);
-            Assert.Equal("Big data gives value", result.Description);
-            Assert.Equal(3, result.AmountOfCollaborators);
-            Assert.Equal(2, result.CreatorId);
-            Assert.True(result.Open);
+            Assert.NotNull(result.dto);
+            Assert.Equal(1, result.dto.Id);
+            Assert.Equal("Big Data", result.dto.Subject);
+            Assert.Equal("Big data is good", result.dto.Title);
+            Assert.Equal("Big data gives value", result.dto.Description);
+            Assert.Equal(3, result.dto.AmountOfCollaborators);
+            Assert.Equal(2, result.dto.CreatorId);
+            Assert.True(result.dto.Open);
+            Assert.Equal (Status.Found, result.status);
             //datetime properties also?
             #endregion
         }
@@ -86,7 +87,8 @@ namespace YoghurtBank.ServicesTests
 
             #region Assert
             //needs to be changed when return value of method is changed
-            Assert.Null(result);
+            Assert.Null(result.dto);
+            Assert.Equal(Status.NotFound, result.status);
             #endregion
 
         }
@@ -104,7 +106,8 @@ namespace YoghurtBank.ServicesTests
             #endregion
 
             #region Assert
-            Assert.Equal(1, result);
+            Assert.Equal(Status.Deleted, result.status);
+            Assert.Equal(1, result.id);
             Assert.Null(entity);
             #endregion
         }
@@ -119,7 +122,8 @@ namespace YoghurtBank.ServicesTests
             Assert.Null(entity);
 
             var result = await _repo.DeleteAsync(id);
-            Assert.Equal(-1, result);
+            Assert.Equal(null, result.id);
+            Assert.Equal(Status.NotFound, result.status);
         }
 
         [Fact]
@@ -148,13 +152,13 @@ namespace YoghurtBank.ServicesTests
 
             #endregion
             #region Assert
-            Assert.NotNull(result);
-            Assert.Equal("NewTitle", result.Title);
-            Assert.Equal("NewSubject", result.Subject);
-            Assert.Equal("NewDescription", result.Description);
-            Assert.Equal(400, result.AmountOfCollaborators);
-            Assert.False(result.Open);
-
+            Assert.NotNull(result.dto);
+            Assert.Equal("NewTitle", result.dto.Title);
+            Assert.Equal("NewSubject", result.dto.Subject);
+            Assert.Equal("NewDescription", result.dto.Description);
+            Assert.Equal(400, result.dto.AmountOfCollaborators);
+            Assert.False(result.dto.Open);
+            Assert.Equal(Status.Found, result.status);
 
             Assert.NotNull(updatedEntity);
             Assert.Equal("NewTitle", updatedEntity.Title);
@@ -184,7 +188,8 @@ namespace YoghurtBank.ServicesTests
 
             var result = await _repo.UpdateAsync(id, update);
             
-            Assert.Null(result);
+            Assert.Equal(Status.NotFound, result.status);
+            Assert.Null(result.dto);
         }
 
         [Fact]
@@ -210,7 +215,8 @@ namespace YoghurtBank.ServicesTests
             #endregion
 
             #region Assert
-            Assert.NotNull(result);
+            Assert.NotNull(result.dto);
+            Assert.Equal(Status.Created, result.status);
             //needs more assertions
             #endregion
         }
@@ -228,7 +234,7 @@ namespace YoghurtBank.ServicesTests
             
             var ideasFromSupervisorId = await _repo.FindIdeasBySupervisorIdAsync(supervisorid);
 
-            Assert.Equal((HttpStatusCode.NotFound, null), ideasFromSupervisorId);
+            Assert.Equal((Status.NotFound, null), ideasFromSupervisorId);
 
         }
 
@@ -254,7 +260,7 @@ namespace YoghurtBank.ServicesTests
                 Type = IdeaType.Project
             };
 
-            Assert.Equal(HttpStatusCode.Accepted, ideasFromSupervisorId.code);
+            Assert.Equal(Status.Found, ideasFromSupervisorId.status);
             Assert.Collection(ideasFromSupervisorId.list,
             idea => Assert.Equal(ideaDTO1, idea),
             idea => Assert.Equal(ideaDTO2, idea)
@@ -329,7 +335,7 @@ namespace YoghurtBank.ServicesTests
                 Type = IdeaType.Project
             };
 
-            Assert.Collection(ideas,
+            Assert.Collection(ideas.ideas,
             idea => Assert.Equal(IdeaDetailsDTO1.ToString(), idea.ToString()),
             idea => Assert.Equal(IdeaDetailsDTO2.ToString(), idea.ToString()),
             idea => Assert.Equal(IdeaDetailsDTO3.ToString(), idea.ToString()),

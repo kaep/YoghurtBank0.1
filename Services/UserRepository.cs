@@ -12,30 +12,32 @@ namespace YoghurtBank.Services
             _context = context;
         }
 
-        public async Task<UserDetailsDTO> CreateAsync(UserCreateDTO user)
+        public async Task<(Status status, UserDetailsDTO dto)> CreateAsync(UserCreateDTO user)
         {
             if (user.UserType == "Student")
             {
-                return await CreateStudent(user);
+                var res = await CreateStudent(user);
+                return (Status.Created, res.user);
             }
             else if (user.UserType == "Supervisor")
             {
-                return await CreateSupervisor(user);
+                var res = await CreateSupervisor(user);
+                return (Status.Created, res.user);
             }
             else
             {
-                return null; //change this?
+                return (Status.BadRequest, null); 
             }
         }
 
         //TODO: i removed the http status code, and had to make user nullable
-        public async Task<UserDetailsDTO>? FindUserByIdAsync(int userId)
+        public async Task<(Status status, UserDetailsDTO? dto)> FindUserByIdAsync(int userId)
         {
             var user = await _context.Users.FindAsync(userId);
 
             if (user == null)
             {
-                return null;
+                return (Status.NotFound, null);
             }
             else
             {
@@ -62,24 +64,24 @@ namespace YoghurtBank.Services
                     };
                 }
 
-                return (userDetailsDTO);
+                return (Status.Found, (userDetailsDTO));
             }
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<(Status status, int? id)> DeleteAsync(int id)
         {
             var entity = await _context.Users.FindAsync(id);
             if (entity == null)
             {
-                return -1; //BAD, RETURN A STATUS OR SOMETHING ELSE INSTEAD
+                return (Status.NotFound, null); //BAD - what to do with the -1
             }
             _context.Users.Remove(entity);
             await _context.SaveChangesAsync();
-            return entity.Id;
+            return (Status.Deleted, entity.Id);
         }
 
 
-        public async Task<IReadOnlyCollection<UserDetailsDTO>> GetAllSupervisors()
+        public async Task<(Status status, IReadOnlyCollection<UserDetailsDTO> supervisors)> GetAllSupervisors()
         {
             // var users = await _context.Users.Where(c => c.GetType() == typeof(Supervisor))
             // .Select(u => new UserDetailsDTO
@@ -102,10 +104,10 @@ namespace YoghurtBank.Services
                 }
             }
 
-            return returnlist.AsReadOnly();
+            return (Status.Found, returnlist.AsReadOnly());
         }
 
-        private async Task<UserDetailsDTO> CreateStudent(UserCreateDTO user)
+        private async Task<(Status status, UserDetailsDTO user)> CreateStudent(UserCreateDTO user)
         {
             var entity = new Student
             {
@@ -115,16 +117,16 @@ namespace YoghurtBank.Services
             };
             await _context.Users.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return new UserDetailsDTO
+            return (Status.Created, new UserDetailsDTO
             {
                 Id = entity.Id,
                 UserName = entity.UserName,
                 UserType = "Student",
                 Email = entity.Email
-            };
+            });
         }
 
-        private async Task<UserDetailsDTO> CreateSupervisor(UserCreateDTO user)
+        private async Task<(Status status, UserDetailsDTO user)> CreateSupervisor(UserCreateDTO user)
         {
             var entity = new Supervisor
             {
@@ -135,13 +137,13 @@ namespace YoghurtBank.Services
             };
             await _context.Users.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return new UserDetailsDTO
+            return (Status.Created, new UserDetailsDTO
             {
                 Id = entity.Id,
                 UserName = entity.UserName,
                 UserType = "Supervisor",
                 Email = entity.Email
-            };
+            });
         }
         
     }

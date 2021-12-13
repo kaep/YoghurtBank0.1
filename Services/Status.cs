@@ -4,6 +4,7 @@
         Updated,
         Deleted,
         NotFound,
+        Found,
         BadRequest,
         Conflict
     }

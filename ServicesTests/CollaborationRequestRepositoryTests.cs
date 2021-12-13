@@ -155,11 +155,12 @@ namespace ServicesTests
             #endregion
 
             #region Assert
-            Assert.NotNull(result);
-            Assert.Equal(3, result.Count());
-            Assert.Equal("Yes", result.ElementAt(0).Application);
-            Assert.Equal("No", result.ElementAt(1).Application);
-            Assert.Equal("Yes", result.ElementAt(2).Application);
+            Assert.NotNull(result.requests);
+            Assert.Equal(3, result.requests.Count());
+            Assert.Equal("Yes", result.requests.ElementAt(0).Application);
+            Assert.Equal("No", result.requests.ElementAt(1).Application);
+            Assert.Equal("Yes", result.requests.ElementAt(2).Application);
+            Assert.Equal(Status.Found, result.status);
             #endregion
         }
 
@@ -175,12 +176,14 @@ namespace ServicesTests
             #endregion
 
             #region Assert
-            Assert.NotNull(result);
-            Assert.Single(result);
-            Assert.Equal("Hail Hydra", result.ElementAt(0).Application);
-            Assert.Equal(CollaborationRequestStatus.ApprovedBySupervisor, result.ElementAt(0).Status);
-            Assert.Equal(1, result.ElementAt(0).StudentId);
-            Assert.Equal(3, result.ElementAt(0).SupervisorId);
+            Assert.NotNull(result.requests);
+            Assert.NotEmpty(result.requests);
+            Assert.Single(result.requests);
+            Assert.Equal("Hail Hydra", result.requests.ElementAt(0).Application);
+            Assert.Equal(CollaborationRequestStatus.ApprovedBySupervisor, result.requests.ElementAt(0).Status);
+            Assert.Equal(1, result.requests.ElementAt(0).StudentId);
+            Assert.Equal(3, result.requests.ElementAt(0).SupervisorId);
+            Assert.Equal(Status.Found, result.status);
             #endregion
         }
 
@@ -196,8 +199,9 @@ namespace ServicesTests
             #endregion
 
             #region Assert
-            Assert.NotNull(result);
-            Assert.Equal(4, result.Count());
+            Assert.Equal(Status.Found, result.status);
+            Assert.NotNull(result.requests);
+            Assert.Equal(4, result.requests.Count());
             #endregion
         }
 
@@ -224,7 +228,8 @@ namespace ServicesTests
 
             #region Assert
 
-            Assert.Equal("Heya", created.Application);
+            Assert.Equal("Heya", created.dto.Application);
+            Assert.Equal(Status.Found, created.status);
 
             #endregion
         }
@@ -278,10 +283,10 @@ namespace ServicesTests
 
             #region Assert
 
-            Assert.Equal(1, result.StudentId);
-            Assert.Equal(1, result.SupervisorId);
-            Assert.Equal(CollaborationRequestStatus.Waiting, result.Status);
-            Assert.Equal("Yes", result.Application);
+            Assert.Equal(1, result.dto.StudentId);
+            Assert.Equal(1, result.dto.SupervisorId);
+            Assert.Equal(CollaborationRequestStatus.Waiting, result.dto.Status);
+            Assert.Equal("Yes", result.dto.Application);
 
             #endregion
         }
@@ -321,10 +326,10 @@ namespace ServicesTests
 
             #region Assert
 
-            Assert.NotEmpty(requests);
-            Assert.Equal(2, requests.Count());
-            Assert.Equal("Yes", requests.ElementAt(0).Application);
-            Assert.Equal("No", requests.ElementAt(1).Application);
+            Assert.NotEmpty(requests.requests);
+            Assert.Equal(2, requests.requests.Count());
+            Assert.Equal("Yes", requests.requests.ElementAt(0).Application);
+            Assert.Equal("No", requests.requests.ElementAt(1).Application);
 
             #endregion
         }
@@ -355,7 +360,7 @@ namespace ServicesTests
             #region Assert
 
             Assert.NotNull(result);
-            Assert.Equal("Heya", result.Application);
+            Assert.Equal("Heya", result.dto.Application);
 
             #endregion
         }
@@ -366,7 +371,7 @@ namespace ServicesTests
             var result = await _repo.DeleteAsync(1);
             var entity = _context.CollaborationRequests.Find(1);
 
-            Assert.Equal(1, result);
+            Assert.Equal(1, result.id);
             Assert.Null(entity);
         }
 
@@ -380,7 +385,7 @@ namespace ServicesTests
             Assert.Null(entity);
 
             var result = await _repo.DeleteAsync(500);
-            Assert.Equal(-1, result);
+            Assert.Equal(-1, result.id);
         }
 
         [Fact]
@@ -405,8 +410,8 @@ namespace ServicesTests
             #region Assert
 
             Assert.Equal(CollaborationRequestStatus.Waiting, status);
-            Assert.NotNull(result);
-            Assert.Equal(CollaborationRequestStatus.ApprovedByStudent, result.Status);
+            Assert.NotNull(result.dto);
+            Assert.Equal(CollaborationRequestStatus.ApprovedByStudent, result.dto.Status);
 
             #endregion
         }

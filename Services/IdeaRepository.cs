@@ -8,19 +8,21 @@ namespace YoghurtBank.Services
         public IdeaRepository(IYoghurtContext context) {
             _context = context;
         }
-        public async Task<IdeaDetailsDTO> CreateAsync(IdeaCreateDTO idea)
+        public async Task<(Status status, IdeaDetailsDTO dto)> CreateAsync(IdeaCreateDTO idea)
         {
             var sup = (Supervisor) await _context.Users.FindAsync(idea.CreatorId);
             //var sup = (Supervisor) await _context.Users.Where(u => u.Id == idea.CreatorId).FirstOrDefault();
             //List<Idea> ideas = await _context.Ideas.Where(i => i.Creator.Id == sup.Id).Select(i => i).ToListAsync();
             if(sup == null)
             {
-                Environment.Exit(1);
+                return (Status.Conflict, null);
+                //Environment.Exit(1);
                 //hvad fanden skal der ske brødre??? -> på en eller anden måde skal vi indikere at der skete en fejl
             }
             if(sup.Ideas == null)
             {
                 Console.WriteLine("NEJ!!!");
+                return (Status.NotFound, null);
                 //Environment.Exit(1);
             }
 
@@ -42,7 +44,7 @@ namespace YoghurtBank.Services
             _context.Ideas.Add(entity);
             await _context.SaveChangesAsync();
 
-            return new IdeaDetailsDTO
+            return (Status.Created, new IdeaDetailsDTO
             {
                 Id = entity.Id,
                 CreatorId = entity.Creator.Id,
@@ -54,15 +56,15 @@ namespace YoghurtBank.Services
                 Open = entity.Open,
                 TimeToComplete = entity.TimeToComplete,
                 StartDate = entity.StartDate
-            };
+            });
         }
 
-        public async Task<IdeaDetailsDTO> UpdateAsync(int id, IdeaUpdateDTO update)
+        public async Task<(Status status, IdeaDetailsDTO dto)> UpdateAsync(int id, IdeaUpdateDTO update)
         {
             var entity = await _context.Ideas.FindAsync(id);
             if(entity == null)
             {
-                return null; //RETURN A STATUS INSTEAD
+                return (Status.NotFound, null);
             }
 
             
@@ -76,7 +78,7 @@ namespace YoghurtBank.Services
             entity.Type = update.Type != null ? update.Type : entity.Type;
 
             await _context.SaveChangesAsync();
-            return new IdeaDetailsDTO
+            return (Status.Found, new IdeaDetailsDTO
             {
                 Id = entity.Id,
                 CreatorId = entity.Creator.Id,
@@ -88,23 +90,23 @@ namespace YoghurtBank.Services
                 Open = entity.Open,
                 TimeToComplete = entity.TimeToComplete,
                 StartDate = entity.StartDate
-            };
+            });
         }
         
-        public async Task<int> DeleteAsync(int id)
+        public async Task<(Status status , int? id)> DeleteAsync(int id)
         {
             var entity = await _context.Ideas.FindAsync(id);
             if(entity == null)
             {
-                return -1; //needs to be changed! 
+                return (Status.NotFound, null);  
             }
             _context.Ideas.Remove(entity);
             await _context.SaveChangesAsync();
-            return entity.Id;
+            return (Status.Deleted, entity.Id);
         }
         
         
-        public async Task<IdeaDetailsDTO> FindIdeaDetailsAsync(int IdeaId)
+        public async Task<(Status status, IdeaDetailsDTO dto)> FindIdeaDetailsAsync(int IdeaId)
         {
             var idea = _context.Ideas.Where(i => i.Id == IdeaId).Include(i => i.Creator).FirstOrDefault();
             //eager loading according to: https://docs.microsoft.com/en-us/ef/ef6/querying/related-data 
@@ -115,10 +117,10 @@ namespace YoghurtBank.Services
             
             if(idea == null)
             {
-                return null;
+                return (Status.NotFound, null);
             }
 
-            return new IdeaDetailsDTO
+            return (Status.Found, new IdeaDetailsDTO
             {
                 Id = idea.Id,
                 Title = idea.Title,
@@ -131,18 +133,19 @@ namespace YoghurtBank.Services
                 StartDate = idea.StartDate,
                 CreatorId = idea.Creator.Id,
                 Type = idea.Type
-            };
+            });
         }
 
 
-        public async Task<(HttpStatusCode code, IEnumerable<IdeaDTO> list)> FindIdeasBySupervisorIdAsync(int userId)
+        public async Task<(Status status, IEnumerable<IdeaDTO> list)> FindIdeasBySupervisorIdAsync(int userId)
         {
             var supervisor = (Supervisor) _context.Users.Find(userId);
 
             if (supervisor == null) 
             {
-                return (HttpStatusCode.NotFound, null);
-            } else 
+                return (Status.NotFound, null);
+            } 
+            else 
             {
             var ideas = await _context.Ideas.Where(i => i.Creator.Id == userId).Select(i =>
             new IdeaDTO {
@@ -152,12 +155,11 @@ namespace YoghurtBank.Services
                 Type = i.Type
             }).ToListAsync();
             
-            return (HttpStatusCode.Accepted, ideas);
+            return (Status.Found, ideas);
             }
-            
         }
 
-        public async Task<IReadOnlyCollection<IdeaDetailsDTO>> ReadAllAsync()
+        public async Task<(Status status, IReadOnlyCollection<IdeaDetailsDTO> ideas)> ReadAllAsync()
         {
             var AllIdeas =  await _context.Ideas
             .Select(i => 
@@ -175,7 +177,7 @@ namespace YoghurtBank.Services
                 Type = i.Type
             }).ToListAsync();
 
-            return AllIdeas.AsReadOnly();
+            return (Status.Found, AllIdeas.AsReadOnly());
         }
     }
 }

@@ -72,10 +72,10 @@ namespace ServicesTests
 
             };
 
-            Assert.Equal(2, user.Id);
-            Assert.Equal("Sofia", user.UserName);
-            Assert.Equal("Student", user.UserType);
-            Assert.Equal("sofkj@itu.dk", user.Email);
+            Assert.Equal(2, user.dto.Id);
+            Assert.Equal("Sofia", user.dto.UserName);
+            Assert.Equal("Student", user.dto.UserType);
+            Assert.Equal("sofkj@itu.dk", user.dto.Email);
         }
 
         [Fact]
@@ -91,7 +91,8 @@ namespace ServicesTests
             #endregion
 
             #region Assert
-            Assert.Equal(1, result);
+            Assert.Equal(Status.Deleted, result.status);
+            Assert.Equal(1, result.id);
             Assert.Null(entityDeleted);
             #endregion
         }
@@ -111,7 +112,7 @@ namespace ServicesTests
 
             #region Assert
             Assert.Null(entityNoExist);
-            Assert.Equal(-1, result);
+            Assert.Equal(-1, result.id);
             #endregion
         }
 
@@ -122,11 +123,11 @@ namespace ServicesTests
 
             var result = await _repository.CreateAsync(user);
 
-            Assert.NotNull(result);
-            Assert.Equal(5, result.Id);
-            Assert.Equal("Hanne", result.UserName);
-            Assert.Equal("Student", result.UserType);
-            Assert.Equal("Kleppert@live.dk", result.Email);
+            Assert.NotNull(result.dto);
+            Assert.Equal(5, result.dto.Id);
+            Assert.Equal("Hanne", result.dto.UserName);
+            Assert.Equal("Student", result.dto.UserType);
+            Assert.Equal("Kleppert@live.dk", result.dto.Email);
         }
 
         [Fact]
@@ -136,11 +137,11 @@ namespace ServicesTests
 
             var result = await _repository.CreateAsync(user);
 
-            Assert.NotNull(result);
-            Assert.Equal(5, result.Id);
-            Assert.Equal("Hanne-Birgitte", result.UserName);
-            Assert.Equal("Supervisor", result.UserType);
-            Assert.Equal("test@test.dk", result.Email);
+            Assert.NotNull(result.dto);
+            Assert.Equal(5, result.dto.Id);
+            Assert.Equal("Hanne-Birgitte", result.dto.UserName);
+            Assert.Equal("Supervisor", result.dto.UserType);
+            Assert.Equal("test@test.dk", result.dto.Email);
         }
 
 
@@ -150,19 +151,19 @@ namespace ServicesTests
         {
             var user = new UserCreateDTO { UserName = "Mikki", UserType = "invalid", Email = "test@test.dk" };
             var result = await _repository.CreateAsync(user);
-            Assert.Null(result);
+            Assert.Null(result.dto);
         }
 
         [Fact]
         public async Task GetAllSupervisors_returns_all_supervisors_in_context()
         {
 
-            var Jens = await _repository.FindUserByIdAsync(3);
-            var Line = await _repository.FindUserByIdAsync(4);
+            var Jens = (await _repository.FindUserByIdAsync(3)).dto;
+            var Line = (await _repository.FindUserByIdAsync(4)).dto;
 
             var result = await _repository.GetAllSupervisors();
-            Assert.Equal(2, result.Count());
-            Assert.Collection(result, 
+            Assert.Equal(2, result.supervisors.Count());
+            Assert.Collection(result.supervisors, 
                 user => Assert.Equal(Jens, user),
                 user => Assert.Equal(Line, user)  
             );

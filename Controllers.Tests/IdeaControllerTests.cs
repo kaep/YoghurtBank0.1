@@ -153,7 +153,7 @@ namespace YoghurtBank.ControllerTests
             var idea2 = new IdeaDetailsDTO();
             var idea3 = new IdeaDetailsDTO();
             _repoMock.Setup(m => m.ReadAllAsync())
-                .ReturnsAsync(new List<IdeaDetailsDTO>{idea1, idea2, idea3}.AsReadOnly());
+                .ReturnsAsync(Status.Found, new List<IdeaDetailsDTO>{idea1, idea2, idea3}.AsReadOnly());
 
             var result = await _controller.GetAll();
             Assert.NotNull(result);

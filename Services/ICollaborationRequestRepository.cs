@@ -3,15 +3,15 @@ namespace YoghurtBank.Services
 {
     public interface ICollaborationRequestRepository
     {
-        Task<CollaborationRequestDetailsDTO> CreateAsync(CollaborationRequestCreateDTO request);
-        Task<CollaborationRequestDetailsDTO> FindById(int id); //aka GET
-        Task<int> DeleteAsync(int id); //returværdi skal overvejes -> det skal nok være noget status-agtigt
+        Task<(Status status, CollaborationRequestDetailsDTO dto)> CreateAsync(CollaborationRequestCreateDTO request);
+        Task<(Status status, CollaborationRequestDetailsDTO dto)> FindById(int id); //aka GET
+        Task<(Status status, int id)> DeleteAsync(int id); 
 
-        Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId);
+        Task<(Status status, IReadOnlyCollection<CollaborationRequestDetailsDTO> requests)> FindRequestsByIdeaAsync(int ideaId);
 
-        Task<CollaborationRequestDetailsDTO> UpdateAsync(int id, CollaborationRequestUpdateDTO updateRequest); //return value? like delete
+        Task<(Status status, CollaborationRequestDetailsDTO dto)> UpdateAsync(int id, CollaborationRequestUpdateDTO updateRequest); 
         
-        Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsBySupervisorAsync(int supervisorId);
-        Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsByStudentAsync(int studentId);
+        Task<(Status status, IReadOnlyCollection<CollaborationRequestDetailsDTO> requests)> FindRequestsBySupervisorAsync(int supervisorId);
+        Task<(Status status, IReadOnlyCollection<CollaborationRequestDetailsDTO> requests)> FindRequestsByStudentAsync(int studentId);
     }
 }

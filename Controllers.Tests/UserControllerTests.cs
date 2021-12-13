@@ -98,7 +98,7 @@ namespace YoghurtBank.ControllerTests
         public async Task Delete_given_invalid_id_returns_minus_one()
         {
             var id = 1; 
-            _repoMock.Setup(m => m.DeleteAsync(id)).ReturnsAsync(-1);
+            _repoMock.Setup(m => m.DeleteAsync(id)).ReturnsAsync(Status.NotFound, -1);
             
             var result = await _controller.Delete(id);
 
@@ -126,7 +126,7 @@ namespace YoghurtBank.ControllerTests
 
             };
     
-            _repoMock.Setup(m => m.GetAllSupervisors()).ReturnsAsync(new List<UserDetailsDTO>{Mikki, Sofia}.AsReadOnly());
+            _repoMock.Setup(m => m.GetAllSupervisors()).ReturnsAsync(Status.Found, new List<UserDetailsDTO>{Mikki, Sofia}.AsReadOnly());
 
             var result = await _controller.GetSupervisors();
             Assert.Equal(2, result.Count());

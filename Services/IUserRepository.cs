@@ -4,13 +4,13 @@ namespace YoghurtBank.Services
 {
     public interface IUserRepository
     {
-        Task<UserDetailsDTO>? FindUserByIdAsync(int userId);
+        Task<(Status status, UserDetailsDTO dto)>? FindUserByIdAsync(int userId);
 
-        Task<UserDetailsDTO> CreateAsync(UserCreateDTO user);
+        Task<(Status status, UserDetailsDTO dto)> CreateAsync(UserCreateDTO user);
 
-        Task<int> DeleteAsync(int id);
+        Task<(Status status, int? id)> DeleteAsync(int id);
 
-        Task<IReadOnlyCollection<UserDetailsDTO>> GetAllSupervisors(); 
+        Task<(Status status, IReadOnlyCollection<UserDetailsDTO> supervisors)> GetAllSupervisors(); 
 
     }
 }
