@@ -84,7 +84,7 @@ namespace YoghurtBank.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<int>> Delete(int id)
+        public async Task<int> Delete(int id)
         {
             //hvis returtypen laves om på deleteasync, kan det være at denne metodes
             //returtype skal laves om til IActionResult i stedet og følge rasmus' eksempel
@@ -95,7 +95,7 @@ namespace YoghurtBank.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CollaborationRequestDetailsDTO>> Put(int id,
+        public async Task<CollaborationRequestDetailsDTO> Put(int id,
             [FromBody] CollaborationRequestUpdateDTO request)
         {
             //denne er ligesom delete, den følger ikke 100% rasmus' eksempel ift. IActionResult returtype og returnering af .ToActionResult

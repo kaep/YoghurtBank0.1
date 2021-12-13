@@ -169,6 +169,25 @@ namespace YoghurtBank.ServicesTests
         }
 
         [Fact]
+        public async Task UpdateAsync_given_nonexisting_entity_returns_null()
+        {
+            var id = 666;
+            
+            var update = new IdeaUpdateDTO
+            {
+                Title = "NewTitle",
+                Subject = "NewSubject",
+                Description = "NewDescription",
+                AmountOfCollaborators = 400,
+                Open = false
+            };
+
+            var result = await _repo.UpdateAsync(id, update);
+            
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async Task CreateAsync_given_idea_returns_it()
         {
             #region Arrange
@@ -194,6 +213,12 @@ namespace YoghurtBank.ServicesTests
             Assert.NotNull(result);
             //needs more assertions
             #endregion
+        }
+
+        [Fact]
+        public async Task CreateAsync_given_something_something()
+        {
+            //get 100% coverage when createasync is not a mess
         }
 
         [Fact]
