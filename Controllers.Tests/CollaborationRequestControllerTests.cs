@@ -137,5 +137,19 @@ namespace YoghurtBank.ControllerTests
             var result = await _controller.Delete(1);
             Assert.Equal(1, result);
         }
+
+        [Fact]
+        public async Task Put_returns_what()
+        {
+            var id = 1;
+            var cb = new CollaborationRequestUpdateDTO();
+            _repoMock.Setup(m => m.UpdateAsync(id, cb))
+                .ReturnsAsync(new CollaborationRequestDetailsDTO{Application = "Sweet"});
+
+            var result = await _controller.Put(id, cb);
+            Assert.NotNull(result);
+            Assert.Equal("Sweet", result.Application);
+
+        }
     }
 } 
