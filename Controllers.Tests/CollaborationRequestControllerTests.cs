@@ -60,7 +60,7 @@ namespace YoghurtBank.ControllerTests
             };
             var cb2 = new CollaborationRequestDetailsDTO
             {
-                StudentId = 3,
+                StudentId = 1,
                 SupervisorId = 4,
                 Application = "Not Science",
                 Status = CollaborationRequestStatus.Waiting
@@ -70,6 +70,36 @@ namespace YoghurtBank.ControllerTests
 
             var result = await _controller.GetRequestsByUser(false, 1);
 
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
+            Assert.Equal(cb1, result.ElementAt(0));
+            Assert.Equal(cb2, result.ElementAt(1));
+        }
+
+        [Fact]
+        public async Task GetRequestsByUser_given_true_returns_finds_requests_by_supervisor()
+        {
+            
+            var cb1 = new CollaborationRequestDetailsDTO
+            {
+                StudentId = 1,
+                SupervisorId = 2,
+                Application = "Science",
+                Status = CollaborationRequestStatus.Waiting
+            };
+            
+            var cb2 = new CollaborationRequestDetailsDTO
+            {
+                StudentId = 1,
+                SupervisorId = 2,
+                Application = "Not Science",
+                Status = CollaborationRequestStatus.Waiting
+            };
+
+            _repoMock.Setup(m => m.FindRequestsBySupervisorAsync(2))
+                .ReturnsAsync(new List<CollaborationRequestDetailsDTO> {cb1, cb2}.AsReadOnly());
+            
+            var result = await _controller.GetRequestsByUser(true, 2);
             Assert.NotNull(result);
             Assert.NotEmpty(result);
             Assert.Equal(cb1, result.ElementAt(0));
