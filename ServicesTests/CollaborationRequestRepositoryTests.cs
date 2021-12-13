@@ -228,6 +228,40 @@ namespace ServicesTests
 
             #endregion
         }
+        
+        [Fact]
+        public async Task CreateAsync_given_invalid_supervisorid_returns_null()
+        {
+            var cb1 = new CollaborationRequestCreateDTO
+            {
+                StudentId = 1,
+                SupervisorId = 666,
+                Application = "Science",
+                IdeaId = 1
+            };
+
+            var created = await _repo.CreateAsync(cb1);
+            
+            Assert.Null(created);
+
+        }
+        
+        [Fact]
+        public async Task CreateAsync_given_invalid_studentid_returns_null()
+        {
+            var cb1 = new CollaborationRequestCreateDTO
+            {
+                StudentId = 666,
+                SupervisorId = 2,
+                Application = "Science",
+                IdeaId = 1
+            };
+
+            var created = await _repo.CreateAsync(cb1);
+            
+            Assert.Null(created);
+
+        }
 
         [Fact]
         public async Task FindById1_returns_collabRequest1()
@@ -295,7 +329,8 @@ namespace ServicesTests
             #endregion
         }
 
-
+        
+        //ER DENNE IKKE DUBLET AF EN ANDEN? 
         [Fact]
         public async Task AddAsync_given_collabrequest_returns_collabrequest()
         {
