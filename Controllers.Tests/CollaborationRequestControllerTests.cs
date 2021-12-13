@@ -149,7 +149,21 @@ namespace YoghurtBank.ControllerTests
             var result = await _controller.Put(id, cb);
             Assert.NotNull(result);
             Assert.Equal("Sweet", result.Application);
+        }
 
+        [Fact]
+        public async Task GetByIdeaId_returns_ideas()
+        {
+            var cb1 = new CollaborationRequestDetailsDTO();
+            var cb2 = new CollaborationRequestDetailsDTO();
+            _repoMock.Setup(m => m.FindRequestsByIdeaAsync(1)).ReturnsAsync(new List<CollaborationRequestDetailsDTO>
+                {cb1, cb2}.AsReadOnly());
+
+            var result = await _controller.GetByIdeaId(1);
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
+            Assert.Equal(cb1, result.ElementAt(0));
+            Assert.Equal(cb2, result.ElementAt(1));
         }
     }
 } 
