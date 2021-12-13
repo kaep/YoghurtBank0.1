@@ -139,5 +139,28 @@ namespace YoghurtBank.ControllerTests
             
             Assert.Equal(details, result);
         }
+
+        [Fact]
+        public async Task Put_given_invalid_idea_returns_something()
+        {
+            //denne skal laves når metoden er på plads. husk at rette navnet. 
+        }
+
+        [Fact]
+        public async Task GetAll_returns_all_ideas()
+        {
+            var idea1 = new IdeaDetailsDTO();
+            var idea2 = new IdeaDetailsDTO();
+            var idea3 = new IdeaDetailsDTO();
+            _repoMock.Setup(m => m.ReadAllAsync())
+                .ReturnsAsync(new List<IdeaDetailsDTO>{idea1, idea2, idea3}.AsReadOnly());
+
+            var result = await _controller.GetAll();
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
+            Assert.Equal(idea1, result.ElementAt(0));
+            Assert.Equal(idea2, result.ElementAt(1));
+            Assert.Equal(idea3, result.ElementAt(2));
+        }
     }
 }
