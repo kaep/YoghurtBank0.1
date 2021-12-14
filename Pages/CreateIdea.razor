@@ -52,6 +52,13 @@
         <button type="reset" class="btn btn-secondary">Reset</button>
         <button type="button" class="btn btn-primary" @onclick="Back">Back</button>
     </div>
+    @if(DateError)
+    {
+        <div class="form-group">
+        <p>Plz new date</p>
+        </div>
+    }
+    
 
 </EditForm>
 
@@ -60,7 +67,7 @@
 
 
 @code {
-
+    private bool DateError = false;
     private IdeaCreateDTO idea = new IdeaCreateDTO{CreatorId = 4}; //creatorid hardcoded while we figure out how to differentiate users
     private DateTime end  {get; set;} = DateTime.UtcNow;
     public DateTime DefaultValue {get; set;} = DateTime.UtcNow;
@@ -73,14 +80,23 @@
 
     private async Task HandleValidSubmit()
     {
+        if(end < DateTime.UtcNow.Date || idea.StartDate < DateTime.UtcNow.Date)
+        {
+            DateError = true;
+        }
+        else 
+        {
+            DateError = false;
+            //bad cast        
+            TimeSpan time = end-idea.StartDate;
+            idea.TimeToComplete = (TimeSpan) (end-idea.StartDate); 
+            idea.Open = true; //bare sæt den som åben pr. default, eller? 
+            var result = await Http.PostAsJsonAsync("https://localhost:7194/api/idea", idea);
+            Console.WriteLine($"Created {result}"); 
+        }
         Console.WriteLine("Success");
 
-        //bad cast        
-        TimeSpan time = end-idea.StartDate;
-        idea.TimeToComplete = (TimeSpan) (end-idea.StartDate); 
-        idea.Open = true; //bare sæt den som åben pr. default, eller? 
-        var result = await Http.PostAsJsonAsync("https://localhost:7194/api/idea", idea);
-        Console.WriteLine($"Created {result}");    
+           
     }
 
     private void Back()
