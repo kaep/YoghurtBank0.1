@@ -62,6 +62,17 @@ namespace YoghurtBank.Services
             };
         }
 
+            public async Task<bool> FindTypeOfUser(int userId) {
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user.GetType() == typeof(Supervisor)) {
+                return true;
+            } else 
+            {
+                return false;
+            }
+        }
+
         public async Task<int> DeleteAsync(int id)
         {
             var entity = await _context.CollaborationRequests.FindAsync(id);

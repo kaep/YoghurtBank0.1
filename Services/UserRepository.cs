@@ -28,6 +28,7 @@ namespace YoghurtBank.Services
             }
         }
 
+
         //TODO: i removed the http status code, and had to make user nullable
         public async Task<UserDetailsDTO>? FindUserByIdAsync(int userId)
         {

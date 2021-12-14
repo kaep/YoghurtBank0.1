@@ -68,7 +68,7 @@ namespace YoghurtBank.ControllerTests
             var requests = new List<CollaborationRequestDetailsDTO>{cb1, cb2}.AsReadOnly();
             _repoMock.Setup(m => m.FindRequestsByStudentAsync(1)).ReturnsAsync(requests);
 
-            var result = await _controller.GetRequestsByUser(false, 1);
+            var result = await _controller.GetRequestsByUser(1);
 
             Assert.NotNull(result);
             Assert.NotEmpty(result);
@@ -99,7 +99,7 @@ namespace YoghurtBank.ControllerTests
             _repoMock.Setup(m => m.FindRequestsBySupervisorAsync(2))
                 .ReturnsAsync(new List<CollaborationRequestDetailsDTO> {cb1, cb2}.AsReadOnly());
             
-            var result = await _controller.GetRequestsByUser(true, 2);
+            var result = await _controller.GetRequestsByUser(2);
             Assert.NotNull(result);
             Assert.NotEmpty(result);
             Assert.Equal(cb1, result.ElementAt(0));

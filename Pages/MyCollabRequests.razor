@@ -10,7 +10,7 @@
 <div>
     <label for="site-search">To see your list of requests, insert your id</label>
         <input type="search" id="site-search" name="q" aria-label="Search through site content">
-        <button type="button" class="btn btn-primary" @onclick="FindMyRequests">Find my requests</button>
+    <button type="button" class="btn btn-primary" @onclick="FindMyRequests">Find my requests</button>
 </div>
 
     
@@ -18,14 +18,16 @@
     
     private CollaborationRequestDetailsDTO[]? requests;
 
-    protected override async Task OnInitializedAsync()
+    private async Task FindMyRequests()
     {
-        <!--requests = await Http.GetFromJsonAsync<CollaborationRequestDetailsDTO[]>($"https://localhost:7194/api/collaborationrequest/user/{id});-->
-    }
+        var idFromField = ("site-search");
+        Console.WriteLine(idFromField);
 
-    private void FindMyRequests()
-    {
-        Console.WriteLine("FindMyRequests" + @requests);
+        <!--var test = Request.Form["site-search"].toString();-->
+
+        requests = await Http.GetFromJsonAsync<CollaborationRequestDetailsDTO[]>($"https://localhost:7194/api/collaborationrequest/userId/{idFromField}");
+        
+        
         <!--collabs = aWait -->
     }
 }

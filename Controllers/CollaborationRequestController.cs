@@ -55,10 +55,12 @@ namespace YoghurtBank.Controllers
 
         [Route("api/[controller]/userId")]
         [Authorize]
-        [HttpGet("{userid}")]
+        [HttpGet("{userId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> GetRequestsByUser(bool isSupervisor, int userId)
+        public async Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> GetRequestsByUser(int userId)
         {
+            var isSupervisor = await _repository.FindTypeOfUser(userId);
+
             if (isSupervisor)
             {
                 return await _repository.FindRequestsBySupervisorAsync(userId);

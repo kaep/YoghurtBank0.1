@@ -9,6 +9,8 @@ namespace YoghurtBank.Services
 
         Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsByIdeaAsync(int ideaId);
 
+        Task<bool> FindTypeOfUser(int userId);
+
         Task<CollaborationRequestDetailsDTO> UpdateAsync(int id, CollaborationRequestUpdateDTO updateRequest); //return value? like delete
         
         Task<IReadOnlyCollection<CollaborationRequestDetailsDTO>> FindRequestsBySupervisorAsync(int supervisorId);
