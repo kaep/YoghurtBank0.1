@@ -22,7 +22,6 @@ namespace YoghurtBank.Data.Model
             await context.Database.MigrateAsync();
             var student1 = new Student
             {
-                Id = 1,
                 UserName = "Henning",
                 CollaborationRequests = new List<CollaborationRequest>(),
                 Email = "HenningG@gmail.com"
@@ -30,7 +29,6 @@ namespace YoghurtBank.Data.Model
 
             var student2 = new Student
             {
-                Id = 2,
                 UserName = "Mads",
                 CollaborationRequests = new List<CollaborationRequest>(),
                 Email = "Minmail@webspeed.dk"
@@ -38,7 +36,6 @@ namespace YoghurtBank.Data.Model
 
             var student3 = new Student
             {
-                Id = 3,
                 UserName = "Sasha",
                 CollaborationRequests = new List<CollaborationRequest>(),
                 Email = "slarsen@mails.com"
@@ -46,7 +43,6 @@ namespace YoghurtBank.Data.Model
 
             var super1 = new Supervisor
             {
-                Id = 4,
                 CollaborationRequests = new List<CollaborationRequest>(),
                 Ideas = new List<Idea>(),
                 UserName = "Roberto O'boto",
@@ -55,7 +51,6 @@ namespace YoghurtBank.Data.Model
 
             var super2 = new Supervisor
             {
-                Id = 5,
                 CollaborationRequests = new List<CollaborationRequest>(),
                 Ideas = new List<Idea>(),
                 UserName = "Morten",
@@ -65,7 +60,6 @@ namespace YoghurtBank.Data.Model
 
             var Idea1 = new Idea
             {
-                Id = 1,
                 Subject = "Algorithms and Data Structures",
                 Title = "Algorithmic Problem Solving",
                 Description = "In this project, students will be working with lorem ipsum dolor",
@@ -80,7 +74,6 @@ namespace YoghurtBank.Data.Model
 
             var Idea2 = new Idea
             {
-                Id = 2,
                 Subject = "Work/life balance",
                 Title = "Work life balance at ITU",
                 Description = "In this project it will be investigated how students at ITU combine work, sparetime and family time",
@@ -95,7 +88,6 @@ namespace YoghurtBank.Data.Model
 
             var Idea3 = new Idea
             {
-                Id = 3,
                 Subject = "Medicine",
                 Title = "Tranquilizers and their effects on persian cats",
                 Description = "In this project, students will be....",
@@ -110,7 +102,6 @@ namespace YoghurtBank.Data.Model
 
             var Idea4 = new Idea
             {
-                Id = 4,
                 Subject = "Lorem ipsum and its many uses",
                 Title = "Amet luctus at, scelerisque a augue.",
                 Description = "Proin sed suscipit nisi. Fusce volutpat eros eget consectetur faucibus. Nunc vel accumsan nunc.",
@@ -125,7 +116,6 @@ namespace YoghurtBank.Data.Model
 
             var Idea5 = new Idea
             {
-                Id = 5,
                 Subject = "Lorem ipsum",
                 Title = "Suspendisse nisl nisl, imperdiet sit.",
                 Description = "In eget dui et tellus accumsan pellentesque. Fusce volutpat eros eget consectetur faucibus.  Praesent id lectus sagittis, condimentum ex ut, porta orci. Mauris gravida sed leo non feugiat. Duis vitae aliquam massa, quis convallis nunc.",
@@ -140,7 +130,6 @@ namespace YoghurtBank.Data.Model
 
             var collabRequest1 = new CollaborationRequest
             {
-                Id = 1,
                 Requester = student1,
                 Requestee = super1,
                 Application = "I love data structures sooooo much",
@@ -150,7 +139,6 @@ namespace YoghurtBank.Data.Model
 
             var collabRequest2 = new CollaborationRequest
             {
-                Id = 2,
                 Requester = student1,
                 Requestee = super1,
                 Application = "I find algorithms to be interesting",
@@ -160,17 +148,15 @@ namespace YoghurtBank.Data.Model
 
             var collabRequest3 = new CollaborationRequest
             {
-                Id = 3,
                 Requester = student1,
                 Requestee = super2,
-                Application = "I think that it would be good to fix some th eproblems with work/life balance",
+                Application = "I think that it would be good to fix some of the problems with work/life balance",
                 Status = CollaborationRequestStatus.ApprovedBySupervisor,
                 Idea = Idea2
             };
 
             var collabRequest4 = new CollaborationRequest
             {
-                Id = 4,
                 Requester = student3,
                 Requestee = super2,
                 Application = "LAtin example text is like, so interesting!",
@@ -180,7 +166,6 @@ namespace YoghurtBank.Data.Model
 
             var collabRequest5 = new CollaborationRequest
             {
-                Id = 5,
                 Requester = student2,
                 Requestee = super1,
                 Application = "Lol, i take medicines sometimes, so i think i would be fun to work eith it ",
@@ -190,7 +175,6 @@ namespace YoghurtBank.Data.Model
 
             var collabRequest6 = new CollaborationRequest
             {
-                Id = 6,
                 Requester = student1,
                 Requestee = super1,
                 Application = "i would really like to work on this project because...",

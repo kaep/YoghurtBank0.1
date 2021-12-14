@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace YoghurtBank.Migrations
 {
-    public partial class heya : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,8 @@ namespace YoghurtBank.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserName = table.Column<string>(type: "text", nullable: false),
+                    UserName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
                     Discriminator = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
@@ -32,13 +33,13 @@ namespace YoghurtBank.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CreatorId = table.Column<int>(type: "integer", nullable: false),
                     Posted = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Subject = table.Column<string>(type: "text", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
+                    Subject = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     AmountOfCollaborators = table.Column<int>(type: "integer", nullable: false),
                     Open = table.Column<bool>(type: "boolean", nullable: false),
                     TimeToComplete = table.Column<TimeSpan>(type: "interval", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -61,7 +62,7 @@ namespace YoghurtBank.Migrations
                     RequesterId = table.Column<int>(type: "integer", nullable: false),
                     RequesteeId = table.Column<int>(type: "integer", nullable: false),
                     IdeaId = table.Column<int>(type: "integer", nullable: true),
-                    Application = table.Column<string>(type: "text", nullable: false),
+                    Application = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
