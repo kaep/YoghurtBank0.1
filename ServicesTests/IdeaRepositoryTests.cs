@@ -242,7 +242,7 @@ namespace YoghurtBank.ServicesTests
             int supervisorid = 2;
             var ideasFromSupervisorId = await _repo.FindIdeasBySupervisorIdAsync(supervisorid);
 
-            var ideaDTO1 = new IdeaDTO
+            var ideaDTO1 = new IdeaDetailsDTO
             {
                 Id = 1,
                 Title = "Big data is good",
@@ -250,7 +250,7 @@ namespace YoghurtBank.ServicesTests
                 Type = IdeaType.Bachelor
             };
 
-            var ideaDTO2 = new IdeaDTO
+            var ideaDTO2 = new IdeaDetailsDTO
             {
                 Id = 3,
                 Title = "DevOps is good",

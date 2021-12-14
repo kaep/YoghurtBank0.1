@@ -135,7 +135,7 @@ namespace YoghurtBank.Services
         }
 
 
-        public async Task<(HttpStatusCode code, IEnumerable<IdeaDTO> list)> FindIdeasBySupervisorIdAsync(int userId)
+        public async Task<(HttpStatusCode code, IReadOnlyCollection<IdeaDetailsDTO> list)> FindIdeasBySupervisorIdAsync(int userId)
         {
             var supervisor = (Supervisor) _context.Users.Find(userId);
 
@@ -145,14 +145,14 @@ namespace YoghurtBank.Services
             } else 
             {
             var ideas = await _context.Ideas.Where(i => i.Creator.Id == userId).Select(i =>
-            new IdeaDTO {
+            new IdeaDetailsDTO {
                 Id = i.Id,
                 Title = i.Title,
                 Subject = i.Subject,
                 Type = i.Type
             }).ToListAsync();
             
-            return (HttpStatusCode.Accepted, ideas);
+            return (HttpStatusCode.Accepted, ideas.AsReadOnly());
             }
             
         }
