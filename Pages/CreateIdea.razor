@@ -29,6 +29,12 @@
         <label for="AmountOfCollaborators">Amount of collaborators</label>
         <InputNumber id="Description" @bind-Value="idea.AmountOfCollaborators" class="form-control" />
     </div>
+    @if(DateError)
+    {
+        <div class="form-group">
+        <p style="color: red;">@DateErrorMessage</p>
+        </div>
+    }
     <div class="form-group">
         <label for="StartDate">Start date</label>
         <InputDate id="StartDate" @bind-Value="idea.StartDate" class="form-control" />
@@ -52,12 +58,7 @@
         <button type="reset" class="btn btn-secondary">Reset</button>
         <button type="button" class="btn btn-primary" @onclick="Back">Back</button>
     </div>
-    @if(DateError)
-    {
-        <div class="form-group">
-        <p>Plz new date</p>
-        </div>
-    }
+    
     
 
 </EditForm>
@@ -71,18 +72,25 @@
     private IdeaCreateDTO idea = new IdeaCreateDTO{CreatorId = 4}; //creatorid hardcoded while we figure out how to differentiate users
     private DateTime end  {get; set;} = DateTime.UtcNow;
     public DateTime DefaultValue {get; set;} = DateTime.UtcNow;
+    public string DateErrorMessage {get; set;}
 
     protected override async Task OnInitializedAsync()
     {
         idea.StartDate = DefaultValue; 
-
     }
 
     private async Task HandleValidSubmit()
     {
+        //This is maybe a bit flawed?
         if(end < DateTime.UtcNow.Date || idea.StartDate < DateTime.UtcNow.Date)
+        { 
+             DateError = true;
+             DateErrorMessage = "Please make sure that all dates are in the future";
+        }
+        if(end.Date == idea.StartDate.Date)
         {
             DateError = true;
+            DateErrorMessage = "Please make sure that start and end date aren't the same";
         }
         else 
         {
