@@ -16,6 +16,8 @@ namespace YoghurtBank.ServicesTests
     {
         private readonly YoghurtContext _context;
         private readonly IdeaRepository _repo;
+        private DateTime _now;
+        private DateTime _today;
 
         public IdeaRepositoryTests()
         {
@@ -25,14 +27,16 @@ namespace YoghurtBank.ServicesTests
             builder.UseSqlite(connection);
             var context = new YoghurtContext(builder.Options);
             context.Database.EnsureCreated();
+            _now = DateTime.Now;
+            _today = DateTime.Today;
 
             var supervisor1 = new Supervisor { Id = 1, UserName = "Torben", CollaborationRequests = new List<CollaborationRequest>(), Ideas = new List<Idea>(), Email = "test@test.dk" };
             var supervisor2 = new Supervisor { Id = 2, UserName = "Preben", CollaborationRequests = new List<CollaborationRequest>(), Ideas = new List<Idea>(), Email = "test@test.dk" };
 
-            var idea1 = new Idea { Id = 1, Creator = supervisor2, Posted = DateTime.Now, Subject = "Big Data", Title = "Big data is good", Description = "Big data gives value", AmountOfCollaborators = 3, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Bachelor };
-            var idea2 = new Idea { Id = 2, Creator = supervisor1, Posted = DateTime.Now, Subject = "Data Intelligence", Title = "Data Intelligence is good", Description = "Data Intelligence gives value", AmountOfCollaborators = 1, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.PhD };
-            var idea3 = new Idea { Id = 3, Creator = supervisor2, Posted = DateTime.Now, Subject = "DevOps", Title = "DevOps is good", Description = "DevOps gives value", AmountOfCollaborators = 2, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Project };
-            var idea4 = new Idea { Id = 4, Creator = supervisor1, Posted = DateTime.Now, Subject = "Requirements Elicitation", Title = "Requirements Elicitation is good", Description = "Requirements Elicitation gives value", AmountOfCollaborators = 5, Open = true, TimeToComplete = DateTime.Today - DateTime.Today, StartDate = DateTime.Now, Type = IdeaType.Masters };
+            var idea1 = new Idea { Id = 1, Creator = supervisor2, Posted = _now, Subject = "Big Data", Title = "Big data is good", Description = "Big data gives value", AmountOfCollaborators = 3, Open = true, TimeToComplete = _today - _today, StartDate = _now, Type = IdeaType.Bachelor };
+            var idea2 = new Idea { Id = 2, Creator = supervisor1, Posted = _now, Subject = "Data Intelligence", Title = "Data Intelligence is good", Description = "Data Intelligence gives value", AmountOfCollaborators = 1, Open = true, TimeToComplete = _today - _today, StartDate = _now, Type = IdeaType.PhD };
+            var idea3 = new Idea { Id = 3, Creator = supervisor2, Posted = _now, Subject = "DevOps", Title = "DevOps is good", Description = "DevOps gives value", AmountOfCollaborators = 2, Open = true, TimeToComplete = _today - _today, StartDate = _now, Type = IdeaType.Project };
+            var idea4 = new Idea { Id = 4, Creator = supervisor1, Posted = _now, Subject = "Requirements Elicitation", Title = "Requirements Elicitation is good", Description = "Requirements Elicitation gives value", AmountOfCollaborators = 5, Open = true, TimeToComplete = _today - _today, StartDate = _now, Type = IdeaType.Masters };
             //DateTime.Now-DateTime.Today
 
             supervisor1.Ideas.Add(idea2);
@@ -199,8 +203,8 @@ namespace YoghurtBank.ServicesTests
                 Description = "Heya Sweden",
                 AmountOfCollaborators = 2,
                 Open = true,
-                TimeToComplete = DateTime.Now - DateTime.Now,
-                StartDate = DateTime.Now,
+                TimeToComplete = _today - _today,
+                StartDate = _now,
                 Type = IdeaType.Bachelor
             };
             #endregion
@@ -277,12 +281,12 @@ namespace YoghurtBank.ServicesTests
                 Id = 2,
                 Title = "Data Intelligence is good",
                 Subject = "Data Intelligence",
-                Posted = DateTime.Now,
+                Posted = _now,
                 Description = "Data Intelligence gives value",
                 AmountOfCollaborators = 1,
                 Open = true,
-                TimeToComplete = DateTime.Today - DateTime.Today,
-                StartDate = DateTime.Now,
+                TimeToComplete = _today - _today,
+                StartDate = _now,
                 Type = IdeaType.PhD
             };
 
@@ -292,12 +296,12 @@ namespace YoghurtBank.ServicesTests
                 Id = 4,
                 Title = "Requirements Elicitation is good",
                 Subject = "Requirements Elicitation",
-                Posted = DateTime.Now,
+                Posted = _now,
                 Description = "Requirements Elicitation gives value",
                 AmountOfCollaborators = 5,
                 Open = true,
-                TimeToComplete = DateTime.Today - DateTime.Today,
-                StartDate = DateTime.Now,
+                TimeToComplete = _today - _today,
+                StartDate = _now,
                 Type = IdeaType.Masters
             };
             var IdeaDetailsDTO3 = new IdeaDetailsDTO
@@ -306,12 +310,12 @@ namespace YoghurtBank.ServicesTests
                 Id = 1,
                 Title = "Big data is good",
                 Subject = "Big Data",
-                Posted = DateTime.Now,
+                Posted = _now,
                 Description = "Big data gives value",
                 AmountOfCollaborators = 3,
                 Open = true,
-                TimeToComplete = DateTime.Today - DateTime.Today,
-                StartDate = DateTime.Now,
+                TimeToComplete = _today - _today,
+                StartDate = _now,
                 Type = IdeaType.Bachelor
             };
             var IdeaDetailsDTO4 = new IdeaDetailsDTO
@@ -320,12 +324,12 @@ namespace YoghurtBank.ServicesTests
                 Id = 3,
                 Title = "DevOps is good",
                 Subject = "DevOps",
-                Posted = DateTime.Now,
+                Posted = _now,
                 Description = "DevOps gives value",
                 AmountOfCollaborators = 2,
                 Open = true,
-                TimeToComplete = DateTime.Today - DateTime.Today,
-                StartDate = DateTime.Now,
+                TimeToComplete = _today - _today,
+                StartDate = _now,
                 Type = IdeaType.Project
             };
 
