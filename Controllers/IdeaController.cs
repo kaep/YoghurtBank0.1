@@ -18,17 +18,17 @@ namespace YoghurtBank.Controllers
         }
 
 
-        [AllowAnonymous]
-        //vi har droppet actionresults for nuværende... keep it simple 
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(IdeaDetailsDTO), StatusCodes.Status200OK)]
-        [HttpGet("{id}")]
-        public async Task<IdeaDetailsDTO> GetById(int id)
-        {
-            return await _repository.FindIdeaDetailsAsync(id);
-            //hvordan fungerer dette? I rasmus' kode ser det ud som om at 
-            //ideadetailsdto slet ikke bliver returneret??? hjælp mig :( 
-        }
+        //  [AllowAnonymous]
+        //  //vi har droppet actionresults for nuværende... keep it simple 
+        //  [ProducesResponseType(StatusCodes.Status404NotFound)]
+        //  [ProducesResponseType(typeof(IdeaDetailsDTO), StatusCodes.Status200OK)]
+        //  [HttpGet("{id}")]
+         public async Task<IdeaDetailsDTO> GetById(int id)
+         {
+             return await _repository.FindIdeaDetailsAsync(id);
+             //hvordan fungerer dette? I rasmus' kode ser det ud som om at 
+             //ideadetailsdto slet ikke bliver returneret??? hjælp mig :( 
+         }
 
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(IReadOnlyCollection<IdeaDetailsDTO>), StatusCodes.Status200OK)]
@@ -57,6 +57,43 @@ namespace YoghurtBank.Controllers
         {
             return await _repository.CreateAsync(idea);
         }
+
+        [AllowAnonymous]
+        [HttpGet("{supervisorid}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(IReadOnlyCollection<IdeaDetailsDTO>), StatusCodes.Status200OK)]
+        //FIND UD AF HVORDAN VI LAVER FLERE HTTPGET MED ID [Route("api/[controller]/super")]
+        public async Task<IReadOnlyCollection<IdeaDetailsDTO>> GetIdeasBySupervisor(int id)
+        {
+            var idea1 = new IdeaDetailsDTO
+            {
+                Title = "Hey"
+
+            };
+
+            var idea2 = new IdeaDetailsDTO
+            {
+                Title = "No"
+
+            };
+
+            //var ideas = new List<IdeaDetailsDTO>{idea1, idea2};
+            //return ideas.AsReadOnly();
+            //flere trin fordi findideasbysuper pt. returnerer en http statuskode
+            var ideas =  await _repository.FindIdeasBySupervisorIdAsync(id);
+            if(ideas.list == null) 
+            {
+                Console.WriteLine("hvad fanden foregår der");
+
+            } 
+            if(ideas.list.Count() == 0)
+            {
+                Console.WriteLine("Jeg er tom din so");
+            }
+            return ideas.list; 
+        }
+
+
 
         [Authorize]
         [HttpPut("{id}")]

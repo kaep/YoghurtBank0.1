@@ -3,7 +3,7 @@ namespace YoghurtBank.Services
 {
     public interface IIdeaRepository
     {
-        Task<(HttpStatusCode code, IEnumerable<IdeaDTO> list)> FindIdeasBySupervisorIdAsync(int userId);
+        Task<(HttpStatusCode code, IReadOnlyCollection<IdeaDetailsDTO> list)> FindIdeasBySupervisorIdAsync(int userId);
 
         Task<IdeaDetailsDTO> FindIdeaDetailsAsync(int IdeaId);
 

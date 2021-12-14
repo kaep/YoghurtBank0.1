@@ -1,15 +1,15 @@
-@page "/ideas"
+@page "/myideas/{superid:int}"
 @attribute [Authorize]
 @inject HttpClient Http
 @inject AuthenticationStateProvider auth
 @inject NavigationManager NavMan
 
-<PageTitle>All ideas</PageTitle>
+<PageTitle>My ieas</PageTitle>
 
 <div style="display: flex">
 @if(ideas == null || ideas.Length == 0)
 {
-    <h1>No ideas - get creatin'!</h1>
+    <h1>You have no ideas - get creatin'!</h1>
 }
 else 
 {
@@ -31,7 +31,7 @@ else
         </div>
         <div class="card-body">
             <button type="button" class="btn btn-primary" style="background-color: green" @onclick="RequestCollab">Request collaboration</button>
-            <button type="button" class="btn btn-primary" @onclick="@(() => Nav(idea.Id))">Show details</button>
+            <button type="button" class="btn btn-primary" >Show details</button>
         </div>
     </div>
     }
@@ -40,21 +40,17 @@ else
 
 
 @code {
+    [Parameter]
+    public int? superid { get; set; }
     private IdeaDetailsDTO[]? ideas;
 
     protected override async Task OnInitializedAsync()
     {
-        ideas = await Http.GetFromJsonAsync<IdeaDetailsDTO[]>($"https://localhost:7194/api/idea");
+        ideas = await Http.GetFromJsonAsync<IdeaDetailsDTO[]>($"https://localhost:7194/api/idea/{superid}");
     }
 
     private void RequestCollab()
     {
         Console.WriteLine("Request collab");
     }
-
-    private void Nav(int id)
-    {
-        NavMan.NavigateTo($"https://localhost:7194/ideadetails/{id}");
-    }
-    
 }

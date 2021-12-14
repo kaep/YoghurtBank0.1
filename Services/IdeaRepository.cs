@@ -135,26 +135,56 @@ namespace YoghurtBank.Services
         }
 
 
-        public async Task<(HttpStatusCode code, IEnumerable<IdeaDTO> list)> FindIdeasBySupervisorIdAsync(int userId)
+        public async Task<(HttpStatusCode code, IReadOnlyCollection<IdeaDetailsDTO> list)> FindIdeasBySupervisorIdAsync(int userId)
         {
-            var supervisor = (Supervisor) _context.Users.Find(userId);
+            // var supervisor = (Supervisor) await _context.Users.FindAsync(userId);
 
-            if (supervisor == null) 
+            // if (supervisor == null) 
+            // {
+            //     Console.WriteLine("Supervisor er null????");
+            //     return (HttpStatusCode.NotFound, null);
+            // } else 
+            // {
+            //     var ideas = await _context.Ideas.Where(i => i.Creator.Id == userId).Select(i =>
+            //     new IdeaDetailsDTO {
+            //         Id = i.Id,
+            //         Title = i.Title,
+            //         Subject = i.Subject,
+            //         Type = i.Type
+            //     }).ToListAsync();
+
+            //     if(ideas == null) 
+            //     {
+            //         Console.WriteLine("HVad så spasser");
+
+            //     }
+
+            //     return (HttpStatusCode.Accepted, ideas.AsReadOnly());
+            // }
+            var hey = 10; 
+            for(int i = 0; i < hey; i++)
             {
-                return (HttpStatusCode.NotFound, null);
-            } else 
-            {
-            var ideas = await _context.Ideas.Where(i => i.Creator.Id == userId).Select(i =>
-            new IdeaDTO {
-                Id = i.Id,
-                Title = i.Title,
-                Subject = i.Subject,
-                Type = i.Type
-            }).ToListAsync();
-            
-            return (HttpStatusCode.Accepted, ideas);
+                var user = await _context.Users.FindAsync(i);
+                Console.WriteLine("Denne bruger er null: "+user == null);
+                Console.WriteLine(user.UserName);
+                Console.WriteLine(user.Id);
+                Console.WriteLine(user.UserName);
             }
-            
+            var ideas = await _context.Ideas.Where(i => i.Creator.Id == userId).Select(i =>
+                new IdeaDetailsDTO {
+                    Id = i.Id,
+                    Title = i.Title,
+                    Subject = i.Subject,
+                    Type = i.Type
+                }).ToListAsync();
+
+                if(ideas == null) 
+                {
+                    Console.WriteLine("HVad så spasser");
+
+                }
+
+                return (HttpStatusCode.Accepted, ideas.AsReadOnly());
         }
 
         public async Task<IReadOnlyCollection<IdeaDetailsDTO>> ReadAllAsync()
