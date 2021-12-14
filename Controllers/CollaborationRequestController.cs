@@ -53,6 +53,7 @@ namespace YoghurtBank.Controllers
             return requests;
         }
 
+        [Route("api/[controller]/userId")]
         [Authorize]
         [HttpGet("{userid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
