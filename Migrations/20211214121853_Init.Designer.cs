@@ -12,8 +12,8 @@ using YoghurtBank.Infrastructure;
 namespace YoghurtBank.Migrations
 {
     [DbContext(typeof(YoghurtContext))]
-    [Migration("20211211195956_update4.0")]
-    partial class update40
+    [Migration("20211214121853_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -77,8 +77,8 @@ namespace YoghurtBank.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("character varying(250)");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<bool>("Open")
                         .HasColumnType("boolean");
@@ -86,7 +86,7 @@ namespace YoghurtBank.Migrations
                     b.Property<DateTime>("Posted")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Subject")
@@ -99,8 +99,8 @@ namespace YoghurtBank.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
